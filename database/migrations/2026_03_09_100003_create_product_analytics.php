@@ -36,7 +36,6 @@ return new class extends Migration
             $table->unique(['product_id', 'variant_id', 'date']);
             $table->index(['store_id', 'date']);
             $table->index(['product_id', 'date']);
-            $table->index('date');
         });
 
         Schema::create('product_performance_summary', function (Blueprint $table) {
@@ -62,7 +61,7 @@ return new class extends Migration
             $table->integer('ranking_orders')->nullable();
             $table->timestamps();
             
-            $table->unique(['product_id', 'period', 'period_start']);
+            $table->unique(['product_id', 'period', 'period_start'], 'prod_perf_summary_unique');
             $table->index(['store_id', 'period', 'period_start']);
             $table->index(['period', 'period_start']);
         });

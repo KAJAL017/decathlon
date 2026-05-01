@@ -157,6 +157,123 @@ function openAddModal() {
     });
 }
 
+// Fill Demo Data Function
+function fillDemoData() {
+    // Sample demo attributes data
+    const demoAttributes = [
+        {
+            name: 'Color',
+            slug: 'color',
+            type: 'color',
+            displayType: 'color_swatch',
+            sortOrder: 1,
+            variant: true,
+            filterable: true,
+            required: false
+        },
+        {
+            name: 'Size',
+            slug: 'size',
+            type: 'select',
+            displayType: 'radio',
+            sortOrder: 2,
+            variant: true,
+            filterable: true,
+            required: true
+        },
+        {
+            name: 'Material',
+            slug: 'material',
+            type: 'select',
+            displayType: 'dropdown',
+            sortOrder: 3,
+            variant: false,
+            filterable: true,
+            required: false
+        },
+        {
+            name: 'Weight',
+            slug: 'weight',
+            type: 'number',
+            displayType: 'dropdown',
+            unit: 'kg',
+            sortOrder: 4,
+            variant: false,
+            filterable: true,
+            required: false
+        },
+        {
+            name: 'Brand',
+            slug: 'brand',
+            type: 'select',
+            displayType: 'dropdown',
+            sortOrder: 5,
+            variant: false,
+            filterable: true,
+            required: false
+        },
+        {
+            name: 'Waterproof',
+            slug: 'waterproof',
+            type: 'boolean',
+            displayType: 'checkbox',
+            sortOrder: 6,
+            variant: false,
+            filterable: true,
+            required: false
+        },
+        {
+            name: 'Gender',
+            slug: 'gender',
+            type: 'select',
+            displayType: 'radio',
+            sortOrder: 7,
+            variant: false,
+            filterable: true,
+            required: false
+        },
+        {
+            name: 'Pattern',
+            slug: 'pattern',
+            type: 'multiselect',
+            displayType: 'checkbox',
+            sortOrder: 8,
+            variant: false,
+            filterable: true,
+            required: false
+        }
+    ];
+    
+    // Pick a random demo attribute
+    const randomAttribute = demoAttributes[Math.floor(Math.random() * demoAttributes.length)];
+    
+    // Fill the form
+    document.getElementById('attributeName').value = randomAttribute.name;
+    document.getElementById('attributeSlug').value = randomAttribute.slug;
+    document.getElementById('attributeType').value = randomAttribute.type;
+    document.getElementById('attributeDisplayType').value = randomAttribute.displayType;
+    document.getElementById('attributeSortOrder').value = randomAttribute.sortOrder;
+    document.getElementById('attributeVariant').checked = randomAttribute.variant;
+    document.getElementById('attributeFilterable').checked = randomAttribute.filterable;
+    document.getElementById('attributeRequired').checked = randomAttribute.required;
+    document.getElementById('attributeStatus').checked = true;
+    
+    // Show unit field if type is number
+    if (randomAttribute.type === 'number' && randomAttribute.unit) {
+        document.getElementById('unitField').style.display = 'block';
+        document.getElementById('attributeUnit').value = randomAttribute.unit;
+    }
+    
+    showNotification('Demo data filled successfully! You can now modify and save.', 'success');
+    
+    // Add a subtle highlight animation to the form
+    const form = document.getElementById('attributeForm');
+    form.style.animation = 'pulse 0.5s ease-in-out';
+    setTimeout(() => {
+        form.style.animation = '';
+    }, 500);
+}
+
 function closeModal() {
     const modal = document.getElementById('attributeModal');
     const modalContent = document.getElementById('attributeModalContent');

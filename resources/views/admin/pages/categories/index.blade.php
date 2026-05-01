@@ -283,11 +283,19 @@
                 <h3 id="modalTitle" class="text-lg font-semibold text-gray-900">Add Category</h3>
                 <p class="text-sm text-gray-600 mt-0.5">Create a new product category</p>
             </div>
-            <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="fillDemoData()" class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition-all shadow-sm hover:shadow-md">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    Demo
+                </button>
+                <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <!-- Modal Body -->
@@ -397,92 +405,48 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
-                        Images (ImageKit)
+                        Category Image (ImageKit)
                     </h4>
 
-                    <div class="grid grid-cols-3 gap-4">
-                        <!-- Category Image -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Category Image</label>
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-[#0082C3] transition-colors">
-                                <div id="categoryImagePreview" class="hidden mb-3">
-                                    <img id="categoryImagePreviewImg" src="" class="w-full h-24 object-cover rounded-lg">
+                    <!-- Category Image - Full Width -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Category Image</label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-[#0082C3] transition-colors bg-gray-50">
+                            <div id="categoryImagePreview" class="hidden mb-4">
+                                <img id="categoryImagePreviewImg" src="" class="w-full max-w-md mx-auto h-48 object-cover rounded-lg shadow-sm">
+                                <button type="button" onclick="removeImage()" class="mt-3 text-sm text-red-600 hover:text-red-700 font-medium">
+                                    Remove Image
+                                </button>
+                            </div>
+                            <div id="categoryImageProgress" class="hidden mb-4 max-w-md mx-auto">
+                                <div class="w-full bg-gray-200 rounded-full h-3 mb-3">
+                                    <div id="categoryImageProgressBar" class="bg-blue-600 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
                                 </div>
-                                <div id="categoryImageProgress" class="hidden mb-3">
-                                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
-                                        <div id="categoryImageProgressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
-                                    </div>
-                                    <p class="text-xs text-gray-600">
-                                        <span id="categoryImageProgressText">0%</span> • 
-                                        <span id="categoryImageSize">0 KB</span>
-                                    </p>
-                                </div>
-                                <button type="button" onclick="openImageKit('image')" class="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-200 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <p class="text-sm text-gray-600 font-medium">
+                                    <span id="categoryImageProgressText">0%</span> • 
+                                    <span id="categoryImageSize">0 KB</span>
+                                </p>
+                            </div>
+                            <div id="categoryImageUploadArea">
+                                <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <button type="button" onclick="openImageKit('image')" class="inline-flex items-center gap-2 px-6 py-3 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-all shadow-sm hover:shadow-md">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                                     </svg>
-                                    Upload
+                                    Upload Image
                                 </button>
-                                <p class="text-xs text-gray-500 mt-2">500x500px</p>
-                                <input type="hidden" id="categoryImageUrl">
-                                <input type="hidden" id="categoryImageId">
+                                <p class="text-sm text-gray-500 mt-4">
+                                    <span class="font-medium">Recommended:</span> 500x500px or higher<br>
+                                    <span class="text-xs">PNG, JPG, WEBP up to 5MB</span>
+                                </p>
                             </div>
-                        </div>
-
-                        <!-- Category Banner -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Category Banner</label>
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-[#0082C3] transition-colors">
-                                <div id="categoryBannerPreview" class="hidden mb-3">
-                                    <img id="categoryBannerPreviewImg" src="" class="w-full h-24 object-cover rounded-lg">
-                                </div>
-                                <div id="categoryBannerProgress" class="hidden mb-3">
-                                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
-                                        <div id="categoryBannerProgressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
-                                    </div>
-                                    <p class="text-xs text-gray-600">
-                                        <span id="categoryBannerProgressText">0%</span> • 
-                                        <span id="categoryBannerSize">0 KB</span>
-                                    </p>
-                                </div>
-                                <button type="button" onclick="openImageKit('banner')" class="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-200 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                                    </svg>
-                                    Upload
-                                </button>
-                                <p class="text-xs text-gray-500 mt-2">1920x400px</p>
-                                <input type="hidden" id="categoryBannerUrl">
-                                <input type="hidden" id="categoryBannerId">
-                            </div>
-                        </div>
-
-                        <!-- Category Icon -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Category Icon</label>
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-[#0082C3] transition-colors">
-                                <div id="categoryIconPreview" class="hidden mb-3">
-                                    <img id="categoryIconPreviewImg" src="" class="w-full h-24 object-cover rounded-lg">
-                                </div>
-                                <div id="categoryIconProgress" class="hidden mb-3">
-                                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
-                                        <div id="categoryIconProgressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
-                                    </div>
-                                    <p class="text-xs text-gray-600">
-                                        <span id="categoryIconProgressText">0%</span> • 
-                                        <span id="categoryIconSize">0 KB</span>
-                                    </p>
-                                </div>
-                                <button type="button" onclick="openImageKit('icon')" class="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-200 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                                    </svg>
-                                    Upload
-                                </button>
-                                <p class="text-xs text-gray-500 mt-2">64x64px</p>
-                                <input type="hidden" id="categoryIconUrl">
-                                <input type="hidden" id="categoryIconId">
-                            </div>
+                            <input type="hidden" id="categoryImageUrl">
+                            <input type="hidden" id="categoryImageId">
+                            <input type="hidden" id="categoryImageResponsive">
+                            <input type="hidden" id="categoryImageWidth">
+                            <input type="hidden" id="categoryImageHeight">
                         </div>
                     </div>
                 </div>
@@ -587,6 +551,18 @@
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+/* Pulse animation for demo data fill */
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% { 
+        transform: scale(1.01);
+        opacity: 0.95;
+    }
 }
 
 /* Smooth scrolling */
@@ -1013,14 +989,12 @@ function openAddModal() {
     document.getElementById('categorySortOrder').value = 0;
     
     document.getElementById('categoryImagePreview').classList.add('hidden');
-    document.getElementById('categoryBannerPreview').classList.add('hidden');
-    document.getElementById('categoryIconPreview').classList.add('hidden');
     document.getElementById('categoryImageUrl').value = '';
     document.getElementById('categoryImageId').value = '';
-    document.getElementById('categoryBannerUrl').value = '';
-    document.getElementById('categoryBannerId').value = '';
-    document.getElementById('categoryIconUrl').value = '';
-    document.getElementById('categoryIconId').value = '';
+    
+    // Show upload area
+    const uploadArea = document.getElementById('categoryImageUploadArea');
+    if (uploadArea) uploadArea.classList.remove('hidden');
     
     // Reset parent category select
     resetParentCategorySelect();
@@ -1047,6 +1021,99 @@ function openAddModal() {
             modalContent.style.transform = 'translateX(0)';
         });
     });
+}
+
+// Fill Demo Data Function
+function fillDemoData() {
+    // Sample demo data
+    const demoCategories = [
+        {
+            name: 'Sports Equipment',
+            slug: 'sports-equipment',
+            description: 'High-quality sports equipment for all your athletic needs. From professional gear to beginner-friendly options.',
+            sortOrder: 1,
+            featured: true,
+            showInMenu: true
+        },
+        {
+            name: 'Outdoor Gear',
+            slug: 'outdoor-gear',
+            description: 'Essential outdoor equipment for camping, hiking, and adventure activities. Durable and weather-resistant products.',
+            sortOrder: 2,
+            featured: true,
+            showInMenu: true
+        },
+        {
+            name: 'Fitness & Gym',
+            slug: 'fitness-gym',
+            description: 'Complete range of fitness equipment and accessories for home and commercial gyms. Build your perfect workout space.',
+            sortOrder: 3,
+            featured: false,
+            showInMenu: true
+        },
+        {
+            name: 'Water Sports',
+            slug: 'water-sports',
+            description: 'Dive into adventure with our water sports collection. Swimming, surfing, diving, and more aquatic activities.',
+            sortOrder: 4,
+            featured: true,
+            showInMenu: true
+        },
+        {
+            name: 'Team Sports',
+            slug: 'team-sports',
+            description: 'Equipment and apparel for football, basketball, cricket, volleyball, and other team sports. Play together, win together.',
+            sortOrder: 5,
+            featured: false,
+            showInMenu: true
+        },
+        {
+            name: 'Cycling & Bikes',
+            slug: 'cycling-bikes',
+            description: 'Premium bicycles and cycling accessories for road, mountain, and city riding. Ride with confidence.',
+            sortOrder: 6,
+            featured: true,
+            showInMenu: true
+        },
+        {
+            name: 'Running & Athletics',
+            slug: 'running-athletics',
+            description: 'Professional running shoes, apparel, and accessories for track, trail, and marathon runners.',
+            sortOrder: 7,
+            featured: false,
+            showInMenu: true
+        },
+        {
+            name: 'Yoga & Wellness',
+            slug: 'yoga-wellness',
+            description: 'Yoga mats, blocks, straps, and wellness products for mindful practice and healthy living.',
+            sortOrder: 8,
+            featured: true,
+            showInMenu: true
+        }
+    ];
+    
+    // Pick a random demo category
+    const randomCategory = demoCategories[Math.floor(Math.random() * demoCategories.length)];
+    
+    // Fill the form
+    document.getElementById('categoryName').value = randomCategory.name;
+    document.getElementById('categorySlug').value = randomCategory.slug;
+    document.getElementById('categoryDescription').value = randomCategory.description;
+    document.getElementById('categorySortOrder').value = randomCategory.sortOrder;
+    document.getElementById('categoryFeatured').checked = randomCategory.featured;
+    document.getElementById('categoryShowInMenu').checked = randomCategory.showInMenu;
+    document.getElementById('categoryStatus').checked = true;
+    
+    // Show success notification
+    showNotification('Demo data filled successfully! You can now modify and save.', 'success');
+    
+    // Add a subtle highlight animation to the form
+    const form = document.getElementById('categoryForm');
+    form.style.animation = 'pulse 0.5s ease-in-out';
+    setTimeout(() => {
+        form.style.animation = '';
+    }, 500);
 }
 
 function closeModal() {
@@ -1524,10 +1591,13 @@ document.getElementById('categoryForm').addEventListener('submit', function(e) {
         show_in_menu: document.getElementById('categoryShowInMenu').checked,
         image_url: document.getElementById('categoryImageUrl').value,
         image_id: document.getElementById('categoryImageId').value,
-        banner_url: document.getElementById('categoryBannerUrl').value,
-        banner_id: document.getElementById('categoryBannerId').value,
-        icon_url: document.getElementById('categoryIconUrl').value,
-        icon_id: document.getElementById('categoryIconId').value,
+        image_responsive: document.getElementById('categoryImageResponsive').value,
+        image_width: document.getElementById('categoryImageWidth').value,
+        image_height: document.getElementById('categoryImageHeight').value,
+        banner_url: document.getElementById('categoryBannerUrl')?.value || null,
+        banner_id: document.getElementById('categoryBannerId')?.value || null,
+        icon_url: document.getElementById('categoryIconUrl')?.value || null,
+        icon_id: document.getElementById('categoryIconId')?.value || null,
         meta_title: document.getElementById('categoryMetaTitle').value,
         meta_description: document.getElementById('categoryMetaDescription').value,
         meta_keywords: document.getElementById('categoryMetaKeywords').value,
@@ -1932,11 +2002,15 @@ function openImageKit(type) {
         const file = e.target.files[0];
         if (!file) return;
         
-        // Get progress elements based on type
-        const progressContainer = document.getElementById(`category${type.charAt(0).toUpperCase() + type.slice(1)}Progress`);
-        const progressBar = document.getElementById(`category${type.charAt(0).toUpperCase() + type.slice(1)}ProgressBar`);
-        const progressText = document.getElementById(`category${type.charAt(0).toUpperCase() + type.slice(1)}ProgressText`);
-        const sizeText = document.getElementById(`category${type.charAt(0).toUpperCase() + type.slice(1)}Size`);
+        // Get progress elements
+        const progressContainer = document.getElementById('categoryImageProgress');
+        const progressBar = document.getElementById('categoryImageProgressBar');
+        const progressText = document.getElementById('categoryImageProgressText');
+        const sizeText = document.getElementById('categoryImageSize');
+        const uploadArea = document.getElementById('categoryImageUploadArea');
+        
+        // Hide upload area, show progress
+        if (uploadArea) uploadArea.classList.add('hidden');
         
         // Reset and show progress container
         progressBar.style.width = '0%';
@@ -1984,45 +2058,42 @@ function openImageKit(type) {
                         if (data.success) {
                             const imageUrl = data.data.url;
                             const fileId = data.data.fileId;
+                            const responsiveUrls = data.data.responsiveUrls;
                             
-                            // Get optimized WebP URL
-                            const webpUrl = data.data.responsiveUrls.webp;
+                            // Store all responsive URLs
+                            document.getElementById('categoryImageUrl').value = responsiveUrls.mobile_webp || imageUrl;
+                            document.getElementById('categoryImageId').value = fileId;
+                            document.getElementById('categoryImageResponsive').value = JSON.stringify(responsiveUrls);
                             
-                            if (type === 'image') {
-                                document.getElementById('categoryImageUrl').value = webpUrl;
-                                document.getElementById('categoryImageId').value = fileId;
-                                document.getElementById('categoryImagePreviewImg').src = webpUrl;
-                                document.getElementById('categoryImagePreview').classList.remove('hidden');
-                            } else if (type === 'banner') {
-                                document.getElementById('categoryBannerUrl').value = webpUrl;
-                                document.getElementById('categoryBannerId').value = fileId;
-                                document.getElementById('categoryBannerPreviewImg').src = webpUrl;
-                                document.getElementById('categoryBannerPreview').classList.remove('hidden');
-                            } else if (type === 'icon') {
-                                document.getElementById('categoryIconUrl').value = webpUrl;
-                                document.getElementById('categoryIconId').value = fileId;
-                                document.getElementById('categoryIconPreviewImg').src = webpUrl;
-                                document.getElementById('categoryIconPreview').classList.remove('hidden');
-                            }
+                            // Store dimensions if available
+                            if (data.data.width) document.getElementById('categoryImageWidth').value = data.data.width;
+                            if (data.data.height) document.getElementById('categoryImageHeight').value = data.data.height;
                             
-                            // Hide progress, show preview
+                            // Show preview with responsive image
+                            document.getElementById('categoryImagePreviewImg').src = responsiveUrls.card_webp || responsiveUrls.mobile_webp || imageUrl;
+                            document.getElementById('categoryImagePreview').classList.remove('hidden');
+                            
+                            // Hide progress
                             progressContainer.classList.add('hidden');
                             progressBar.style.width = '0%';
                             
-                            showNotification('Image uploaded successfully! (WebP optimized)', 'success');
+                            showNotification('Image uploaded successfully! Multiple sizes generated for all devices.', 'success');
                         } else {
                             progressContainer.classList.add('hidden');
                             progressBar.style.width = '0%';
+                            if (uploadArea) uploadArea.classList.remove('hidden');
                             showNotification(data.message || 'Upload failed', 'error');
                         }
                     } catch (error) {
                         progressContainer.classList.add('hidden');
                         progressBar.style.width = '0%';
+                        if (uploadArea) uploadArea.classList.remove('hidden');
                         showNotification('Upload failed. Invalid response.', 'error');
                     }
                 } else {
                     progressContainer.classList.add('hidden');
                     progressBar.style.width = '0%';
+                    if (uploadArea) uploadArea.classList.remove('hidden');
                     showNotification('Upload failed. Server error.', 'error');
                 }
             });
@@ -2031,6 +2102,7 @@ function openImageKit(type) {
             xhr.addEventListener('error', function() {
                 progressContainer.classList.add('hidden');
                 progressBar.style.width = '0%';
+                if (uploadArea) uploadArea.classList.remove('hidden');
                 showNotification('Upload failed. Network error.', 'error');
             });
             
@@ -2045,12 +2117,31 @@ function openImageKit(type) {
 }
 
 // Helper function to format file size
+// Helper function to format file size
 function formatFileSize(bytes) {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+}
+
+// Remove uploaded image
+function removeImage() {
+    // Hide preview
+    document.getElementById('categoryImagePreview').classList.add('hidden');
+    
+    // Clear values
+    document.getElementById('categoryImageUrl').value = '';
+    document.getElementById('categoryImageId').value = '';
+    
+    // Show upload area again
+    const uploadArea = document.getElementById('categoryImageUploadArea');
+    if (uploadArea) {
+        uploadArea.classList.remove('hidden');
+    }
+    
+    showNotification('Image removed successfully', 'success');
 }
 
 function showNotification(message, type = 'success') {

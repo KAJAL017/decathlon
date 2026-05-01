@@ -318,7 +318,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        Basic Info
+                        Product Details
                     </span>
                 </button>
                 <button onclick="switchTab('media')" id="tab-media" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg transition-colors">
@@ -337,12 +337,21 @@
                         Variants
                     </span>
                 </button>
-                <button onclick="switchTab('related')" id="tab-related" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg transition-colors">
+                <button onclick="switchTab('organization')" id="tab-organization" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg transition-colors">
                     <span class="flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                         </svg>
-                        Related
+                        Organization
+                    </span>
+                </button>
+                <button onclick="switchTab('advanced')" id="tab-advanced" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg transition-colors">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Advanced
                     </span>
                 </button>
                 <button onclick="switchTab('seo')" id="tab-seo" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg transition-colors">
@@ -351,14 +360,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                         SEO
-                    </span>
-                </button>
-                <button onclick="switchTab('faqs')" id="tab-faqs" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg transition-colors">
-                    <span class="flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        FAQs
                     </span>
                 </button>
             </div>
@@ -375,20 +376,20 @@
                     
                     <div class="grid grid-cols-2 gap-4">
                         <div class="col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Product Name <span class="text-red-500">*</span></label>
-                            <input type="text" id="productName" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="e.g., Nike Air Max 270" required>
-                            <p id="productNameError" class="hidden text-xs text-red-600 mt-1"></p>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Product Name <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="productName" maxlength="200" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="e.g., Nike Air Max 270" required>
+                            <div class="flex items-center justify-between mt-1">
+                                <p id="productNameError" class="hidden text-xs text-red-600"></p>
+                                <p class="text-xs text-gray-500"><span id="productNameCount">0</span>/200 characters</p>
+                            </div>
                         </div>
 
                         <div class="col-span-2">
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">Slug <span class="text-gray-500 text-xs">(Auto-generated)</span></label>
                             <input type="text" id="productSlug" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="nike-air-max-270">
                             <p id="productSlugError" class="hidden text-xs text-red-600 mt-1"></p>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">SKU Prefix</label>
-                            <input type="text" id="productSkuPrefix" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="e.g., NIKE">
                         </div>
 
                         <div>
@@ -408,94 +409,435 @@
                             </select>
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Primary Category</label>
-                            <select id="productCategory" data-searchable data-placeholder="Select Category" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                                <option value="">Select Category</option>
-                            </select>
-                        </div>
-
                         <div class="col-span-2">
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">Short Description</label>
-                            <textarea id="productShortDescription" data-editor="simple" rows="2" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Brief product description (max 500 chars)"></textarea>
+                            <textarea id="productShortDescription" data-editor="simple" rows="2" maxlength="500" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Brief product description (max 500 chars)"></textarea>
+                            <p class="text-xs text-gray-500 mt-1"><span id="shortDescCount">0</span>/500 characters</p>
                         </div>
 
                         <div class="col-span-2">
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">Description</label>
                             <textarea id="productDescription" data-editor="full" rows="4" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Detailed product description"></textarea>
+                            <p class="text-xs text-gray-500 mt-1">Full product description with formatting</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Product Settings -->
-                <div class="space-y-4 border-t pt-6 mt-6">
-                    <h4 class="text-sm font-semibold text-gray-900">Product Settings</h4>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Status <span class="text-red-500">*</span></label>
-                            <select id="productStatus" data-searchable data-placeholder="Select Status" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" required>
-                                <option value="draft">Draft</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
+                <!-- Pricing & Inventory Section - COLLAPSIBLE -->
+                <div class="collapsible-section mt-6">
+                    <div class="collapsible-header active" data-collapsible="section-pricing" data-default="open" onclick="toggleCollapsible('section-pricing')">
+                        <div class="collapsible-title">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>Pricing & Inventory</span>
+                            <span class="section-badge required">Required</span>
                         </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Availability <span class="text-red-500">*</span></label>
-                            <select id="productAvailability" data-searchable data-placeholder="Select Availability" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" onchange="toggleAvailableDate()" required>
-                                <option value="in_stock">In Stock</option>
-                                <option value="out_of_stock">Out of Stock</option>
-                                <option value="pre_order">Pre-Order</option>
-                                <option value="backorder">Backorder</option>
-                            </select>
+                        <svg class="collapsible-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div id="section-pricing" class="collapsible-content active">
+                        <div class="collapsible-body">
+                            <p class="helper-text mb-4">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Set product pricing and manage inventory tracking
+                            </p>
+                            
+                            <!-- Pricing -->
+                            <div class="space-y-4 mb-6">
+                                <h5 class="text-sm font-semibold text-gray-800">Pricing</h5>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                            Regular Price <span class="text-red-500">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                                            <input type="number" step="0.01" min="0" id="productRegularPrice" class="w-full pl-8 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00" required>
+                                        </div>
+                                        <p class="helper-text">Base selling price</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                            Sale Price
+                                        </label>
+                                        <div class="relative">
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                                            <input type="number" step="0.01" min="0" id="productSalePrice" class="w-full pl-8 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
+                                        </div>
+                                        <p class="helper-text">Discounted price (optional)</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                            Cost Per Item
+                                        </label>
+                                        <div class="relative">
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                                            <input type="number" step="0.01" min="0" id="productCostPrice" class="w-full pl-8 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
+                                        </div>
+                                        <p class="helper-text">Your cost (for profit calc)</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Profit Margin Display -->
+                                <div id="profitMarginDisplay" class="hidden p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <span class="text-gray-700">Profit Margin:</span>
+                                        <span class="font-semibold text-blue-700" id="profitMarginValue">0%</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm mt-1">
+                                        <span class="text-gray-700">Profit Amount:</span>
+                                        <span class="font-semibold text-green-700" id="profitAmountValue">$0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Inventory Tracking -->
+                            <div class="space-y-4 border-t pt-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h5 class="text-sm font-semibold text-gray-800">Inventory Tracking</h5>
+                                        <p class="text-xs text-gray-500 mt-0.5">Track stock quantity for this product</p>
+                                    </div>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="productTrackInventory" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]" onchange="toggleInventoryFields()">
+                                        <span class="text-sm font-medium text-gray-700">Track Inventory</span>
+                                    </label>
+                                </div>
+                                
+                                <!-- Inventory Fields (Conditional) -->
+                                <div id="inventoryFields" class="hidden space-y-4">
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                                Stock Quantity <span class="text-red-500">*</span>
+                                            </label>
+                                            <input type="number" min="0" id="productStockQuantity" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0">
+                                            <p class="helper-text">Current stock level</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                                Low Stock Alert
+                                            </label>
+                                            <input type="number" min="0" id="productLowStockThreshold" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="5">
+                                            <p class="helper-text">Alert when stock is low</p>
+                                        </div>
+                                        
+                                        <div class="flex items-end">
+                                            <label class="flex items-center gap-2 cursor-pointer pb-2">
+                                                <input type="checkbox" id="productAllowBackorders" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
+                                                <span class="text-sm font-medium text-gray-700">Allow Backorders</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- SKU & Barcode -->
+                            <div class="space-y-4 border-t pt-4 mt-4">
+                                <h5 class="text-sm font-semibold text-gray-800">Product Identifiers</h5>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                            SKU (Stock Keeping Unit)
+                                        </label>
+                                        <input type="text" id="productSku" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Auto-generated or custom">
+                                        <p class="helper-text">Unique product identifier</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                            Barcode (ISBN, UPC, GTIN, etc.)
+                                        </label>
+                                        <input type="text" id="productBarcode" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Enter barcode">
+                                        <p class="helper-text">For scanning and tracking</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div id="availableDateContainer" class="hidden">
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Available Date</label>
-                            <input type="date" id="productAvailableDate" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                            <p class="text-xs text-gray-500 mt-1">When will this product be available?</p>
+                <!-- Shipping Section - COLLAPSIBLE -->
+                <div class="collapsible-section mt-6">
+                    <div class="collapsible-header" data-collapsible="section-shipping" data-default="closed" onclick="toggleCollapsible('section-shipping')">
+                        <div class="collapsible-title">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path>
+                            </svg>
+                            <span>Shipping & Dimensions</span>
+                            <span class="section-badge optional">Optional</span>
                         </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Visibility</label>
-                            <select id="productVisibility" data-searchable data-placeholder="Select Visibility" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                                <option value="visible">Visible (Everywhere)</option>
-                                <option value="hidden">Hidden</option>
-                                <option value="catalog_only">Catalog Only</option>
-                                <option value="search_only">Search Only</option>
-                            </select>
+                        <svg class="collapsible-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div id="section-shipping" class="collapsible-content">
+                        <div class="collapsible-body">
+                            <p class="helper-text mb-4">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Add shipping details for accurate delivery cost calculations
+                            </p>
+                            
+                            <!-- Shipping Options -->
+                            <div class="space-y-4 mb-6">
+                                <h5 class="text-sm font-semibold text-gray-800">Shipping Options</h5>
+                                <div class="flex items-center gap-6">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="productRequiresShipping" checked class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]" onchange="toggleShippingFields()">
+                                        <span class="text-sm font-medium text-gray-700">This product requires shipping</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="productShipsSeparately" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
+                                        <span class="text-sm font-medium text-gray-700">Ships separately</span>
+                                    </label>
+                                </div>
+                                <p class="helper-text">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Uncheck "Requires shipping" for digital products or services
+                                </p>
+                            </div>
+                            
+                            <!-- Weight & Dimensions -->
+                            <div id="shippingDetailsFields" class="space-y-4">
+                                <h5 class="text-sm font-semibold text-gray-800">Weight & Dimensions</h5>
+                                
+                                <!-- Weight -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Weight</label>
+                                        <div class="flex gap-2">
+                                            <input type="number" step="0.01" min="0" id="productWeight" class="flex-1 px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
+                                            <select id="productWeightUnit" class="px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
+                                                <option value="kg">kg</option>
+                                                <option value="g">g</option>
+                                                <option value="lb">lb</option>
+                                                <option value="oz">oz</option>
+                                            </select>
+                                        </div>
+                                        <p class="helper-text">Product weight for shipping</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Dimension Unit</label>
+                                        <select id="productDimensionUnit" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
+                                            <option value="cm">Centimeters (cm)</option>
+                                            <option value="m">Meters (m)</option>
+                                            <option value="in">Inches (in)</option>
+                                            <option value="ft">Feet (ft)</option>
+                                        </select>
+                                        <p class="helper-text">Unit for dimensions below</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Dimensions -->
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Length</label>
+                                        <input type="number" step="0.01" min="0" id="productLength" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
+                                        <p class="helper-text">Longest side</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Width</label>
+                                        <input type="number" step="0.01" min="0" id="productWidth" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
+                                        <p class="helper-text">Middle side</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Height</label>
+                                        <input type="number" step="0.01" min="0" id="productHeight" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
+                                        <p class="helper-text">Shortest side</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Package Info -->
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                                    <div class="flex items-start gap-2">
+                                        <svg class="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <div class="text-xs text-gray-600">
+                                            <p class="font-medium mb-1">Shipping Tips:</p>
+                                            <ul class="list-disc list-inside space-y-0.5">
+                                                <li>Accurate dimensions help calculate shipping costs</li>
+                                                <li>Include packaging weight and dimensions</li>
+                                                <li>Measure the longest, middle, and shortest sides</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Publish Date</label>
-                            <input type="datetime-local" id="productPublishedAt" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                            <p class="text-xs text-gray-500 mt-1">Schedule when product goes live</p>
+                <!-- Product Status (Collapsible - Default Open) -->
+                <div class="collapsible-section border-t pt-6 mt-6" data-section="product-status">
+                    <div class="collapsible-header active" onclick="toggleCollapsible('product-status')">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>Product Status</span>
                         </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Unpublish Date</label>
-                            <input type="datetime-local" id="productUnpublishedAt" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                            <p class="text-xs text-gray-500 mt-1">Auto-unpublish after this date</p>
+                        <div class="flex items-center gap-2">
+                            <span class="section-badge required">Required</span>
+                            <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
                         </div>
+                    </div>
+                    <div class="collapsible-content active">
+                        <div class="collapsible-body">
+                            <p class="helper-text">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Control product visibility and availability status
+                            </p>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Status <span class="text-red-500">*</span></label>
+                                    <select id="productStatus" data-searchable data-placeholder="Select Status" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" required>
+                                        <option value="draft">Draft</option>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                    <p class="text-xs text-gray-500 mt-1">Product publication status</p>
+                                </div>
 
-                        <div class="col-span-2 flex items-center gap-4">
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" id="productFeatured" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
-                                <span class="text-sm font-medium text-gray-700">Featured</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" id="productNew" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
-                                <span class="text-sm font-medium text-gray-700">New</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" id="productBestSeller" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
-                                <span class="text-sm font-medium text-gray-700">Best Seller</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" id="productIsDigital" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
-                                <span class="text-sm font-medium text-gray-700">Digital Product</span>
-                            </label>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Availability <span class="text-red-500">*</span></label>
+                                    <select id="productAvailability" data-searchable data-placeholder="Select Availability" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" onchange="toggleAvailableDate()" required>
+                                        <option value="in_stock">In Stock</option>
+                                        <option value="out_of_stock">Out of Stock</option>
+                                        <option value="pre_order">Pre-Order</option>
+                                        <option value="backorder">Backorder</option>
+                                    </select>
+                                    <p class="text-xs text-gray-500 mt-1">Stock availability status</p>
+                                </div>
+
+                                <div id="availableDateContainer" class="hidden">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Available Date</label>
+                                    <input type="date" id="productAvailableDate" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
+                                    <p class="text-xs text-gray-500 mt-1">When will this product be available?</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Visibility</label>
+                                    <select id="productVisibility" data-searchable data-placeholder="Select Visibility" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
+                                        <option value="visible">Visible (Everywhere)</option>
+                                        <option value="hidden">Hidden</option>
+                                        <option value="catalog_only">Catalog Only</option>
+                                        <option value="search_only">Search Only</option>
+                                    </select>
+                                    <p class="text-xs text-gray-500 mt-1">Where product appears</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Flags (Collapsible - Default Closed) -->
+                <div class="collapsible-section border-t pt-6 mt-6" data-section="product-flags">
+                    <div class="collapsible-header" onclick="toggleCollapsible('product-flags')">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"></path>
+                            </svg>
+                            <span>Product Flags</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="section-badge optional">Optional</span>
+                            <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="collapsible-body">
+                            <p class="helper-text">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Mark product with special badges and categories
+                            </p>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="col-span-2 flex items-center gap-6">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="productFeatured" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
+                                        <span class="text-sm font-medium text-gray-700">Featured Product</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="productNew" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
+                                        <span class="text-sm font-medium text-gray-700">New Arrival</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="productBestSeller" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
+                                        <span class="text-sm font-medium text-gray-700">Best Seller</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="productIsDigital" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
+                                        <span class="text-sm font-medium text-gray-700">Digital Product</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scheduling & Dates (Collapsible - Default Closed) -->
+                <div class="collapsible-section border-t pt-6 mt-6" data-section="product-scheduling">
+                    <div class="collapsible-header" onclick="toggleCollapsible('product-scheduling')">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <span>Scheduling & Dates</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="section-badge optional">Optional</span>
+                            <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="collapsible-body">
+                            <p class="helper-text">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Schedule automatic publish and unpublish dates
+                            </p>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Publish Date</label>
+                                    <input type="datetime-local" id="productPublishedAt" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
+                                    <p class="text-xs text-gray-500 mt-1">Schedule when product goes live</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Unpublish Date</label>
+                                    <input type="datetime-local" id="productUnpublishedAt" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
+                                    <p class="text-xs text-gray-500 mt-1">Auto-unpublish after this date</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -519,42 +861,7 @@
                     </div>
                 </div>
 
-                <!-- Product Tags -->
-                <div class="space-y-4 border-t pt-6 mt-6">
-                    <h4 class="text-sm font-semibold text-gray-900">Product Tags</h4>
-                    <p class="text-xs text-gray-500">Add tags for better search and filtering (press Enter to add)</p>
-                    
-                    <div>
-                        <div class="flex flex-wrap gap-2 mb-2" id="productTagsContainer">
-                            <!-- Tags will appear here -->
-                        </div>
-                        <input type="text" id="productTagInput" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Type tag and press Enter (e.g., summer, sports, running)">
-                    </div>
-                </div>
 
-                <!-- Dimensions -->
-                <div class="space-y-4 border-t pt-6 mt-6">
-                    <h4 class="text-sm font-semibold text-gray-900">Dimensions & Weight</h4>
-                    
-                    <div class="grid grid-cols-4 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Weight (kg)</label>
-                            <input type="number" step="0.01" id="productWeight" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Length (cm)</label>
-                            <input type="number" step="0.01" id="productLength" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Width (cm)</label>
-                            <input type="number" step="0.01" id="productWidth" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Height (cm)</label>
-                            <input type="number" step="0.01" id="productHeight" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
-                        </div>
-                    </div>
-                </div>
             </div>
 
 
@@ -583,28 +890,73 @@
                         </div>
                     </div>
 
-                    <!-- Videos Section -->
-                    <div class="space-y-4 border-t pt-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-900">Product Videos</h4>
-                                <p class="text-xs text-gray-500">Add YouTube or Vimeo videos</p>
-                            </div>
-                            <button type="button" onclick="openAddVideoModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                </svg>
-                                Add Video
-                            </button>
-                        </div>
-
-                        <!-- Videos List -->
-                        <div id="productVideosList" class="space-y-3">
-                            <div class="text-center py-8 text-gray-500 text-sm">
-                                <svg class="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <!-- Product Videos (Collapsible - Default Closed) -->
+                    <div class="collapsible-section border-t pt-6" data-section="product-videos">
+                        <div class="collapsible-header" onclick="toggleCollapsible('product-videos')">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                                 </svg>
-                                No videos added yet
+                                <span>Product Videos</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="section-badge optional">Optional</span>
+                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <p class="helper-text">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Add YouTube or Vimeo videos to showcase your product in action
+                                </p>
+
+                                <div class="flex items-center justify-between mb-4">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-700">Video Gallery</p>
+                                        <p class="text-xs text-gray-500">Embed videos from YouTube or Vimeo</p>
+                                    </div>
+                                    <button type="button" onclick="openAddVideoModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                        Add Video
+                                    </button>
+                                </div>
+
+                                <!-- Videos List -->
+                                <div id="productVideosList" class="space-y-3">
+                                    <div class="text-center py-8 text-gray-500 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                                        <svg class="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <p class="font-medium">No videos added yet</p>
+                                        <p class="text-xs mt-1">Click "Add Video" to embed your first video</p>
+                                    </div>
+                                </div>
+
+                                <!-- Video Tips -->
+                                <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                    <div class="flex gap-2">
+                                        <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <div class="text-xs text-blue-800">
+                                            <p class="font-semibold mb-1">Video Best Practices:</p>
+                                            <ul class="list-disc list-inside space-y-0.5 text-blue-700">
+                                                <li>Use high-quality product demonstration videos</li>
+                                                <li>Keep videos under 2 minutes for better engagement</li>
+                                                <li>Add captions for accessibility</li>
+                                                <li>Show product features and benefits clearly</li>
+                                                <li>Supported: YouTube, Vimeo URLs</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -650,6 +1002,199 @@
                 </div>
             </div>
 
+            <!-- Tab: Organization -->
+            <div id="content-organization" class="tab-content hidden px-6 py-4">
+                <div class="space-y-6">
+                    
+                    <!-- Categories Section (Collapsible - Default Open) -->
+                    <div class="collapsible-section" data-section="product-categories">
+                        <div class="collapsible-header active" onclick="toggleCollapsible('product-categories')">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                                </svg>
+                                <span>Categories</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="section-badge optional">Optional</span>
+                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="collapsible-content active">
+                            <div class="collapsible-body">
+                                <p class="helper-text">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Organize your product into one or more categories for better navigation
+                                </p>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Primary Category</label>
+                                        <select id="productPrimaryCategory" data-searchable data-placeholder="Select Primary Category" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
+                                            <option value="">Select Primary Category</option>
+                                        </select>
+                                        <p class="text-xs text-gray-500 mt-1">Main category for this product</p>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Additional Categories</label>
+                                        <select id="productAdditionalCategories" multiple data-searchable data-placeholder="Select Additional Categories" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
+                                            <!-- Categories will be loaded here -->
+                                        </select>
+                                        <p class="text-xs text-gray-500 mt-1">Product can appear in multiple categories</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tags Section (Collapsible - Default Open) -->
+                    <div class="collapsible-section border-t pt-6" data-section="product-tags">
+                        <div class="collapsible-header active" onclick="toggleCollapsible('product-tags')">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                </svg>
+                                <span>Product Tags</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="section-badge optional">Optional</span>
+                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="collapsible-content active">
+                            <div class="collapsible-body">
+                                <p class="helper-text">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Add tags for better search and filtering (press Enter to add)
+                                </p>
+                                
+                                <div>
+                                    <div class="flex flex-wrap gap-2 mb-3" id="productTagsContainer">
+                                        <!-- Tags will appear here -->
+                                    </div>
+                                    <input type="text" id="productTagInput" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Type tag and press Enter (e.g., summer, sports, running)">
+                                    <p class="text-xs text-gray-500 mt-1">Tags help customers find your product</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collections Section (Collapsible - Default Closed) -->
+                    <div class="collapsible-section border-t pt-6" data-section="product-collections">
+                        <div class="collapsible-header" onclick="toggleCollapsible('product-collections')">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                </svg>
+                                <span>Collections</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="section-badge optional">Optional</span>
+                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <p class="helper-text">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Add product to curated collections (e.g., "Summer Sale", "Best Sellers")
+                                </p>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Select Collections</label>
+                                    <select id="productCollections" multiple data-searchable data-placeholder="Select Collections" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
+                                        <!-- Collections will be loaded here -->
+                                    </select>
+                                    <p class="text-xs text-gray-500 mt-1">Product can be part of multiple collections</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Attributes Section (Collapsible - Default Closed) -->
+                    <div class="collapsible-section border-t pt-6" data-section="product-attributes">
+                        <div class="collapsible-header" onclick="toggleCollapsible('product-attributes')">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                </svg>
+                                <span>Product Attributes</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="section-badge optional">Optional</span>
+                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <p class="helper-text">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Add non-variant attributes (e.g., Material, Warranty, Country of Origin)
+                                </p>
+                                
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-sm font-medium text-gray-700">Attribute List</p>
+                                        <button type="button" onclick="openAddAttributeModal()" class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 transition-colors">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                            </svg>
+                                            Add Attribute
+                                        </button>
+                                    </div>
+
+                                    <div id="productAttributesList" class="space-y-2">
+                                        <div class="text-center py-6 text-gray-500 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                                            <svg class="w-10 h-10 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                            </svg>
+                                            <p class="font-medium">No attributes added yet</p>
+                                            <p class="text-xs mt-1">Click "Add Attribute" to add product specifications</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Attributes Tips -->
+                                <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                                    <div class="flex gap-2">
+                                        <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <div class="text-xs text-green-800">
+                                            <p class="font-semibold mb-1">Attribute Tips:</p>
+                                            <ul class="list-disc list-inside space-y-0.5 text-green-700">
+                                                <li>Use attributes for product specifications (Material, Warranty, etc.)</li>
+                                                <li>For variant options (Size, Color), use the Variants tab instead</li>
+                                                <li>Attributes help customers make informed decisions</li>
+                                                <li>Keep attribute names consistent across products</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <!-- Tab: SEO -->
             <div id="content-seo" class="tab-content hidden px-6 py-4">
                 <div class="space-y-4">
@@ -678,84 +1223,304 @@
                 </div>
             </div>
 
-            <!-- Tab: FAQs -->
-            <div id="content-faqs" class="tab-content hidden px-6 py-4">
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h4 class="text-sm font-semibold text-gray-900">Frequently Asked Questions</h4>
-                            <p class="text-xs text-gray-500">Add common questions and answers about this product</p>
-                        </div>
-                        <button type="button" onclick="addFaqItem()" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                            </svg>
-                            Add FAQ
-                        </button>
-                    </div>
-
-                    <!-- FAQs List -->
-                    <div id="productFaqsList" class="space-y-3">
-                        <div class="text-center py-8 text-gray-500 text-sm">
-                            <svg class="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            No FAQs added yet
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab: Related Products -->
-            <div id="content-related" class="tab-content hidden px-6 py-4">
+            <!-- Tab: Advanced -->
+            <div id="content-advanced" class="tab-content hidden px-6 py-4">
                 <div class="space-y-6">
-                    <!-- Related Products Section -->
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-900">Related Products</h4>
-                                <p class="text-xs text-gray-500 mt-0.5">Products that are similar or complementary</p>
+                    
+                    <!-- Related Products Section (Collapsible - Default Closed) -->
+                    <div class="collapsible-section" data-section="related-products">
+                        <div class="collapsible-header" onclick="toggleCollapsible('related-products')">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                                </svg>
+                                <span>Related Products</span>
                             </div>
-                            <button type="button" onclick="openProductSelector('related')" class="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                                + Add Related
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <span class="section-badge optional">Optional</span>
+                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
                         </div>
-                        <div id="relatedProductsList" class="space-y-2 min-h-[60px] border border-gray-200 rounded-lg p-3 bg-gray-50">
-                            <p class="text-xs text-gray-400 text-center py-2">No related products added</p>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <p class="helper-text">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Suggest similar or complementary products to increase cross-selling
+                                </p>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-700">Related Products</p>
+                                                <p class="text-xs text-gray-500 mt-0.5">Products that are similar or complementary</p>
+                                            </div>
+                                            <button type="button" onclick="openProductSelector('related')" class="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                                                + Add Related
+                                            </button>
+                                        </div>
+                                        <div id="relatedProductsList" class="space-y-2 min-h-[60px] border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                            <p class="text-xs text-gray-400 text-center py-2">No related products added</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-700">Upsell Products</p>
+                                                <p class="text-xs text-gray-500 mt-0.5">Higher-value alternatives to increase order value</p>
+                                            </div>
+                                            <button type="button" onclick="openProductSelector('upsell')" class="px-3 py-1.5 bg-purple-600 text-white text-xs font-medium rounded-lg hover:bg-purple-700 transition-colors">
+                                                + Add Upsell
+                                            </button>
+                                        </div>
+                                        <div id="upsellProductsList" class="space-y-2 min-h-[60px] border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                            <p class="text-xs text-gray-400 text-center py-2">No upsell products added</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-700">Cross-sell Products</p>
+                                                <p class="text-xs text-gray-500 mt-0.5">Complementary products often bought together</p>
+                                            </div>
+                                            <button type="button" onclick="openProductSelector('cross_sell')" class="px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 transition-colors">
+                                                + Add Cross-sell
+                                            </button>
+                                        </div>
+                                        <div id="crossSellProductsList" class="space-y-2 min-h-[60px] border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                            <p class="text-xs text-gray-400 text-center py-2">No cross-sell products added</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Upsell Products Section -->
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-900">Upsell Products</h4>
-                                <p class="text-xs text-gray-500 mt-0.5">Higher-value alternatives to increase order value</p>
+                    <!-- FAQs Section (Collapsible - Default Closed) -->
+                    <div class="collapsible-section border-t pt-6" data-section="product-faqs">
+                        <div class="collapsible-header" onclick="toggleCollapsible('product-faqs')">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>Frequently Asked Questions</span>
                             </div>
-                            <button type="button" onclick="openProductSelector('upsell')" class="px-3 py-1.5 bg-purple-600 text-white text-xs font-medium rounded-lg hover:bg-purple-700 transition-colors">
-                                + Add Upsell
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <span class="section-badge optional">Optional</span>
+                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
                         </div>
-                        <div id="upsellProductsList" class="space-y-2 min-h-[60px] border border-gray-200 rounded-lg p-3 bg-gray-50">
-                            <p class="text-xs text-gray-400 text-center py-2">No upsell products added</p>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <p class="helper-text">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Add common questions and answers to help customers make informed decisions
+                                </p>
+                                
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-700">FAQ List</p>
+                                            <p class="text-xs text-gray-500">Questions and answers about this product</p>
+                                        </div>
+                                        <button type="button" onclick="addFaqItem()" class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 transition-colors">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                            </svg>
+                                            Add FAQ
+                                        </button>
+                                    </div>
+                                    <div id="productFaqsList" class="space-y-3">
+                                        <div class="text-center py-6 text-gray-500 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                                            <svg class="w-10 h-10 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <p class="font-medium">No FAQs added yet</p>
+                                            <p class="text-xs mt-1">Click "Add FAQ" to add questions and answers</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Cross-sell Products Section -->
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-900">Cross-sell Products</h4>
-                                <p class="text-xs text-gray-500 mt-0.5">Complementary products often bought together</p>
+                    <!-- Product Bundles Section (Collapsible - Default Closed) -->
+                    <div class="collapsible-section border-t pt-6" data-section="product-bundles">
+                        <div class="collapsible-header" onclick="toggleCollapsible('product-bundles')">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                </svg>
+                                <span>Product Bundles</span>
                             </div>
-                            <button type="button" onclick="openProductSelector('cross_sell')" class="px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 transition-colors">
-                                + Add Cross-sell
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <span class="section-badge optional">Optional</span>
+                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
                         </div>
-                        <div id="crossSellProductsList" class="space-y-2 min-h-[60px] border border-gray-200 rounded-lg p-3 bg-gray-50">
-                            <p class="text-xs text-gray-400 text-center py-2">No cross-sell products added</p>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <p class="helper-text">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Create product bundles by combining multiple products at a special price
+                                </p>
+                                
+                                <div class="space-y-4">
+                                    <div class="flex items-center gap-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                        <input type="checkbox" id="productIsBundle" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]" onchange="toggleBundleFields()">
+                                        <label for="productIsBundle" class="text-sm font-medium text-gray-700 cursor-pointer">
+                                            This is a bundle product
+                                        </label>
+                                    </div>
+
+                                    <div id="bundleFieldsContainer" class="hidden space-y-4">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-700">Bundle Items</p>
+                                                <p class="text-xs text-gray-500">Products included in this bundle</p>
+                                            </div>
+                                            <button type="button" onclick="openBundleItemSelector()" class="inline-flex items-center gap-2 px-3 py-1.5 bg-orange-600 text-white text-xs font-medium rounded-lg hover:bg-orange-700 transition-colors">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                                </svg>
+                                                Add Item
+                                            </button>
+                                        </div>
+
+                                        <div id="bundleItemsList" class="space-y-2">
+                                            <div class="text-center py-6 text-gray-500 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                                                <svg class="w-10 h-10 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                                </svg>
+                                                <p class="font-medium">No bundle items added</p>
+                                                <p class="text-xs mt-1">Click "Add Item" to add products to this bundle</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1.5">Bundle Discount (%)</label>
+                                                <input type="number" id="bundleDiscount" min="0" max="100" step="1" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="10">
+                                                <p class="text-xs text-gray-500 mt-1">Discount percentage for bundle</p>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1.5">Bundle Price</label>
+                                                <div class="relative">
+                                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                                                    <input type="number" id="bundlePrice" min="0" step="0.01" class="w-full pl-7 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent bg-gray-50" placeholder="0.00" readonly>
+                                                </div>
+                                                <p class="text-xs text-gray-500 mt-1">Auto-calculated bundle price</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Bundle Tips -->
+                                    <div class="p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                                        <div class="flex gap-2">
+                                            <svg class="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <div class="text-xs text-orange-800">
+                                                <p class="font-semibold mb-1">Bundle Tips:</p>
+                                                <ul class="list-disc list-inside space-y-0.5 text-orange-700">
+                                                    <li>Bundles combine multiple products at a discounted price</li>
+                                                    <li>Set quantity for each product in the bundle</li>
+                                                    <li>Bundle price is auto-calculated based on discount</li>
+                                                    <li>Great for "Starter Kits" or "Complete Sets"</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Custom Fields Section (Collapsible - Default Closed) -->
+                    <div class="collapsible-section border-t pt-6" data-section="custom-fields">
+                        <div class="collapsible-header" onclick="toggleCollapsible('custom-fields')">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                                </svg>
+                                <span>Custom Fields</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="section-badge optional">Optional</span>
+                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <p class="helper-text">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Add custom metadata fields for special product information
+                                </p>
+                                
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-700">Custom Field List</p>
+                                            <p class="text-xs text-gray-500">Additional product metadata</p>
+                                        </div>
+                                        <button type="button" onclick="addCustomField()" class="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                            </svg>
+                                            Add Field
+                                        </button>
+                                    </div>
+
+                                    <div id="customFieldsList" class="space-y-3">
+                                        <div class="text-center py-6 text-gray-500 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                                            <svg class="w-10 h-10 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                                            </svg>
+                                            <p class="font-medium">No custom fields added</p>
+                                            <p class="text-xs mt-1">Click "Add Field" to add custom metadata</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Custom Fields Tips -->
+                                    <div class="p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+                                        <div class="flex gap-2">
+                                            <svg class="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <div class="text-xs text-indigo-800">
+                                                <p class="font-semibold mb-1">Custom Field Examples:</p>
+                                                <ul class="list-disc list-inside space-y-0.5 text-indigo-700">
+                                                    <li>Manufacturer Part Number</li>
+                                                    <li>Import/Export Codes (HS Code, ECCN)</li>
+                                                    <li>Internal SKU References</li>
+                                                    <li>Special Handling Instructions</li>
+                                                    <li>Warranty Information</li>
+                                                    <li>Any other custom metadata</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </form>
@@ -860,6 +1625,135 @@
 .tab-content.active {
     display: block;
 }
+
+/* Collapsible Section Styles */
+.collapsible-section {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.collapsible-section:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    background: #f9fafb;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.collapsible-header:hover {
+    background: #f3f4f6;
+}
+
+.collapsible-header.active {
+    border-bottom-color: #e5e7eb;
+}
+
+.collapsible-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #111827;
+}
+
+.collapsible-icon {
+    width: 20px;
+    height: 20px;
+    color: #6b7280;
+    transition: transform 0.3s ease;
+}
+
+.collapsible-header.active .collapsible-icon {
+    transform: rotate(180deg);
+}
+
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+}
+
+.collapsible-content.active {
+    max-height: 5000px; /* Large enough for content */
+    opacity: 1;
+}
+
+.collapsible-body {
+    padding: 20px;
+}
+
+.section-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.section-badge.required {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.section-badge.optional {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.section-badge.new {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+/* Helper text styles */
+.helper-text {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.helper-text svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+/* Character counter */
+.char-counter {
+    font-size: 11px;
+    color: #9ca3af;
+    text-align: right;
+    margin-top: 4px;
+}
+
+.char-counter.warning {
+    color: #f59e0b;
+}
+
+.char-counter.error {
+    color: #ef4444;
+}
 </style>
 
 <script>
@@ -876,12 +1770,201 @@ let relatedProducts = { related: [], upsell: [], cross_sell: [] };
 let currentRelationType = '';
 let selectedProductsForRelation = new Set();
 
+// Collapsible sections state (stored in localStorage)
+let collapsibleState = {};
+
+// Load collapsible state from localStorage
+function loadCollapsibleState() {
+    const saved = localStorage.getItem('productFormCollapsibleState');
+    if (saved) {
+        try {
+            collapsibleState = JSON.parse(saved);
+        } catch (e) {
+            collapsibleState = {};
+        }
+    }
+}
+
+// Save collapsible state to localStorage
+function saveCollapsibleState() {
+    localStorage.setItem('productFormCollapsibleState', JSON.stringify(collapsibleState));
+}
+
+// Toggle collapsible section
+function toggleCollapsible(sectionId) {
+    console.log('Toggling section:', sectionId); // Debug log
+    
+    // Find section by data-section attribute (new pattern)
+    const section = document.querySelector(`[data-section="${sectionId}"]`);
+    
+    if (section) {
+        // New pattern: find header and content within section
+        const header = section.querySelector('.collapsible-header');
+        const content = section.querySelector('.collapsible-content');
+        const icon = section.querySelector('.collapsible-icon');
+        
+        if (!content || !header) {
+            console.error('Content or header not found for section:', sectionId);
+            return;
+        }
+        
+        // Toggle active class on header
+        const isActive = header.classList.contains('active');
+        
+        if (isActive) {
+            // Close section
+            header.classList.remove('active');
+            content.classList.remove('active');
+            if (icon) icon.style.transform = 'rotate(-90deg)';
+            collapsibleState[sectionId] = false;
+        } else {
+            // Open section
+            header.classList.add('active');
+            content.classList.add('active');
+            if (icon) icon.style.transform = 'rotate(0deg)';
+            collapsibleState[sectionId] = true;
+        }
+        
+        saveCollapsibleState();
+        console.log('Section toggled:', sectionId, 'Active:', !isActive);
+        return;
+    }
+    
+    // Fallback to old pattern with data-collapsible
+    const header = document.querySelector(`[data-collapsible="${sectionId}"]`);
+    const content = document.getElementById(sectionId);
+    
+    if (!header || !content) {
+        console.error('Header or content not found for section:', sectionId);
+        return;
+    }
+    
+    const isActive = content.classList.contains('active');
+    
+    if (isActive) {
+        header.classList.remove('active');
+        content.classList.remove('active');
+        collapsibleState[sectionId] = false;
+    } else {
+        header.classList.add('active');
+        content.classList.add('active');
+        collapsibleState[sectionId] = true;
+    }
+    
+    saveCollapsibleState();
+    console.log('Section toggled (old pattern):', sectionId, 'Active:', !isActive);
+}
+
+// Initialize collapsible sections
+function initCollapsibleSections() {
+    console.log('Initializing collapsible sections...');
+    loadCollapsibleState();
+    
+    // Define default open sections
+    const defaultOpenSections = [
+        'section-pricing',      // Old pattern - Pricing & Inventory
+        'product-status',       // New pattern - Product Status
+        'product-categories',   // New pattern - Categories
+        'product-tags'          // New pattern - Tags
+    ];
+    
+    // Initialize new pattern sections (data-section)
+    document.querySelectorAll('[data-section]').forEach(section => {
+        const sectionId = section.getAttribute('data-section');
+        const header = section.querySelector('.collapsible-header');
+        const content = section.querySelector('.collapsible-content');
+        const icon = section.querySelector('.collapsible-icon');
+        
+        if (!content || !header) {
+            console.warn('Missing content or header for section:', sectionId);
+            return;
+        }
+        
+        // Check saved state or use default
+        const shouldBeOpen = collapsibleState.hasOwnProperty(sectionId) 
+            ? collapsibleState[sectionId] 
+            : defaultOpenSections.includes(sectionId);
+        
+        console.log('Section:', sectionId, 'Should be open:', shouldBeOpen);
+        
+        if (shouldBeOpen) {
+            header.classList.add('active');
+            content.classList.add('active');
+            if (icon) icon.style.transform = 'rotate(0deg)';
+            collapsibleState[sectionId] = true;
+        } else {
+            header.classList.remove('active');
+            content.classList.remove('active');
+            if (icon) icon.style.transform = 'rotate(-90deg)';
+            collapsibleState[sectionId] = false;
+        }
+    });
+    
+    // Initialize old pattern sections (data-collapsible)
+    document.querySelectorAll('.collapsible-content').forEach(content => {
+        const sectionId = content.id;
+        if (!sectionId) return;
+        
+        const header = document.querySelector(`[data-collapsible="${sectionId}"]`);
+        if (!header) return;
+        
+        // Check saved state or use default
+        const shouldBeOpen = collapsibleState.hasOwnProperty(sectionId) 
+            ? collapsibleState[sectionId] 
+            : defaultOpenSections.includes(sectionId);
+        
+        console.log('Section (old pattern):', sectionId, 'Should be open:', shouldBeOpen);
+        
+        if (shouldBeOpen) {
+            header.classList.add('active');
+            content.classList.add('active');
+            collapsibleState[sectionId] = true;
+        } else {
+            header.classList.remove('active');
+            content.classList.remove('active');
+            collapsibleState[sectionId] = false;
+        }
+    });
+    
+    // Save initial state
+    saveCollapsibleState();
+    console.log('Collapsible sections initialized!');
+}
+
+// Character counter function
+function updateCharCounter(inputId, counterId, maxLength) {
+    const input = document.getElementById(inputId);
+    const counter = document.getElementById(counterId);
+    
+    if (!input || !counter) return;
+    
+    input.addEventListener('input', function() {
+        const length = this.value.length;
+        counter.textContent = `${length}/${maxLength}`;
+        
+        // Add warning/error classes
+        counter.classList.remove('warning', 'error');
+        if (length > maxLength * 0.9) {
+            counter.classList.add('warning');
+        }
+        if (length > maxLength) {
+            counter.classList.add('error');
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('searchInput') && document.getElementById('productsTableBody')) {
         loadProducts();
         loadBrands();
         loadCategories();
     }
+    
+    // Initialize collapsible sections
+    initCollapsibleSections();
+    
+    // Initialize pricing listeners
+    initPricingListeners();
     
     // Auto-slug generation
     document.getElementById('productName')?.addEventListener('input', function() {
@@ -891,13 +1974,48 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('productSlug').value = slug;
     });
     
+    // Character counters
+    document.getElementById('productName')?.addEventListener('input', function() {
+        document.getElementById('productNameCount').textContent = this.value.length;
+    });
+    
+    document.getElementById('productShortDescription')?.addEventListener('input', function() {
+        document.getElementById('shortDescCount').textContent = this.value.length;
+    });
+    
     // SEO character counters
     document.getElementById('productSeoTitle')?.addEventListener('input', function() {
-        document.getElementById('seoTitleCount').textContent = this.value.length;
+        const count = this.value.length;
+        const counter = document.getElementById('seoTitleCount');
+        counter.textContent = count;
+        // Color code based on length
+        if (count > 60) {
+            counter.parentElement.classList.add('text-red-600');
+            counter.parentElement.classList.remove('text-gray-500', 'text-yellow-600');
+        } else if (count > 50) {
+            counter.parentElement.classList.add('text-yellow-600');
+            counter.parentElement.classList.remove('text-gray-500', 'text-red-600');
+        } else {
+            counter.parentElement.classList.add('text-gray-500');
+            counter.parentElement.classList.remove('text-yellow-600', 'text-red-600');
+        }
     });
     
     document.getElementById('productSeoDescription')?.addEventListener('input', function() {
-        document.getElementById('seoDescCount').textContent = this.value.length;
+        const count = this.value.length;
+        const counter = document.getElementById('seoDescCount');
+        counter.textContent = count;
+        // Color code based on length
+        if (count > 160) {
+            counter.parentElement.classList.add('text-red-600');
+            counter.parentElement.classList.remove('text-gray-500', 'text-yellow-600');
+        } else if (count > 140) {
+            counter.parentElement.classList.add('text-yellow-600');
+            counter.parentElement.classList.remove('text-gray-500', 'text-red-600');
+        } else {
+            counter.parentElement.classList.add('text-gray-500');
+            counter.parentElement.classList.remove('text-yellow-600', 'text-red-600');
+        }
     });
 
     // Digital product toggle
@@ -947,6 +2065,164 @@ function toggleAvailableDate() {
     } else {
         dateContainer.classList.add('hidden');
         document.getElementById('productAvailableDate').value = '';
+    }
+}
+
+// Toggle Inventory Fields
+function toggleInventoryFields() {
+    const trackInventory = document.getElementById('productTrackInventory').checked;
+    const inventoryFields = document.getElementById('inventoryFields');
+    
+    if (trackInventory) {
+        inventoryFields.classList.remove('hidden');
+    } else {
+        inventoryFields.classList.add('hidden');
+        // Clear inventory fields
+        document.getElementById('productStockQuantity').value = '';
+        document.getElementById('productLowStockThreshold').value = '';
+        document.getElementById('productAllowBackorders').checked = false;
+    }
+}
+
+// Toggle Shipping Fields
+function toggleShippingFields() {
+    const requiresShipping = document.getElementById('productRequiresShipping').checked;
+    const shippingFields = document.getElementById('shippingDetailsFields');
+    
+    if (requiresShipping) {
+        shippingFields.classList.remove('hidden');
+    } else {
+        shippingFields.classList.add('hidden');
+        // Clear shipping fields
+        document.getElementById('productWeight').value = '';
+        document.getElementById('productLength').value = '';
+        document.getElementById('productWidth').value = '';
+        document.getElementById('productHeight').value = '';
+    }
+}
+
+// Toggle Bundle Fields
+function toggleBundleFields() {
+    const isBundle = document.getElementById('productIsBundle').checked;
+    const bundleFields = document.getElementById('bundleFieldsContainer');
+    
+    if (isBundle) {
+        bundleFields.classList.remove('hidden');
+    } else {
+        bundleFields.classList.add('hidden');
+        // Clear bundle fields
+        document.getElementById('bundleDiscount').value = '';
+        document.getElementById('bundlePrice').value = '';
+    }
+}
+
+// Open Bundle Item Selector (Placeholder)
+function openBundleItemSelector() {
+    alert('Bundle item selector will be implemented. This allows selecting products to include in the bundle.');
+}
+
+// Add Custom Field
+let customFieldsArray = [];
+function addCustomField() {
+    const fieldId = Date.now();
+    const fieldHtml = `
+        <div class="custom-field-item p-3 border border-gray-200 rounded-lg bg-gray-50" data-field-id="${fieldId}">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <input type="text" placeholder="Field Name (e.g., Manufacturer)" class="custom-field-name w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" placeholder="Field Value" class="custom-field-value flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
+                    <button type="button" onclick="removeCustomField(${fieldId})" class="px-3 py-2 bg-red-600 text-white text-xs font-medium rounded-lg hover:bg-red-700 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    const container = document.getElementById('customFieldsList');
+    // Remove empty state if exists
+    const emptyState = container.querySelector('.text-center');
+    if (emptyState) {
+        container.innerHTML = '';
+    }
+    container.insertAdjacentHTML('beforeend', fieldHtml);
+}
+
+// Remove Custom Field
+function removeCustomField(fieldId) {
+    const field = document.querySelector(`[data-field-id="${fieldId}"]`);
+    if (field) {
+        field.remove();
+    }
+    
+    // Show empty state if no fields left
+    const container = document.getElementById('customFieldsList');
+    if (container.children.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-6 text-gray-500 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                <svg class="w-10 h-10 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                </svg>
+                <p class="font-medium">No custom fields added</p>
+                <p class="text-xs mt-1">Click "Add Field" to add custom metadata</p>
+            </div>
+        `;
+    }
+}
+
+// Calculate Profit Margin
+function calculateProfitMargin() {
+    const regularPrice = parseFloat(document.getElementById('productRegularPrice').value) || 0;
+    const salePrice = parseFloat(document.getElementById('productSalePrice').value) || 0;
+    const costPrice = parseFloat(document.getElementById('productCostPrice').value) || 0;
+    
+    const profitDisplay = document.getElementById('profitMarginDisplay');
+    const profitMarginValue = document.getElementById('profitMarginValue');
+    const profitAmountValue = document.getElementById('profitAmountValue');
+    
+    // Use sale price if available, otherwise regular price
+    const sellingPrice = salePrice > 0 ? salePrice : regularPrice;
+    
+    if (sellingPrice > 0 && costPrice > 0) {
+        const profitAmount = sellingPrice - costPrice;
+        const profitMargin = ((profitAmount / sellingPrice) * 100).toFixed(2);
+        
+        profitMarginValue.textContent = profitMargin + '%';
+        profitAmountValue.textContent = '$' + profitAmount.toFixed(2);
+        
+        // Color code based on margin
+        if (profitMargin < 10) {
+            profitMarginValue.className = 'font-semibold text-red-700';
+        } else if (profitMargin < 30) {
+            profitMarginValue.className = 'font-semibold text-yellow-700';
+        } else {
+            profitMarginValue.className = 'font-semibold text-green-700';
+        }
+        
+        profitDisplay.classList.remove('hidden');
+    } else {
+        profitDisplay.classList.add('hidden');
+    }
+}
+
+// Initialize profit calculation listeners
+function initPricingListeners() {
+    const regularPriceInput = document.getElementById('productRegularPrice');
+    const salePriceInput = document.getElementById('productSalePrice');
+    const costPriceInput = document.getElementById('productCostPrice');
+    
+    if (regularPriceInput) {
+        regularPriceInput.addEventListener('input', calculateProfitMargin);
+    }
+    if (salePriceInput) {
+        salePriceInput.addEventListener('input', calculateProfitMargin);
+    }
+    if (costPriceInput) {
+        costPriceInput.addEventListener('input', calculateProfitMargin);
     }
 }
 
@@ -1063,7 +2339,7 @@ function loadCategories() {
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            const categorySelect = document.getElementById('productCategory');
+            const categorySelect = document.getElementById('productPrimaryCategory');
             const categoryFilter = document.getElementById('categoryFilter');
             
             if (categorySelect) {
@@ -1410,10 +2686,9 @@ function resetForm() {
     document.getElementById('productId').value = '';
     document.getElementById('productName').value = '';
     document.getElementById('productSlug').value = '';
-    document.getElementById('productSkuPrefix').value = '';
     document.getElementById('productType').value = 'simple';
     document.getElementById('productBrand').value = '';
-    document.getElementById('productCategory').value = '';
+    document.getElementById('productPrimaryCategory').value = '';
     document.getElementById('productShortDescription').value = '';
     document.getElementById('productDescription').value = '';
     document.getElementById('productStatus').value = 'draft';
@@ -1454,10 +2729,9 @@ function populateForm(product) {
     document.getElementById('productId').value = product.id;
     document.getElementById('productName').value = product.name;
     document.getElementById('productSlug').value = product.slug;
-    document.getElementById('productSkuPrefix').value = product.sku_prefix || '';
     document.getElementById('productType').value = product.product_type;
     document.getElementById('productBrand').value = product.brand_id || '';
-    document.getElementById('productCategory').value = product.category_id || '';
+    document.getElementById('productPrimaryCategory').value = product.category_id || '';
     setSummernoteContent('productShortDescription', product.short_description || '');
     setSummernoteContent('productDescription', product.description || '');
     document.getElementById('productStatus').value = product.status;
@@ -1560,10 +2834,9 @@ function saveProduct() {
     const data = {
         name: document.getElementById('productName').value,
         slug: document.getElementById('productSlug').value,
-        sku_prefix: document.getElementById('productSkuPrefix').value,
         product_type: document.getElementById('productType').value,
         brand_id: document.getElementById('productBrand').value || null,
-        category_id: document.getElementById('productCategory').value || null,
+        category_id: document.getElementById('productPrimaryCategory').value || null,
         short_description: getSummernoteContent('productShortDescription'),
         description: getSummernoteContent('productDescription'),
         status: document.getElementById('productStatus').value,
@@ -1821,7 +3094,21 @@ function renderVariantAttributesSelector() {
     const container = document.getElementById('variantAttributesContainer');
     
     if (variantAttributes.length === 0) {
-        container.innerHTML = '<p class="text-sm text-gray-500">No variant attributes found. Please create attributes first.</p>';
+        container.innerHTML = `
+            <div class="text-center py-6">
+                <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                </svg>
+                <p class="text-sm font-medium text-gray-900 mb-1">No Variant Attributes Found</p>
+                <p class="text-xs text-gray-500 mb-3">Create variant attributes (like Color, Size) first to generate product variants</p>
+                <a href="/admin/attributes" class="inline-flex items-center gap-2 px-4 py-2 bg-[#0082C3] text-white text-sm font-medium rounded-lg hover:bg-[#006ba3] transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Create Attributes
+                </a>
+            </div>
+        `;
         return;
     }
     
@@ -1882,7 +3169,7 @@ function generateVariants() {
     });
     
     if (selectedAttrs.length === 0) {
-        showToast('Please select at least one attribute with values', 'error');
+        showToast('Please select at least one attribute and its values to generate variants', 'warning');
         return;
     }
     
@@ -2007,6 +3294,9 @@ function openModal() {
     
     requestAnimationFrame(() => {
         modalContent.style.transform = 'translateX(0)';
+        
+        // Initialize collapsible sections
+        initCollapsibleSections();
         
         // Initialize Summernote editors after modal is visible
         setTimeout(() => {
@@ -2755,6 +4045,46 @@ function formatDate(dateString) {
     return new Date(dateString).toLocaleString();
 }
 
+// Show Notification Toast
+function showNotification(message, type = 'success') {
+    const colors = {
+        success: 'bg-green-500',
+        error: 'bg-red-500',
+        warning: 'bg-yellow-500',
+        info: 'bg-blue-500'
+    };
+    
+    const icons = {
+        success: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>',
+        error: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>',
+        warning: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>',
+        info: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>'
+    };
+    
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 px-6 py-4 rounded-lg shadow-lg z-[9999] flex items-center gap-3 ${colors[type] || colors.success} text-white transform transition-all duration-300 translate-x-0`;
+    notification.innerHTML = `
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            ${icons[type] || icons.success}
+        </svg>
+        <span class="font-medium">${message}</span>
+        <button onclick="this.parentElement.remove()" class="ml-2 hover:bg-white/20 rounded p-1 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        notification.style.transform = 'translateX(400px)';
+        notification.style.opacity = '0';
+        setTimeout(() => notification.remove(), 300);
+    }, 5000);
+}
+
 </script>
 
 <!-- Import Modal -->
@@ -2908,3 +4238,4 @@ function formatDate(dateString) {
 </div>
 
 @endpush
+

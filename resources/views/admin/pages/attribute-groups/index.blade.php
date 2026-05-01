@@ -175,11 +175,19 @@
                 <h3 id="modalTitle" class="text-lg font-semibold text-gray-900">Add Attribute Group</h3>
                 <p class="text-sm text-gray-600 mt-0.5">Create a new attribute group</p>
             </div>
-            <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="fillDemoData()" class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition-all shadow-sm hover:shadow-md">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    Demo
+                </button>
+                <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <form id="groupForm" class="flex-1 overflow-y-auto">
@@ -259,6 +267,10 @@
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
 }
 </style>
 
@@ -490,6 +502,80 @@ function openAddModal() {
             modalContent.style.transform = 'translateX(0)';
         });
     });
+}
+
+// Fill Demo Data Function
+function fillDemoData() {
+    // Sample demo attribute groups
+    const demoGroups = [
+        {
+            name: 'General',
+            slug: 'general',
+            description: 'Basic product information and general attributes',
+            sortOrder: 1
+        },
+        {
+            name: 'Size & Fit',
+            slug: 'size-fit',
+            description: 'Size, dimensions, and fitting information for products',
+            sortOrder: 2
+        },
+        {
+            name: 'Technical Specs',
+            slug: 'technical-specs',
+            description: 'Technical specifications and detailed product features',
+            sortOrder: 3
+        },
+        {
+            name: 'Material & Care',
+            slug: 'material-care',
+            description: 'Material composition and care instructions',
+            sortOrder: 4
+        },
+        {
+            name: 'Performance',
+            slug: 'performance',
+            description: 'Performance characteristics and ratings',
+            sortOrder: 5
+        },
+        {
+            name: 'Design & Style',
+            slug: 'design-style',
+            description: 'Design elements, colors, and style attributes',
+            sortOrder: 6
+        },
+        {
+            name: 'Compatibility',
+            slug: 'compatibility',
+            description: 'Compatibility information with other products or systems',
+            sortOrder: 7
+        },
+        {
+            name: 'Warranty & Support',
+            slug: 'warranty-support',
+            description: 'Warranty details and customer support information',
+            sortOrder: 8
+        }
+    ];
+    
+    // Pick a random demo group
+    const randomGroup = demoGroups[Math.floor(Math.random() * demoGroups.length)];
+    
+    // Fill the form
+    document.getElementById('groupName').value = randomGroup.name;
+    document.getElementById('groupSlug').value = randomGroup.slug;
+    document.getElementById('groupDescription').value = randomGroup.description;
+    document.getElementById('groupSortOrder').value = randomGroup.sortOrder;
+    document.getElementById('groupStatus').checked = true;
+    
+    showNotification('Demo data filled successfully! You can now modify and save.', 'success');
+    
+    // Add a subtle highlight animation to the form
+    const form = document.getElementById('groupForm');
+    form.style.animation = 'pulse 0.5s ease-in-out';
+    setTimeout(() => {
+        form.style.animation = '';
+    }, 500);
 }
 
 function closeModal() {

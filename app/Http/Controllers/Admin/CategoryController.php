@@ -75,6 +75,9 @@ class CategoryController extends Controller
             'parent_id' => 'nullable|exists:categories,id',
             'image_url' => 'nullable|string',
             'image_id' => 'nullable|string',
+            'image_responsive' => 'nullable|json',
+            'image_width' => 'nullable|integer',
+            'image_height' => 'nullable|integer',
             'banner_url' => 'nullable|string',
             'banner_id' => 'nullable|string',
             'icon_url' => 'nullable|string',
@@ -100,6 +103,11 @@ class CategoryController extends Controller
         // Auto-generate slug if not provided or empty
         if (empty($data['slug']) || trim($data['slug']) === '') {
             unset($data['slug']);
+        }
+
+        // Decode image_responsive if it's a string
+        if (isset($data['image_responsive']) && is_string($data['image_responsive'])) {
+            $data['image_responsive'] = json_decode($data['image_responsive'], true);
         }
 
         $category = Category::create($data);

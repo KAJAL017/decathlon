@@ -112,19 +112,64 @@ class ImageKitService
     }
 
     /**
-     * Get responsive image URLs (multiple sizes)
+     * Get responsive image URLs (multiple sizes for all devices)
      */
     public function getResponsiveUrls($filePath, $preset = 'category_image')
     {
-        $presetConfig = config("imagekit.presets.{$preset}", []);
-        
-        return [
-            'original' => $this->getUrl($filePath),
-            'large' => $this->getUrl($filePath, array_merge($presetConfig, ['width' => $presetConfig['width'] ?? 1200])),
-            'medium' => $this->getUrl($filePath, array_merge($presetConfig, ['width' => ($presetConfig['width'] ?? 1200) / 2])),
-            'small' => $this->getUrl($filePath, array_merge($presetConfig, ['width' => ($presetConfig['width'] ?? 1200) / 4])),
-            'thumbnail' => $this->getUrl($filePath, config('imagekit.presets.thumbnail')),
-            'webp' => $this->getUrl($filePath, array_merge($presetConfig, ['format' => 'webp'])),
+        // Define responsive breakpoints for all devices
+        $sizes = [
+            // Mobile devices
+            'mobile_small' => ['width' => 320, 'quality' => 80],   // Small phones
+            'mobile' => ['width' => 480, 'quality' => 80],         // Standard phones
+            'mobile_large' => ['width' => 640, 'quality' => 85],   // Large phones
+            
+            // Tablets
+            'tablet' => ['width' => 768, 'quality' => 85],         // Portrait tablets
+            'tablet_large' => ['width' => 1024, 'quality' => 85],  // Landscape tablets
+            
+            // Desktop
+            'desktop' => ['width' => 1280, 'quality' => 90],       // Standard desktop
+            'desktop_large' => ['width' => 1920, 'quality' => 90], // Large desktop
+            
+            // Special sizes
+            'thumbnail' => ['width' => 150, 'height' => 150, 'quality' => 80],
+            'card' => ['width' => 400, 'height' => 400, 'quality' => 85],
+            'hero' => ['width' => 2560, 'quality' => 90],          // 4K displays
         ];
+
+        $responsiveUrls = [
+            'original' => $this->getUrl($filePath),
+        ];
+
+        // Generate URLs for each size
+        foreach ($sizes as $sizeName => $transformations) {
+            // WebP format for modern browsers
+            $responsiveUrls[$sizeName . '_webp'] = $this->getUrl($filePath, array_merge($transformations, ['format' => 'webp']));
+            
+            // JPEG format for fallback
+            $responsiveUrls[$sizeName . '_jpg'] = $this->getUrl($filePath, array_merge($transformations, ['format' => 'jpg']));
+        }
+
+        return $responsiveUrls;
+    }
+
+    /**
+     * Generate srcset string for responsive images
+     */
+    public function generateSrcset($filePath, $format = 'webp')
+    {
+        $widths = [320, 480, 640, 768, 1024, 1280, 1920, 2560];
+        $srcset = [];
+
+        foreach ($widths as $width) {
+            $url = $this->getUrl($filePath, [
+                'width' => $width,
+                'format' => $format,
+                'quality' => $width > 1280 ? 90 : 85
+            ]);
+            $srcset[] = "{$url} {$width}w";
+        }
+
+        return implode(', ', $srcset);
     }
 }

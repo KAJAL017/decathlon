@@ -7,8 +7,11 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">Attribute Values</h1>
-            <p class="text-sm text-gray-600 mt-1">Manage values for product attributes</p>
+            <h1 class="text-3xl font-bold text-gray-900">
+                Attribute Values
+                <span id="attributeNameDisplay" class="hidden text-2xl text-gray-500"></span>
+            </h1>
+            <p class="text-sm text-gray-600 mt-1" id="headerDescription">Manage values for product attributes</p>
         </div>
         <div class="flex items-center gap-3">
             <a href="{{ route('admin.attributes.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">
@@ -120,6 +123,11 @@
             <select id="attributeFilter" data-searchable data-placeholder="All Attributes" onchange="loadValues()" class="px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
                 <option value="">All Attributes</option>
             </select>
+            <button id="clearFilterBtn" onclick="clearAttributeFilter()" class="hidden px-4 py-2.5 border border-red-300 text-red-600 text-sm font-medium rounded-lg hover:bg-red-50 transition-colors" title="Clear attribute filter">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
             <select id="statusFilter" data-searchable data-placeholder="All Status" onchange="loadValues()" class="px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
                 <option value="">All Status</option>
                 <option value="1">Active</option>
@@ -204,11 +212,19 @@
                 <h3 id="modalTitle" class="text-lg font-semibold text-gray-900">Add Attribute Value</h3>
                 <p class="text-sm text-gray-600 mt-0.5">Create a new attribute value</p>
             </div>
-            <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="fillDemoData()" class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition-all shadow-sm hover:shadow-md">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    Demo
+                </button>
+                <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <form id="valueForm" class="flex-1 overflow-y-auto">
@@ -300,6 +316,10 @@
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
 }
 </style>
 
@@ -408,12 +428,50 @@ function loadAttributes() {
                     attributeFilter.innerHTML += `<option value="${attr.id}">${attr.name}</option>`;
                 });
                 
+                // Set preselected value BEFORE initializing SearchableSelect
                 if (preselectedAttributeId) {
                     attributeFilter.value = preselectedAttributeId;
+                    
+                    // Update page header with attribute name
+                    const selectedAttr = data.data.find(a => a.id == preselectedAttributeId);
+                    if (selectedAttr) {
+                        const attributeNameDisplay = document.getElementById('attributeNameDisplay');
+                        const headerDescription = document.getElementById('headerDescription');
+                        const clearFilterBtn = document.getElementById('clearFilterBtn');
+                        
+                        if (attributeNameDisplay) {
+                            attributeNameDisplay.textContent = ` - ${selectedAttr.name}`;
+                            attributeNameDisplay.classList.remove('hidden');
+                        }
+                        if (headerDescription) {
+                            headerDescription.textContent = `Manage values for ${selectedAttr.name} attribute`;
+                        }
+                        if (clearFilterBtn) {
+                            clearFilterBtn.classList.remove('hidden');
+                        }
+                    }
                 }
                 
                 // Initialize SearchableSelect
                 new SearchableSelect(attributeFilter);
+                
+                // Trigger change event to update the custom dropdown display
+                if (preselectedAttributeId) {
+                    const event = new Event('change', { bubbles: true });
+                    attributeFilter.dispatchEvent(event);
+                    
+                    // Also update the SearchableSelect display manually
+                    const selectedOption = attributeFilter.options[attributeFilter.selectedIndex];
+                    if (selectedOption) {
+                        const wrapper = attributeFilter.parentElement.querySelector('.searchable-select-wrapper');
+                        if (wrapper) {
+                            const displayText = wrapper.querySelector('.searchable-select-display span');
+                            if (displayText) {
+                                displayText.textContent = selectedOption.text;
+                            }
+                        }
+                    }
+                }
             }
         }
     })
@@ -478,6 +536,46 @@ function debounceSearch() {
             loadValues(1);
         });
     }, 300);
+}
+
+function clearAttributeFilter() {
+    const attributeFilter = document.getElementById('attributeFilter');
+    const attributeNameDisplay = document.getElementById('attributeNameDisplay');
+    const headerDescription = document.getElementById('headerDescription');
+    const clearFilterBtn = document.getElementById('clearFilterBtn');
+    
+    // Clear the filter
+    attributeFilter.value = '';
+    
+    // Update SearchableSelect display
+    const wrapper = attributeFilter.parentElement.querySelector('.searchable-select-wrapper');
+    if (wrapper) {
+        const displayText = wrapper.querySelector('.searchable-select-display span');
+        if (displayText) {
+            displayText.textContent = 'All Attributes';
+        }
+    }
+    
+    // Reset header
+    if (attributeNameDisplay) {
+        attributeNameDisplay.classList.add('hidden');
+    }
+    if (headerDescription) {
+        headerDescription.textContent = 'Manage values for product attributes';
+    }
+    
+    // Hide clear button
+    if (clearFilterBtn) {
+        clearFilterBtn.classList.add('hidden');
+    }
+    
+    // Remove URL parameter
+    const url = new URL(window.location);
+    url.searchParams.delete('attribute_id');
+    window.history.replaceState({}, '', url);
+    
+    // Reload values
+    loadValues(1);
 }
 
 function updateStats(values, pagination) {
@@ -647,6 +745,91 @@ function openAddModal() {
             modalContent.style.transform = 'translateX(0)';
         });
     });
+}
+
+// Fill Demo Data Function
+function fillDemoData() {
+    // Sample demo attribute values with different types
+    const demoValues = [
+        // Color values
+        { name: 'Red', slug: 'red', colorCode: '#FF0000', sortOrder: 1, type: 'color' },
+        { name: 'Blue', slug: 'blue', colorCode: '#0000FF', sortOrder: 2, type: 'color' },
+        { name: 'Green', slug: 'green', colorCode: '#00FF00', sortOrder: 3, type: 'color' },
+        { name: 'Black', slug: 'black', colorCode: '#000000', sortOrder: 4, type: 'color' },
+        { name: 'White', slug: 'white', colorCode: '#FFFFFF', sortOrder: 5, type: 'color' },
+        
+        // Size values
+        { name: 'Small', slug: 'small', sortOrder: 1, type: 'size' },
+        { name: 'Medium', slug: 'medium', sortOrder: 2, type: 'size' },
+        { name: 'Large', slug: 'large', sortOrder: 3, type: 'size' },
+        { name: 'XL', slug: 'xl', sortOrder: 4, type: 'size' },
+        { name: 'XXL', slug: 'xxl', sortOrder: 5, type: 'size' },
+        
+        // Material values
+        { name: 'Cotton', slug: 'cotton', sortOrder: 1, type: 'material' },
+        { name: 'Polyester', slug: 'polyester', sortOrder: 2, type: 'material' },
+        { name: 'Leather', slug: 'leather', sortOrder: 3, type: 'material' },
+        { name: 'Wool', slug: 'wool', sortOrder: 4, type: 'material' },
+        { name: 'Silk', slug: 'silk', sortOrder: 5, type: 'material' },
+        
+        // Brand values
+        { name: 'Nike', slug: 'nike', sortOrder: 1, type: 'brand' },
+        { name: 'Adidas', slug: 'adidas', sortOrder: 2, type: 'brand' },
+        { name: 'Puma', slug: 'puma', sortOrder: 3, type: 'brand' },
+        { name: 'Reebok', slug: 'reebok', sortOrder: 4, type: 'brand' },
+        
+        // Pattern values
+        { name: 'Solid', slug: 'solid', sortOrder: 1, type: 'pattern' },
+        { name: 'Striped', slug: 'striped', sortOrder: 2, type: 'pattern' },
+        { name: 'Checkered', slug: 'checkered', sortOrder: 3, type: 'pattern' },
+        { name: 'Floral', slug: 'floral', sortOrder: 4, type: 'pattern' }
+    ];
+    
+    // Pick a random demo value
+    const randomValue = demoValues[Math.floor(Math.random() * demoValues.length)];
+    
+    // Fill the form
+    document.getElementById('valueName').value = randomValue.name;
+    document.getElementById('valueSlug').value = randomValue.slug;
+    document.getElementById('valueSortOrder').value = randomValue.sortOrder;
+    document.getElementById('valueStatus').checked = true;
+    
+    // Handle color code if present
+    if (randomValue.colorCode) {
+        document.getElementById('valueColorCode').value = randomValue.colorCode;
+        document.getElementById('valueColorPicker').value = randomValue.colorCode;
+        document.getElementById('colorCodeField').style.display = 'block';
+    } else {
+        document.getElementById('colorCodeField').style.display = 'none';
+    }
+    
+    // If there's a preselected attribute or attributes are loaded, try to select appropriate one
+    if (allAttributes.length > 0) {
+        // Try to find an attribute matching the demo value type
+        let matchingAttr = allAttributes.find(a => 
+            a.name.toLowerCase().includes(randomValue.type) || 
+            a.slug.toLowerCase().includes(randomValue.type)
+        );
+        
+        // If no match, just pick the first attribute
+        if (!matchingAttr) {
+            matchingAttr = allAttributes[0];
+        }
+        
+        if (matchingAttr) {
+            document.getElementById('valueAttribute').value = matchingAttr.id;
+            toggleColorField(matchingAttr.id);
+        }
+    }
+    
+    showNotification('Demo data filled successfully! You can now modify and save.', 'success');
+    
+    // Add a subtle highlight animation to the form
+    const form = document.getElementById('valueForm');
+    form.style.animation = 'pulse 0.5s ease-in-out';
+    setTimeout(() => {
+        form.style.animation = '';
+    }, 500);
 }
 
 function closeModal() {

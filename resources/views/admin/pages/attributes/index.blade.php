@@ -219,11 +219,19 @@
                 <h3 id="modalTitle" class="text-lg font-semibold text-gray-900">Add Attribute</h3>
                 <p class="text-sm text-gray-600 mt-0.5">Create a new product attribute</p>
             </div>
-            <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="fillDemoData()" class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition-all shadow-sm hover:shadow-md">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    Demo
+                </button>
+                <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <form id="attributeForm" class="flex-1 overflow-y-auto">
@@ -371,6 +379,17 @@
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+/* Pulse animation for demo data fill */
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% { 
+        transform: scale(1.01);
+        opacity: 0.95;
+    }
 }
 </style>
 
@@ -609,7 +628,22 @@ function renderAttributes(attributes) {
                 <span class="inline-flex items-center px-2.5 py-1 ${typeColors[attribute.type] || 'bg-gray-100 text-gray-700'} rounded-md text-xs font-medium">${typeIcons[attribute.type] || ''} ${typeLabels[attribute.type] || attribute.type}</span>
             </td>
             <td class="px-6 py-4">
-                <a href="/admin/attribute-values?attribute_id=${attribute.id}" class="text-sm text-blue-600 hover:text-blue-800 font-medium">${attribute.values_count || 0} values</a>
+                ${attribute.values_count > 0 
+                    ? `<a href="/admin/attribute-values?attribute_id=${attribute.id}" class="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-800 hover:underline font-medium transition-all group">
+                        <span class="inline-flex items-center justify-center w-6 h-6 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold group-hover:bg-blue-200 transition-colors">${attribute.values_count}</span>
+                        <span>values</span>
+                        <svg class="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>`
+                    : `<a href="/admin/attribute-values?attribute_id=${attribute.id}" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 hover:underline transition-all group">
+                        <span class="inline-flex items-center justify-center w-6 h-6 bg-gray-100 text-gray-500 rounded-full text-xs font-semibold group-hover:bg-blue-100 group-hover:text-blue-700 transition-colors">0</span>
+                        <span>Add values</span>
+                        <svg class="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                    </a>`
+                }
             </td>
             <td class="px-6 py-4">
                 ${badges.length > 0 ? '<div class="flex gap-1 flex-wrap">' + badges.join('') : '<span class="text-gray-400 text-sm">None</span>'}
@@ -623,11 +657,11 @@ function renderAttributes(attributes) {
             </td>
             <td class="px-6 py-4">
                 <div class="flex items-center justify-end gap-2">
-                    <button onclick="viewAttribute(${attribute.id})" class="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Manage values">
+                    <a href="/admin/attribute-values?attribute_id=${attribute.id}" class="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="View & manage values">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                         </svg>
-                    </button>
+                    </a>
                     <button onclick="editAttribute(${attribute.id})" class="p-2 text-gray-600 hover:text-[#0082C3] hover:bg-blue-50 rounded-lg transition-colors" title="Edit attribute">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -730,6 +764,134 @@ function openAddModal() {
             modalContent.style.transform = 'translateX(0)';
         });
     });
+}
+
+// Fill Demo Data Function
+function fillDemoData() {
+    // Sample demo attributes data
+    const demoAttributes = [
+        {
+            name: 'Color',
+            slug: 'color',
+            type: 'color',
+            displayType: 'color_swatch',
+            sortOrder: 1,
+            variant: true,
+            filterable: true,
+            searchable: true,
+            required: false
+        },
+        {
+            name: 'Size',
+            slug: 'size',
+            type: 'select',
+            displayType: 'radio',
+            sortOrder: 2,
+            variant: true,
+            filterable: true,
+            searchable: true,
+            required: true
+        },
+        {
+            name: 'Material',
+            slug: 'material',
+            type: 'select',
+            displayType: 'dropdown',
+            sortOrder: 3,
+            variant: false,
+            filterable: true,
+            searchable: true,
+            required: false
+        },
+        {
+            name: 'Weight',
+            slug: 'weight',
+            type: 'number',
+            displayType: 'dropdown',
+            unit: 'kg',
+            sortOrder: 4,
+            variant: false,
+            filterable: true,
+            searchable: false,
+            required: false
+        },
+        {
+            name: 'Brand',
+            slug: 'brand',
+            type: 'select',
+            displayType: 'dropdown',
+            sortOrder: 5,
+            variant: false,
+            filterable: true,
+            searchable: true,
+            required: false
+        },
+        {
+            name: 'Waterproof',
+            slug: 'waterproof',
+            type: 'boolean',
+            displayType: 'checkbox',
+            sortOrder: 6,
+            variant: false,
+            filterable: true,
+            searchable: false,
+            required: false
+        },
+        {
+            name: 'Gender',
+            slug: 'gender',
+            type: 'select',
+            displayType: 'radio',
+            sortOrder: 7,
+            variant: false,
+            filterable: true,
+            searchable: true,
+            required: false
+        },
+        {
+            name: 'Pattern',
+            slug: 'pattern',
+            type: 'multiselect',
+            displayType: 'checkbox',
+            sortOrder: 8,
+            variant: false,
+            filterable: true,
+            searchable: true,
+            required: false
+        }
+    ];
+    
+    // Pick a random demo attribute
+    const randomAttribute = demoAttributes[Math.floor(Math.random() * demoAttributes.length)];
+    
+    // Fill the form
+    document.getElementById('attributeName').value = randomAttribute.name;
+    document.getElementById('attributeSlug').value = randomAttribute.slug;
+    document.getElementById('attributeType').value = randomAttribute.type;
+    document.getElementById('attributeDisplayType').value = randomAttribute.displayType;
+    document.getElementById('attributeSortOrder').value = randomAttribute.sortOrder;
+    document.getElementById('attributeVariant').checked = randomAttribute.variant;
+    document.getElementById('attributeFilterable').checked = randomAttribute.filterable;
+    document.getElementById('attributeSearchable').checked = randomAttribute.searchable;
+    document.getElementById('attributeRequired').checked = randomAttribute.required;
+    document.getElementById('attributeStatus').checked = true;
+    
+    // Show unit field if type is number
+    if (randomAttribute.type === 'number' && randomAttribute.unit) {
+        document.getElementById('unitField').style.display = 'block';
+        document.getElementById('attributeUnit').value = randomAttribute.unit;
+    } else {
+        document.getElementById('unitField').style.display = 'none';
+    }
+    
+    showNotification('Demo data filled successfully! You can now modify and save.', 'success');
+    
+    // Add a subtle highlight animation to the form
+    const form = document.getElementById('attributeForm');
+    form.style.animation = 'pulse 0.5s ease-in-out';
+    setTimeout(() => {
+        form.style.animation = '';
+    }, 500);
 }
 
 function closeModal() {

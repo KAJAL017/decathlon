@@ -17,6 +17,9 @@ class Category extends Model
         'parent_id',
         'image_url',
         'image_id',
+        'image_responsive',
+        'image_width',
+        'image_height',
         'banner_url',
         'banner_id',
         'icon_url',
@@ -37,6 +40,7 @@ class Category extends Model
         'show_in_menu' => 'boolean',
         'sort_order' => 'integer',
         'products_count' => 'integer',
+        'image_responsive' => 'array',
     ];
 
     // Relationships
