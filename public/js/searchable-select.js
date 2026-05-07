@@ -74,7 +74,7 @@ class SearchableSelect {
         
         // Dropdown container
         this.dropdown = document.createElement('div');
-        this.dropdown.className = 'searchable-select-dropdown hidden absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-hidden';
+        this.dropdown.className = 'searchable-select-dropdown hidden absolute z-[9999] w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-hidden';
         this.dropdown.innerHTML = `
             <div class="p-2 border-b border-gray-200">
                 <input type="text" class="searchable-select-search w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="${this.options.searchPlaceholder}">
@@ -168,6 +168,26 @@ class SearchableSelect {
         this.dropdown.classList.remove('hidden');
         this.isOpen = true;
         this.searchInput.focus();
+        
+        // Check if dropdown should open upward
+        const rect = this.selectedDisplay.getBoundingClientRect();
+        const dropdownHeight = 300; // approximate max height
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const spaceAbove = rect.top;
+        
+        if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
+            // Open upward
+            this.dropdown.style.bottom = '100%';
+            this.dropdown.style.top = 'auto';
+            this.dropdown.style.marginBottom = '4px';
+            this.dropdown.style.marginTop = '0';
+        } else {
+            // Open downward (default)
+            this.dropdown.style.top = '100%';
+            this.dropdown.style.bottom = 'auto';
+            this.dropdown.style.marginTop = '4px';
+            this.dropdown.style.marginBottom = '0';
+        }
         
         // Rotate arrow
         const arrow = this.selectedDisplay.querySelector('svg');
