@@ -12,10 +12,14 @@ class ProductTag extends Model
         'slug',
         'description',
         'products_count',
+        'status',
+        'sort_order',
     ];
 
     protected $casts = [
         'products_count' => 'integer',
+        'status' => 'boolean',
+        'sort_order' => 'integer',
     ];
 
     // Relationships
@@ -73,5 +77,16 @@ class ProductTag extends Model
     {
         $this->products_count = $this->products()->count();
         $this->save();
+    }
+
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('sort_order')->orderBy('name');
     }
 }

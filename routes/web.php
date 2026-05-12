@@ -65,6 +65,16 @@ Route::delete('/admin/categories/{id}', [App\Http\Controllers\Admin\CategoryCont
 Route::post('/admin/categories/{id}/toggle-status', [App\Http\Controllers\Admin\CategoryController::class, 'toggleStatus'])->name('admin.categories.toggle');
 Route::post('/admin/categories/bulk-action', [App\Http\Controllers\Admin\CategoryController::class, 'bulkAction'])->name('admin.categories.bulk');
 
+// Tags Management
+Route::get('/admin/tags', [App\Http\Controllers\Admin\TagController::class, 'index'])->name('admin.tags.index');
+Route::get('/admin/tags/list', [App\Http\Controllers\Admin\TagController::class, 'list'])->name('admin.tags.list');
+Route::post('/admin/tags', [App\Http\Controllers\Admin\TagController::class, 'store'])->name('admin.tags.store');
+Route::get('/admin/tags/{id}', [App\Http\Controllers\Admin\TagController::class, 'show'])->name('admin.tags.show');
+Route::put('/admin/tags/{id}', [App\Http\Controllers\Admin\TagController::class, 'update'])->name('admin.tags.update');
+Route::delete('/admin/tags/{id}', [App\Http\Controllers\Admin\TagController::class, 'destroy'])->name('admin.tags.destroy');
+Route::post('/admin/tags/{id}/toggle-status', [App\Http\Controllers\Admin\TagController::class, 'toggleStatus'])->name('admin.tags.toggle');
+Route::post('/admin/tags/bulk-action', [App\Http\Controllers\Admin\TagController::class, 'bulkAction'])->name('admin.tags.bulk');
+
 // Attributes Management
 Route::get('/admin/attributes', [App\Http\Controllers\Admin\AttributeController::class, 'index'])->name('admin.attributes.index');
 Route::get('/admin/attributes/list', [App\Http\Controllers\Admin\AttributeController::class, 'list'])->name('admin.attributes.list');

@@ -22,7 +22,12 @@ class ImageKitController extends Controller
         try {
             $params = $this->imageKit->getAuthenticationParameters();
             
-            return response()->json($params);
+            // ImageKit SDK expects these exact keys
+            return response()->json([
+                'token' => $params['token'],
+                'expire' => $params['expire'],
+                'signature' => $params['signature']
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

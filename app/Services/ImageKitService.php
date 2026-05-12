@@ -24,7 +24,17 @@ class ImageKitService
     public function getAuthenticationParameters()
     {
         $token = Str::random(40);
-        $expire = time() + 3600; // 1 hour
+        // Use 10 minutes instead of 1 hour to avoid timezone issues
+        $expire = time() + 600; // 10 minutes from now
+        
+        // Debug: Log the current time and expire time
+        \Log::info('ImageKit Auth Debug', [
+            'current_time' => time(),
+            'current_datetime' => date('Y-m-d H:i:s'),
+            'expire_time' => $expire,
+            'expire_datetime' => date('Y-m-d H:i:s', $expire),
+            'difference_seconds' => $expire - time()
+        ]);
         
         $signature = hash_hmac(
             'sha1',

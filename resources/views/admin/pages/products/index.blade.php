@@ -583,15 +583,15 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                Add tags for better search and filtering (press Enter to add)
+                                Select tags from database for better search and filtering
                             </p>
                             
                             <div>
-                                <div class="flex flex-wrap gap-2 mb-3" id="productTagsContainer">
-                                    <!-- Tags will appear here -->
-                                </div>
-                                <input type="text" id="productTagInput" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Type tag and press Enter (e.g., summer, sports, running)">
-                                <p class="text-xs text-gray-500 mt-1">Tags help customers find your product</p>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5">Select Tags</label>
+                                <select id="productTags" multiple data-searchable data-placeholder="Select Tags" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
+                                    <!-- Tags will be loaded here -->
+                                </select>
+                                <p class="text-xs text-gray-500 mt-1">Tags help customers find your product. You can select multiple tags.</p>
                             </div>
                         </div>
                     </div>
@@ -629,7 +629,7 @@
                                             Regular Price <span class="text-red-500">*</span>
                                         </label>
                                         <div class="relative">
-                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
                                             <input type="number" step="0.01" min="0" id="productRegularPrice" class="w-full pl-8 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00" required>
                                         </div>
                                         <p class="helper-text">Base selling price</p>
@@ -640,7 +640,7 @@
                                             Sale Price
                                         </label>
                                         <div class="relative">
-                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
                                             <input type="number" step="0.01" min="0" id="productSalePrice" class="w-full pl-8 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
                                         </div>
                                         <p class="helper-text">Discounted price (optional)</p>
@@ -651,7 +651,7 @@
                                             Cost Per Item
                                         </label>
                                         <div class="relative">
-                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
                                             <input type="number" step="0.01" min="0" id="productCostPrice" class="w-full pl-8 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
                                         </div>
                                         <p class="helper-text">Your cost (for profit calc)</p>
@@ -679,8 +679,16 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-1.5">
                                             SKU (Stock Keeping Unit)
                                         </label>
-                                        <input type="text" id="productSku" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Auto-generated or custom">
-                                        <p class="helper-text">Unique product identifier</p>
+                                        <div class="flex gap-2">
+                                            <input type="text" id="productSku" class="flex-1 px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Auto-generated or custom">
+                                            <button type="button" onclick="generateSKU()" class="px-3 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5" title="Generate SKU">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                                </svg>
+                                                Generate
+                                            </button>
+                                        </div>
+                                        <p class="helper-text">Unique product identifier (auto-generated based on product data)</p>
                                     </div>
                                     
                                     <div>
@@ -1309,7 +1317,7 @@
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 mb-1.5">Bundle Price</label>
                                                 <div class="relative">
-                                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
                                                     <input type="number" id="bundlePrice" min="0" step="0.01" class="w-full pl-7 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent bg-gray-50" placeholder="0.00" readonly>
                                                 </div>
                                                 <p class="text-xs text-gray-500 mt-1">Auto-calculated bundle price</p>
@@ -1606,6 +1614,33 @@
 }
 .tab-content.active {
     display: block;
+}
+
+/* Sortable.js Drag & Drop Styles */
+.sortable-ghost {
+    opacity: 0.4;
+    background: #e0f2fe;
+    border: 2px dashed #0082C3 !important;
+}
+
+.sortable-chosen {
+    cursor: grabbing !important;
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+    z-index: 1000;
+}
+
+.sortable-drag {
+    opacity: 1 !important;
+    cursor: grabbing !important;
+}
+
+.sortable-item {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sortable-item:hover {
+    transform: translateY(-2px);
 }
 
 /* Collapsible Section Styles */
@@ -1940,6 +1975,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadProducts();
         loadBrands();
         loadCategories();
+        loadTags();
     }
     
     // Initialize collapsible sections
@@ -2015,17 +2051,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Availability status change
     document.getElementById('productAvailability')?.addEventListener('change', toggleAvailableDate);
 
-    // Product tags input
-    document.getElementById('productTagInput')?.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const tagValue = this.value.trim();
-            if (tagValue) {
-                addProductTag(tagValue);
-                this.value = '';
-            }
-        }
-    });
+    // Product tags are now handled by searchable multi-select
+    // No need for manual tag input handling
+
     
     // Form submission
     document.getElementById('productForm')?.addEventListener('submit', function(e) {
@@ -2034,8 +2062,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Product Tags Management
-let productTags = [];
+// Product Tags Management - Now using multi-select
+// Tags are stored as array of tag IDs
+let productTagIds = [];
 
 // Availability Date Toggle
 function toggleAvailableDate() {
@@ -2159,7 +2188,7 @@ function calculateProfitMargin() {
         const profitMargin = ((profitAmount / sellingPrice) * 100).toFixed(2);
         
         profitMarginValue.textContent = profitMargin + '%';
-        profitAmountValue.textContent = '$' + profitAmount.toFixed(2);
+        profitAmountValue.textContent = '₹' + profitAmount.toFixed(2);
         
         // Color code based on margin
         if (profitMargin < 10) {
@@ -2193,33 +2222,72 @@ function initPricingListeners() {
     }
 }
 
-function addProductTag(tagName) {
-    if (!productTags.includes(tagName)) {
-        productTags.push(tagName);
-        renderProductTags();
-    }
-}
-
-function removeProductTag(tagName) {
-    productTags = productTags.filter(t => t !== tagName);
-    renderProductTags();
-}
-
-function renderProductTags() {
-    const container = document.getElementById('productTagsContainer');
-    if (!container) return;
+// Generate Professional SKU
+function generateSKU() {
+    const productName = document.getElementById('productName').value.trim();
+    const brandSelect = document.getElementById('productBrand');
+    const categorySelect = document.getElementById('productPrimaryCategory');
+    const productType = document.getElementById('productType').value;
     
-    container.innerHTML = productTags.map(tag => `
-        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 text-blue-700 text-sm rounded-full">
-            ${tag}
-            <button type="button" onclick="removeProductTag('${tag}')" class="hover:text-blue-900">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-        </span>
-    `).join('');
+    if (!productName) {
+        showToast('Please enter product name first', 'error');
+        return;
+    }
+    
+    let skuParts = [];
+    
+    // 1. Category prefix (first 4 letters, uppercase)
+    if (categorySelect && categorySelect.selectedOptions[0] && categorySelect.value) {
+        const categoryName = categorySelect.selectedOptions[0].text;
+        const categoryPrefix = categoryName.substring(0, 4).toUpperCase().replace(/[^A-Z]/g, '');
+        if (categoryPrefix) skuParts.push(categoryPrefix);
+    }
+    
+    // 2. Brand prefix (first 4 letters, uppercase)
+    if (brandSelect && brandSelect.selectedOptions[0] && brandSelect.value) {
+        const brandName = brandSelect.selectedOptions[0].text;
+        const brandPrefix = brandName.substring(0, 4).toUpperCase().replace(/[^A-Z]/g, '');
+        if (brandPrefix) skuParts.push(brandPrefix);
+    }
+    
+    // 3. Product name keywords (first 2-3 significant words, max 4 chars each)
+    const nameWords = productName
+        .toUpperCase()
+        .replace(/[^A-Z0-9\s]/g, '')
+        .split(/\s+/)
+        .filter(word => word.length > 2) // Skip small words like "A", "OF", "THE"
+        .slice(0, 3) // Take first 3 significant words
+        .map(word => word.substring(0, 4)); // Max 4 chars per word
+    
+    if (nameWords.length > 0) {
+        skuParts.push(...nameWords);
+    }
+    
+    // 4. Product type indicator (first 3 letters)
+    if (productType) {
+        const typePrefix = productType.substring(0, 3).toUpperCase();
+        skuParts.push(typePrefix);
+    }
+    
+    // 5. Random unique identifier (4 digits)
+    const randomId = Math.floor(1000 + Math.random() * 9000);
+    skuParts.push(randomId.toString());
+    
+    // Combine all parts with hyphen
+    const generatedSKU = skuParts.join('-');
+    
+    // Set the SKU
+    document.getElementById('productSku').value = generatedSKU;
+    
+    // Show success message
+    showToast('SKU generated successfully: ' + generatedSKU, 'success');
+    
+    console.log('Generated SKU:', generatedSKU);
 }
+
+// Old tag functions removed - now using searchable multi-select
+// Tags are managed through the select element directly
+
 
 
 function loadProducts(page = 1) {
@@ -2309,8 +2377,10 @@ function loadCategories() {
             console.log('Categories loaded:', data.data.length);
             
             const categorySelect = document.getElementById('productPrimaryCategory');
+            const additionalCategoriesSelect = document.getElementById('productAdditionalCategories');
             const categoryFilter = document.getElementById('categoryFilter');
             
+            // Update Primary Category dropdown
             if (categorySelect) {
                 // Update native select options
                 categorySelect.innerHTML = '<option value="">Select Category</option>';
@@ -2319,25 +2389,30 @@ function loadCategories() {
                 });
                 console.log('Primary category options updated');
                 
-                // Update SearchableSelect dropdown options
-                const wrapper = categorySelect.nextElementSibling;
-                if (wrapper && wrapper.classList.contains('searchable-select-wrapper')) {
-                    const optionsContainer = wrapper.querySelector('.searchable-select-options');
-                    if (optionsContainer) {
-                        let optionsHtml = '';
-                        Array.from(categorySelect.options).forEach(opt => {
-                            optionsHtml += `
-                                <div class="searchable-select-option px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 text-gray-700" data-value="${opt.value}">
-                                    ${opt.textContent}
-                                </div>
-                            `;
-                        });
-                        optionsContainer.innerHTML = optionsHtml;
-                        console.log('SearchableSelect options container updated');
-                    }
+                // Refresh SearchableSelect instance
+                const instance = searchableSelectInstances.find(inst => inst.select === categorySelect);
+                if (instance) {
+                    instance.refresh();
                 }
             }
             
+            // Update Additional Categories multi-select dropdown
+            if (additionalCategoriesSelect) {
+                // Update native select options
+                additionalCategoriesSelect.innerHTML = '';
+                data.data.forEach(category => {
+                    additionalCategoriesSelect.innerHTML += `<option value="${category.id}">${category.name}</option>`;
+                });
+                console.log('Additional categories options updated');
+                
+                // Refresh SearchableSelect instance
+                const instance = searchableSelectInstances.find(inst => inst.select === additionalCategoriesSelect);
+                if (instance) {
+                    instance.refresh();
+                }
+            }
+            
+            // Update Category Filter dropdown
             if (categoryFilter) {
                 categoryFilter.innerHTML = '<option value="">All Categories</option>';
                 data.data.forEach(category => {
@@ -2345,21 +2420,10 @@ function loadCategories() {
                 });
                 console.log('Category filter options updated');
                 
-                // Update SearchableSelect for filter too
-                const wrapper = categoryFilter.nextElementSibling;
-                if (wrapper && wrapper.classList.contains('searchable-select-wrapper')) {
-                    const optionsContainer = wrapper.querySelector('.searchable-select-options');
-                    if (optionsContainer) {
-                        let optionsHtml = '';
-                        Array.from(categoryFilter.options).forEach(opt => {
-                            optionsHtml += `
-                                <div class="searchable-select-option px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 text-gray-700" data-value="${opt.value}">
-                                    ${opt.textContent}
-                                </div>
-                            `;
-                        });
-                        optionsContainer.innerHTML = optionsHtml;
-                    }
+                // Refresh SearchableSelect instance
+                const instance = searchableSelectInstances.find(inst => inst.select === categoryFilter);
+                if (instance) {
+                    instance.refresh();
                 }
             }
         } else {
@@ -2368,6 +2432,44 @@ function loadCategories() {
     })
     .catch(error => {
         console.error('Error loading categories:', error);
+    });
+}
+
+// Load Tags from Database
+function loadTags() {
+    fetch('/admin/tags/list?per_page=1000&status=1', {
+        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success && data.tags && data.tags.data) {
+            console.log('Tags loaded:', data.tags.data.length);
+            
+            const tagsSelect = document.getElementById('productTags');
+            
+            if (tagsSelect) {
+                // Update native select options
+                tagsSelect.innerHTML = '';
+                data.tags.data.forEach(tag => {
+                    tagsSelect.innerHTML += `<option value="${tag.id}">${tag.name}</option>`;
+                });
+                console.log('Product tags options updated');
+                
+                // Find and refresh the SearchableSelect instance
+                if (typeof searchableSelectInstances !== 'undefined') {
+                    const instance = searchableSelectInstances.find(inst => inst.select === tagsSelect);
+                    if (instance) {
+                        instance.refresh();
+                        console.log('SearchableSelect instance refreshed');
+                    }
+                }
+            }
+        } else {
+            console.error('Failed to load tags:', data);
+        }
+    })
+    .catch(error => {
+        console.error('Error loading tags:', error);
     });
 }
 
@@ -2675,10 +2777,19 @@ function openAddModal() {
     document.getElementById('modalTitle').textContent = 'Add Product';
     document.getElementById('submitBtnText').textContent = 'Create Product';
     switchTab('basic');
+    
+    // Reload tags and categories to get latest from database
+    loadTags();
+    loadCategories();
+    
     openModal();
 }
 
 function editProduct(id) {
+    // Reload tags and categories first to get latest from database
+    loadTags();
+    loadCategories();
+    
     fetch(`/admin/products/${id}`, {
         headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
     })
@@ -2728,9 +2839,25 @@ function resetForm() {
     productVideos = [];
     productFaqs = [];
     productVariants = [];
-    productTags = [];
+    productTagIds = [];
     relatedProducts = { related: [], upsell: [], cross_sell: [] };
-    renderProductTags();
+    
+    // Reset tags multi-select
+    const tagsSelect = document.getElementById('productTags');
+    if (tagsSelect) {
+        Array.from(tagsSelect.options).forEach(opt => opt.selected = false);
+        // Update searchable select display
+        updateSearchableMultiSelectDisplay(tagsSelect);
+    }
+    
+    // Reset additional categories multi-select
+    const additionalCategoriesSelect = document.getElementById('productAdditionalCategories');
+    if (additionalCategoriesSelect) {
+        Array.from(additionalCategoriesSelect.options).forEach(opt => opt.selected = false);
+        // Update searchable select display
+        updateSearchableMultiSelectDisplay(additionalCategoriesSelect);
+    }
+    
     renderVideosList();
     renderFaqsList();
     renderRelatedProducts();
@@ -2788,10 +2915,34 @@ function populateForm(product) {
     document.getElementById('productSeoDescription').value = product.seo_description || '';
     document.getElementById('productSeoKeywords').value = product.seo_keywords || '';
     
-    // Load tags
+    // Load tags - select options in multi-select
     if (product.tags && product.tags.length > 0) {
-        productTags = product.tags.map(t => t.name);
-        renderProductTags();
+        productTagIds = product.tags.map(t => t.id);
+        const tagsSelect = document.getElementById('productTags');
+        if (tagsSelect) {
+            // Select the tags
+            Array.from(tagsSelect.options).forEach(opt => {
+                opt.selected = productTagIds.includes(parseInt(opt.value));
+            });
+            // Update searchable select display
+            updateSearchableMultiSelectDisplay(tagsSelect);
+        }
+    }
+    
+    // Load additional categories - select options in multi-select
+    if (product.categories && product.categories.length > 0) {
+        const additionalCategoriesSelect = document.getElementById('productAdditionalCategories');
+        if (additionalCategoriesSelect) {
+            // Get category IDs (excluding primary category)
+            const categoryIds = product.categories.map(c => c.id);
+            
+            // Select the categories
+            Array.from(additionalCategoriesSelect.options).forEach(opt => {
+                opt.selected = categoryIds.includes(parseInt(opt.value));
+            });
+            // Update searchable select display
+            updateSearchableMultiSelectDisplay(additionalCategoriesSelect);
+        }
     }
     
     // Load videos
@@ -2870,7 +3021,8 @@ function saveProduct() {
         seo_title: document.getElementById('productSeoTitle').value,
         seo_description: document.getElementById('productSeoDescription').value,
         seo_keywords: document.getElementById('productSeoKeywords').value,
-        tags: productTags,
+        tags: Array.from(document.getElementById('productTags').selectedOptions).map(opt => parseInt(opt.value)),
+        categories: Array.from(document.getElementById('productAdditionalCategories').selectedOptions).map(opt => parseInt(opt.value)),
         videos: productVideos,
         faqs: productFaqs
     };
@@ -2987,52 +3139,176 @@ function deleteProduct(id, name, variantsCount) {
     );
 }
 
-// ImageKit Integration
+// ImageKit Integration - Multiple Images Upload with Responsive Sizes
 function openImageKitUpload() {
-    const imageKitConfig = {
-        publicKey: "{{ config('imagekit.public_key') }}",
-        urlEndpoint: "{{ config('imagekit.url_endpoint') }}",
-        authenticationEndpoint: "{{ route('imagekit.auth') }}"
+    // Create file input element
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.multiple = true; // Allow multiple file selection
+    
+    fileInput.onchange = function(e) {
+        const files = Array.from(e.target.files);
+        if (files.length === 0) {
+            return;
+        }
+        
+        // Validate files
+        const validFiles = [];
+        for (const file of files) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showToast(`${file.name} is not an image file`, 'error');
+                continue;
+            }
+            
+            // Validate file size (max 10MB)
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            if (file.size > maxSize) {
+                showToast(`${file.name} is too large (max 10MB)`, 'error');
+                continue;
+            }
+            
+            validFiles.push(file);
+        }
+        
+        if (validFiles.length > 0) {
+            uploadMultipleToImageKit(validFiles);
+        }
     };
     
+    // Trigger file selection
+    fileInput.click();
+}
+
+function uploadMultipleToImageKit(files) {
     if (typeof ImageKit === 'undefined') {
         showToast('ImageKit SDK not loaded', 'error');
         return;
     }
     
-    const imagekit = new ImageKit(imageKitConfig);
+    showToast(`Uploading ${files.length} image(s)...`, 'info');
     
-    imagekit.upload({
-        file: null,
-        fileName: `product_${Date.now()}`,
-        folder: '/products',
-        useUniqueFileName: true,
-        onUploadStart: (evt) => {
-            showToast('Uploading image...', 'info');
-        },
-        onUploadProgress: (evt) => {
-            const percent = Math.round((evt.loaded / evt.total) * 100);
-            console.log(`Upload progress: ${percent}%`);
-        }
-    }, function(err, result) {
-        if (err) {
-            console.error('Upload error:', err);
-            showToast('Image upload failed', 'error');
-            return;
-        }
-        
-        // Add image to productImages array
-        productImages.push({
-            image_url: result.url,
-            image_id: result.fileId,
-            alt_text: '',
-            sort_order: productImages.length,
-            is_featured: productImages.length === 0
-        });
-        
-        renderProductImages();
-        showToast('Image uploaded successfully', 'success');
+    let uploadedCount = 0;
+    let failedCount = 0;
+    
+    // Upload each file with fresh authentication
+    files.forEach((file, index) => {
+        // Get fresh authentication parameters for each file
+        fetch("{{ route('imagekit.auth') }}")
+            .then(response => response.json())
+            .then(authParams => {
+                console.log(`Auth params for file ${index + 1}:`, authParams);
+                
+                const imageKitConfig = {
+                    publicKey: "{{ config('imagekit.public_key') }}",
+                    urlEndpoint: "{{ config('imagekit.url_endpoint') }}",
+                    authenticationEndpoint: "{{ route('imagekit.auth') }}"
+                };
+                
+                const imagekit = new ImageKit(imageKitConfig);
+                
+                console.log(`Uploading file ${index + 1}:`, file.name);
+                
+                imagekit.upload({
+                    file: file,
+                    fileName: `product_${Date.now()}_${index}_${file.name}`,
+                    folder: '/products',
+                    useUniqueFileName: true,
+                    tags: ['product', 'responsive'],
+                    // Pass fresh authentication parameters
+                    token: authParams.token,
+                    signature: authParams.signature,
+                    expire: authParams.expire
+                }, function(err, result) {
+                    if (err) {
+                        console.error(`Upload error for file ${index + 1}:`, err);
+                        failedCount++;
+                        
+                        // Show specific error message
+                        if (err.message) {
+                            showToast(`${file.name}: ${err.message}`, 'error');
+                        }
+                    } else {
+                        console.log(`Upload success for file ${index + 1}:`, result);
+                        
+                        // Add image with responsive URLs to productImages array
+                        productImages.push({
+                            image_url: result.url,
+                            image_id: result.fileId,
+                            alt_text: '',
+                            sort_order: productImages.length,
+                            is_featured: productImages.length === 0,
+                            responsive_urls: generateResponsiveUrls(result.url),
+                            file_name: result.name,
+                            file_size: result.size,
+                            width: result.width,
+                            height: result.height
+                        });
+                        uploadedCount++;
+                    }
+                    
+                    // Check if all uploads are complete
+                    if (uploadedCount + failedCount === files.length) {
+                        renderProductImages();
+                        initImageSortable(); // Initialize drag & drop
+                        
+                        if (uploadedCount > 0) {
+                            showToast(`${uploadedCount} image(s) uploaded successfully`, 'success');
+                        }
+                        if (failedCount > 0) {
+                            showToast(`${failedCount} image(s) failed to upload`, 'error');
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error(`Auth fetch error for file ${index + 1}:`, error);
+                failedCount++;
+                
+                if (uploadedCount + failedCount === files.length) {
+                    showToast('Failed to get authentication parameters', 'error');
+                }
+            });
     });
+}
+
+// Generate responsive URLs for different devices (Shopify-style)
+function generateResponsiveUrls(baseUrl) {
+    // ImageKit transformation parameters
+    const sizes = {
+        thumbnail: { width: 150, height: 150, quality: 80 },      // Admin thumbnails
+        small: { width: 320, height: 320, quality: 85 },          // Mobile
+        medium: { width: 640, height: 640, quality: 85 },         // Tablet
+        large: { width: 1024, height: 1024, quality: 90 },        // Desktop
+        xlarge: { width: 1920, height: 1920, quality: 90 },       // Large screens
+        original: { width: null, height: null, quality: 95 }      // Original size
+    };
+    
+    const responsiveUrls = {};
+    
+    for (const [sizeName, params] of Object.entries(sizes)) {
+        if (params.width && params.height) {
+            // Force WebP format for all images
+            const transformedUrl = `${baseUrl}?tr=w-${params.width},h-${params.height},q-${params.quality},f-webp,fo-auto`;
+            responsiveUrls[sizeName] = transformedUrl;
+        } else {
+            // Original also in WebP
+            responsiveUrls[sizeName] = `${baseUrl}?tr=f-webp,q-${params.quality}`;
+        }
+    }
+    
+    return responsiveUrls;
+}
+
+function generateResponsiveTransformations() {
+    return [
+        { name: 'thumbnail', width: 150, height: 150 },
+        { name: 'small', width: 320, height: 320 },
+        { name: 'medium', width: 640, height: 640 },
+        { name: 'large', width: 1024, height: 1024 },
+        { name: 'xlarge', width: 1920, height: 1920 }
+    ];
 }
 
 function renderProductImages() {
@@ -3044,21 +3320,198 @@ function renderProductImages() {
     }
     
     grid.innerHTML = productImages.map((img, index) => `
-        <div class="relative group border border-gray-200 rounded-lg overflow-hidden">
-            <img src="${img.image_url}" alt="${img.alt_text || 'Product image'}" class="w-full h-32 object-cover">
-            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                ${index === 0 ? '<span class="px-2 py-1 bg-blue-600 text-white text-xs rounded">Featured</span>' : ''}
-                <button type="button" onclick="removeProductImage(${index})" class="p-1.5 bg-red-600 text-white rounded hover:bg-red-700">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                    </svg>
-                </button>
+        <div class="sortable-item relative group border-2 border-gray-200 rounded-xl overflow-hidden hover:border-[#0082C3] transition-all cursor-move bg-white shadow-sm hover:shadow-md" data-index="${index}">
+            <!-- Drag Handle -->
+            <div class="absolute top-2 left-2 z-10 bg-gray-900/75 text-white px-2 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                </svg>
+                ${index + 1}
             </div>
-            <div class="absolute top-2 left-2">
-                <span class="px-2 py-1 bg-gray-900/75 text-white text-xs rounded">${index + 1}</span>
+            
+            <!-- Featured Badge -->
+            ${index === 0 ? `
+                <div class="absolute top-2 right-2 z-10 bg-blue-600 text-white px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>
+                    Featured
+                </div>
+            ` : ''}
+            
+            <!-- Image -->
+            <img src="${img.responsive_urls?.thumbnail || img.image_url}" 
+                 alt="${img.alt_text || 'Product image'}" 
+                 class="w-full h-40 object-cover"
+                 loading="lazy">
+            
+            <!-- Hover Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+                <!-- Image Info -->
+                <div class="text-white text-xs space-y-1 mb-2">
+                    ${img.width && img.height ? `<p class="font-medium">${img.width} × ${img.height}px</p>` : ''}
+                    ${img.file_size ? `<p class="opacity-90">${formatFileSize(img.file_size)}</p>` : ''}
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="setFeaturedImage(${index})" class="flex-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                        </svg>
+                        Feature
+                    </button>
+                    <button type="button" onclick="viewResponsiveSizes(${index})" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-lg transition-colors" title="View Responsive Sizes">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                    <button type="button" onclick="removeProductImage(${index})" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-lg transition-colors" title="Remove">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     `).join('');
+    
+    // Initialize sortable after rendering
+    initImageSortable();
+}
+
+// Initialize Sortable.js for drag & drop
+function initImageSortable() {
+    const grid = document.getElementById('productImagesGrid');
+    if (!grid || typeof Sortable === 'undefined') return;
+    
+    // Destroy existing sortable instance if any
+    if (grid.sortableInstance) {
+        grid.sortableInstance.destroy();
+    }
+    
+    grid.sortableInstance = Sortable.create(grid, {
+        animation: 200,
+        handle: '.sortable-item',
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+        dragClass: 'sortable-drag',
+        onEnd: function(evt) {
+            // Reorder productImages array
+            const movedItem = productImages.splice(evt.oldIndex, 1)[0];
+            productImages.splice(evt.newIndex, 0, movedItem);
+            
+            // Update sort orders and featured status
+            productImages.forEach((img, i) => {
+                img.sort_order = i;
+                img.is_featured = i === 0;
+            });
+            
+            // Re-render to update badges and numbers
+            renderProductImages();
+            showToast('Images reordered', 'success');
+        }
+    });
+}
+
+// Set featured image
+function setFeaturedImage(index) {
+    if (index === 0) {
+        showToast('This image is already featured', 'info');
+        return;
+    }
+    
+    // Move image to first position
+    const movedImage = productImages.splice(index, 1)[0];
+    productImages.unshift(movedImage);
+    
+    // Update sort orders and featured status
+    productImages.forEach((img, i) => {
+        img.sort_order = i;
+        img.is_featured = i === 0;
+    });
+    
+    renderProductImages();
+    showToast('Featured image updated', 'success');
+}
+
+// View responsive sizes modal
+function viewResponsiveSizes(index) {
+    const img = productImages[index];
+    if (!img.responsive_urls) {
+        showToast('Responsive URLs not available', 'error');
+        return;
+    }
+    
+    const sizes = Object.entries(img.responsive_urls).map(([size, url]) => {
+        const sizeInfo = {
+            thumbnail: '150×150px (Admin)',
+            small: '320×320px (Mobile)',
+            medium: '640×640px (Tablet)',
+            large: '1024×1024px (Desktop)',
+            xlarge: '1920×1920px (Large Screen)',
+            original: 'Original Size'
+        };
+        
+        return `
+            <div class="border border-gray-200 rounded-lg p-3 hover:border-[#0082C3] transition-colors">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-semibold text-gray-900 capitalize">${size}</span>
+                    <span class="text-xs text-gray-500">${sizeInfo[size] || ''}</span>
+                </div>
+                <input type="text" value="${url}" readonly class="w-full px-2 py-1 text-xs bg-gray-50 border border-gray-200 rounded font-mono" onclick="this.select()">
+                <button onclick="copyToClipboard('${url}')" class="mt-2 w-full px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs rounded transition-colors">
+                    Copy URL
+                </button>
+            </div>
+        `;
+    }).join('');
+    
+    // Show modal with responsive URLs
+    const modal = `
+        <div id="responsiveSizesModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm" onclick="closeResponsiveSizesModal(event)">
+            <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full mx-4 max-h-[90vh] overflow-hidden" onclick="event.stopPropagation()">
+                <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-900">Responsive Image Sizes</h3>
+                    <button onclick="closeResponsiveSizesModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6 overflow-y-auto max-h-[calc(90vh-80px)]">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${sizes}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modal);
+}
+
+function closeResponsiveSizesModal(event) {
+    if (!event || event.target.id === 'responsiveSizesModal') {
+        const modal = document.getElementById('responsiveSizesModal');
+        if (modal) modal.remove();
+    }
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        showToast('URL copied to clipboard', 'success');
+    }).catch(() => {
+        showToast('Failed to copy URL', 'error');
+    });
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
 }
 
 function removeProductImage(index) {
@@ -3196,8 +3649,6 @@ function generateVariants() {
             name: variantName,
             sku: '',
             price: '',
-            compare_price: '',
-            cost_price: '',
             attributes: combo,
             images: [], // Initialize empty images array
             status: true
@@ -3267,11 +3718,9 @@ function renderVariantsList() {
                     </div>
                     
                     <!-- Variant Details -->
-                    <div class="grid grid-cols-4 gap-2 mb-3">
+                    <div class="grid grid-cols-2 gap-2 mb-3">
                         <input type="text" placeholder="SKU" value="${variant.sku}" onchange="updateVariant(${index}, 'sku', this.value)" class="px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-purple-500">
                         <input type="number" step="0.01" placeholder="Price" value="${variant.price}" onchange="updateVariant(${index}, 'price', this.value)" class="px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-purple-500">
-                        <input type="number" step="0.01" placeholder="Compare Price" value="${variant.compare_price || ''}" onchange="updateVariant(${index}, 'compare_price', this.value)" class="px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-purple-500">
-                        <input type="number" step="0.01" placeholder="Cost Price" value="${variant.cost_price || ''}" onchange="updateVariant(${index}, 'cost_price', this.value)" class="px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     
                     <!-- Variant Images Section -->
@@ -3428,6 +3877,15 @@ function openModal() {
 function closeModal() {
     const modal = document.getElementById('productModal');
     const modalContent = document.getElementById('productModalContent');
+    
+    // Close all open searchable select dropdowns
+    if (typeof searchableSelectInstances !== 'undefined') {
+        searchableSelectInstances.forEach(instance => {
+            if (instance.isOpen) {
+                instance.close();
+            }
+        });
+    }
     
     modalContent.style.transform = 'translateX(100%)';
     
@@ -4370,6 +4828,47 @@ function updateSearchableSelectDisplay(selectElement, value) {
                 optionsHtml += `
                     <div class="searchable-select-option px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 ${isSelected ? 'bg-blue-50 text-[#0082C3] font-medium' : 'text-gray-700'}" data-value="${opt.value}">
                         ${opt.textContent}
+                    </div>
+                `;
+            });
+            optionsContainer.innerHTML = optionsHtml;
+        }
+    }
+}
+
+// Helper function to update SearchableSelect display for multi-select
+function updateSearchableMultiSelectDisplay(selectElement) {
+    if (!selectElement) return;
+    
+    const wrapper = selectElement.nextElementSibling;
+    if (wrapper && wrapper.classList.contains('searchable-select-wrapper')) {
+        const displayText = wrapper.querySelector('.searchable-select-text');
+        if (displayText) {
+            const selectedOptions = Array.from(selectElement.selectedOptions);
+            if (selectedOptions.length > 0) {
+                displayText.textContent = `${selectedOptions.length} selected`;
+                displayText.classList.remove('text-gray-400');
+                displayText.classList.add('text-gray-700');
+            } else {
+                displayText.textContent = selectElement.getAttribute('data-placeholder') || 'Select options';
+                displayText.classList.add('text-gray-400');
+                displayText.classList.remove('text-gray-700');
+            }
+        }
+        
+        // Update dropdown options with checkboxes
+        const optionsContainer = wrapper.querySelector('.searchable-select-options');
+        if (optionsContainer) {
+            const selectedValues = Array.from(selectElement.selectedOptions).map(opt => opt.value);
+            let optionsHtml = '';
+            Array.from(selectElement.options).forEach(opt => {
+                const isSelected = selectedValues.includes(opt.value);
+                optionsHtml += `
+                    <div class="searchable-select-option px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 ${isSelected ? 'bg-blue-50' : ''}" data-value="${opt.value}">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" ${isSelected ? 'checked' : ''} class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]" onclick="event.stopPropagation()">
+                            <span class="${isSelected ? 'text-[#0082C3] font-medium' : 'text-gray-700'}">${opt.textContent}</span>
+                        </label>
                     </div>
                 `;
             });
