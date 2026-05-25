@@ -264,6 +264,41 @@
 
 @push('scripts')
 <script>
+// ── Inject courier modal directly into body (avoids stacking context issues) ──
+(function() {
+    // Add spin keyframe
+    const style = document.createElement('style');
+    style.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
+    document.head.appendChild(style);
+
+    const el = document.createElement('div');
+    el.id = 'courierModal';
+    el.style.cssText = 'position:fixed;inset:0;z-index:9999;display:none;';
+    el.innerHTML = `
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);" onclick="closeCourierModal()"></div>
+        <div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;max-width:580px;background:#fff;border-radius:16px;box-shadow:0 25px 50px rgba(0,0,0,0.25);overflow:hidden;display:flex;flex-direction:column;max-height:90vh;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #f3f4f6;background:#fff;flex-shrink:0;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="width:36px;height:36px;background:#f97316;border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                        <svg style="width:20px;height:20px;color:#fff;" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 10V7"/></svg>
+                    </div>
+                    <div>
+                        <h2 id="courierModalTitle" style="font-size:15px;font-weight:700;color:#111827;margin:0;">Select Courier</h2>
+                        <p style="font-size:12px;color:#9ca3af;margin:0;">Choose the best courier for this shipment</p>
+                    </div>
+                </div>
+                <button onclick="closeCourierModal()" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:#9ca3af;border:none;background:none;cursor:pointer;border-radius:8px;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+                    <svg style="width:20px;height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div id="courierModalBody" style="flex:1;overflow-y:auto;">
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 20px;gap:16px;">
+                    <p style="font-size:14px;color:#6b7280;">Loading couriers...</p>
+                </div>
+            </div>
+        </div>`;
+    document.body.appendChild(el);
+})();
 const STATUS_COLORS = {
     pending:'yellow', confirmed:'blue', processing:'indigo',
     shipped:'purple', delivered:'green', cancelled:'red', refunded:'gray'
@@ -418,6 +453,9 @@ function renderOrderDetail(o) {
         </tr>
     `).join('');
 
+    const hasSR = o.admin_note && o.admin_note.includes('Shiprocket Order ID:');
+    const srCancellable = hasSR && !['delivered','cancelled','refunded'].includes(o.status);
+
     return `
     <div class="space-y-5">
         {{-- Status bar --}}
@@ -425,12 +463,18 @@ function renderOrderDetail(o) {
             ${pill(o.status, STATUS_COLORS[o.status]||'gray')}
             ${pill(o.payment_status, PAY_COLORS[o.payment_status]||'gray')}
             <span class="text-xs text-gray-400">${new Date(o.created_at).toLocaleString('en-IN')}</span>
-            <div class="ml-auto flex gap-2">
+            <div class="ml-auto flex gap-2 flex-wrap">
                 <select onchange="updateOrderStatus(${o.id}, this.value)" class="text-xs border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#0082C3]">
                     <option value="">Change Status</option>
                     ${['pending','confirmed','processing','shipped','delivered','cancelled','refunded'].map(s=>`<option value="${s}">${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('')}
                 </select>
-                <button onclick="generateInvoice(${o.id})" class="px-3 py-1.5 text-xs bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold">Generate Invoice</button>
+                <button onclick="generateInvoice(${o.id})" class="px-3 py-1.5 text-xs bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold">📄 Invoice</button>
+                ${hasSR
+                    ? (srCancellable
+                        ? `<button onclick="cancelShiprocket(${o.id})" class="px-3 py-1.5 text-xs bg-red-500 text-white rounded-lg hover:bg-red-600 font-semibold flex items-center gap-1">❌ Cancel Shiprocket</button>`
+                        : `<span class="px-3 py-1.5 text-xs bg-gray-100 text-gray-500 rounded-lg font-semibold flex items-center gap-1">✓ On Shiprocket</span>`)
+                    : `<button onclick="shipViaShiprocket(${o.id})" class="px-3 py-1.5 text-xs bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold flex items-center gap-1">🚀 Ship via Shiprocket</button>`
+                }
             </div>
         </div>
 
@@ -478,7 +522,86 @@ function renderOrderDetail(o) {
         </div>
 
         ${o.admin_note?`<div class="bg-yellow-50 border border-yellow-100 rounded-xl p-3"><p class="text-xs font-bold text-yellow-700 mb-1">Admin Note</p><p class="text-sm text-yellow-800">${esc(o.admin_note)}</p></div>`:''}
+
+        ${renderShiprocketSection(o)}
     </div>`;
+}
+
+function renderShiprocketSection(o) {
+    const note = o.admin_note || '';
+    const srMatch  = note.match(/Shiprocket Order ID: (\d+)/);
+    const shipMatch = note.match(/Shipment ID: (\d+)/);
+    if (!srMatch) return '';
+
+    const srOrderId   = srMatch[1];
+    const srShipmentId = shipMatch ? shipMatch[1] : '—';
+    const awb         = o.tracking_number || null;
+    const carrier     = o.shipping_carrier || null;
+
+    const statusMap = {
+        'pending':    ['bg-yellow-100 text-yellow-700', 'Pending'],
+        'processing': ['bg-indigo-100 text-indigo-700', 'Processing'],
+        'shipped':    ['bg-purple-100 text-purple-700', 'Shipped'],
+        'delivered':  ['bg-green-100 text-green-700',   'Delivered'],
+        'cancelled':  ['bg-red-100 text-red-700',       'Cancelled'],
+    };
+    const [pillCls, pillLabel] = statusMap[o.status] || ['bg-gray-100 text-gray-600', o.status];
+
+    return `
+        <div class="border border-orange-200 bg-orange-50 rounded-xl overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-orange-100">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">🚀</span>
+                    <p class="text-sm font-bold text-orange-800">Shiprocket Shipment</p>
+                    <span class="px-2 py-0.5 rounded-full text-xs font-semibold ${pillCls}">${pillLabel}</span>
+                </div>
+                <button onclick="syncShiprocket(${o.id})" id="syncBtn-${o.id}"
+                    class="flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 text-white text-xs font-bold rounded-lg hover:bg-orange-600 transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Sync Status
+                </button>
+            </div>
+            <div class="px-4 py-3 grid grid-cols-2 gap-3 text-xs">
+                <div>
+                    <p class="text-orange-600 font-semibold uppercase tracking-wider mb-0.5">SR Order ID</p>
+                    <p class="font-mono font-bold text-gray-900">${esc(srOrderId)}</p>
+                </div>
+                <div>
+                    <p class="text-orange-600 font-semibold uppercase tracking-wider mb-0.5">Shipment ID</p>
+                    <p class="font-mono font-bold text-gray-900">${esc(srShipmentId)}</p>
+                </div>
+                ${awb ? `
+                <div>
+                    <p class="text-orange-600 font-semibold uppercase tracking-wider mb-0.5">AWB / Tracking</p>
+                    <p class="font-mono font-bold text-gray-900">${esc(awb)}</p>
+                </div>` : ''}
+                ${carrier ? `
+                <div>
+                    <p class="text-orange-600 font-semibold uppercase tracking-wider mb-0.5">Courier</p>
+                    <p class="font-bold text-gray-900">${esc(carrier)}</p>
+                </div>` : ''}
+                ${o.shipped_at ? `
+                <div>
+                    <p class="text-orange-600 font-semibold uppercase tracking-wider mb-0.5">Shipped At</p>
+                    <p class="text-gray-700">${new Date(o.shipped_at).toLocaleString('en-IN')}</p>
+                </div>` : ''}
+                ${o.delivered_at ? `
+                <div>
+                    <p class="text-orange-600 font-semibold uppercase tracking-wider mb-0.5">Delivered At</p>
+                    <p class="text-gray-700">${new Date(o.delivered_at).toLocaleString('en-IN')}</p>
+                </div>` : ''}
+            </div>
+            ${awb ? `
+            <div class="px-4 pb-3">
+                <a href="https://shiprocket.co/tracking/${esc(awb)}" target="_blank"
+                   class="inline-flex items-center gap-1.5 text-xs text-orange-600 hover:text-orange-800 font-semibold underline">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    Track on Shiprocket
+                </a>
+            </div>` : ''}
+        </div>`;
 }
 
 function updateOrderStatus(id, status) {
@@ -492,6 +615,281 @@ function updateOrderStatus(id, status) {
         if (res.success) { showToast('success', 'Status updated'); loadOrders(); viewOrder(id); }
         else showToast('error', res.message);
     });
+}
+
+// ── Shiprocket ────────────────────────────────────────────────────
+async function shipViaShiprocket(orderId) {
+    // Open courier selection modal instead of directly creating
+    openCourierModal(orderId);
+}
+
+async function cancelShiprocket(orderId) {
+    if (!confirm('Cancel this order on Shiprocket? This will also mark the order as cancelled locally.')) return;
+
+    try {
+        const r    = await fetch('/admin/shiprocket/orders/' + orderId + '/cancel', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        });
+        const data = await r.json();
+
+        if (data.success) {
+            showToast('success', '✓ Order cancelled on Shiprocket');
+            loadOrders();
+            viewOrder(orderId); // refresh detail panel
+        } else {
+            showToast('error', data.message || 'Cancel failed');
+        }
+    } catch (e) {
+        showToast('error', e.message);
+    }
+}
+
+async function syncShiprocket(orderId) {
+    const btn = document.getElementById('syncBtn-' + orderId);
+    if (btn) { btn.disabled = true; btn.innerHTML = '<svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Syncing...'; }
+
+    try {
+        const r    = await fetch('/admin/shiprocket/orders/' + orderId + '/sync', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        });
+        const data = await r.json();
+
+        if (data.success) {
+            const d = data.data;
+            showToast('success', 'Synced! Status: ' + d.sr_status + (d.awb ? ' | AWB: ' + d.awb : ''));
+            loadOrders();
+            viewOrder(orderId); // refresh detail with new data
+        } else {
+            if (btn) { btn.disabled = false; btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Sync Status'; }
+            showToast('error', data.message || 'Sync failed');
+        }
+    } catch (e) {
+        if (btn) { btn.disabled = false; btn.innerHTML = 'Sync Status'; }
+        showToast('error', e.message);
+    }
+}
+
+// ── Courier Selection Modal ───────────────────────────────────────
+let srCurrentOrderId = null;
+
+function openCourierModal(orderId) {
+    srCurrentOrderId = orderId;
+    document.getElementById('courierModal').style.display = 'block';
+    loadCouriers(orderId);
+}
+
+function closeCourierModal() {
+    document.getElementById('courierModal').style.display = 'none';
+    srCurrentOrderId = null;
+}
+
+async function loadCouriers(orderId) {
+    const body    = document.getElementById('courierModalBody');
+    const title   = document.getElementById('courierModalTitle');
+    body.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-16 gap-4">
+            <svg class="w-10 h-10 text-orange-400 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+            <p class="text-sm text-gray-500 font-medium">Fetching available couriers...</p>
+            <p class="text-xs text-gray-400">Checking serviceability & rates</p>
+        </div>`;
+
+    try {
+        const r    = await fetch('/admin/shiprocket/orders/' + orderId + '/couriers', {
+            credentials: 'same-origin',
+            headers: { 'Accept': 'application/json' }
+        });
+        const data = await r.json();
+
+        if (!data.success) throw new Error(data.message);
+
+        const d        = data.data;
+        const couriers = d.couriers || [];
+        title.textContent = 'Ship Order — Select Courier';
+
+        if (!couriers.length) {
+            body.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-16 gap-3">
+                    <div class="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                    </div>
+                    <p class="text-sm font-semibold text-gray-700">No couriers available</p>
+                    <p class="text-xs text-gray-400 text-center max-w-xs">No courier services found for this pincode route.<br>Check pickup & delivery pincodes in Settings.</p>
+                </div>`;
+            return;
+        }
+
+        // Route info bar
+        const routeBar = `
+            <div class="flex items-center gap-4 px-5 py-3 bg-orange-50 border-b border-orange-100 text-xs text-orange-700">
+                <span class="font-semibold">📦 ${esc(d.order_number)}</span>
+                <span class="text-orange-400">|</span>
+                <span>📍 ${esc(d.pickup_pincode)} → ${esc(d.delivery_pincode)}</span>
+                <span class="text-orange-400">|</span>
+                <span>⚖️ ${d.weight} kg</span>
+                ${d.is_cod ? '<span class="ml-auto bg-orange-200 text-orange-800 px-2 py-0.5 rounded-full font-bold">COD</span>' : '<span class="ml-auto bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">Prepaid</span>'}
+            </div>`;
+
+        // Courier cards
+        const cards = couriers.map((c, idx) => {
+            const isBest    = idx === 0;
+            const isFastest = couriers.reduce((min, x) => {
+                const d1 = parseInt(x.estimated_days) || 999;
+                const d2 = parseInt(min.estimated_days) || 999;
+                return d1 < d2 ? x : min;
+            }, couriers[0]).id === c.id;
+
+            const stars = c.rating ? Math.round(parseFloat(c.rating)) : 0;
+            const starHtml = stars > 0 ? Array.from({length:5}, (_,i) =>
+                '<svg class="w-3 h-3 ' + (i < stars ? 'text-yellow-400' : 'text-gray-200') + '" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'
+            ).join('') : '';
+
+            const badges = [];
+            if (isBest)    badges.push('<span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full">💰 Best Price</span>');
+            if (isFastest && !isBest) badges.push('<span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-bold rounded-full">⚡ Fastest</span>');
+            if (c.is_surface) badges.push('<span class="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">Surface</span>');
+
+            const logoHtml = c.logo
+                ? '<img src="' + esc(c.logo) + '" alt="' + esc(c.name) + '" class="w-10 h-10 object-contain rounded-lg border border-gray-100 bg-white p-1" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+                  + '<div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center hidden"><span class="text-orange-600 font-bold text-sm">' + esc(c.name.charAt(0)) + '</span></div>'
+                : '<div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center"><span class="text-orange-600 font-bold text-sm">' + esc(c.name.charAt(0)) + '</span></div>';
+
+            const etd = c.etd || (c.estimated_days ? c.estimated_days + ' days' : '—');
+            const codCharge = c.cod_charges > 0 ? '<span class="text-xs text-gray-400">+₹' + c.cod_charges.toFixed(0) + ' COD</span>' : '';
+
+            return `
+                <div class="group relative flex items-center gap-4 p-4 border-2 border-gray-100 rounded-2xl hover:border-orange-400 hover:shadow-md transition-all cursor-pointer bg-white"
+                     onclick="selectCourier(${c.id}, '${esc(c.name)}', ${c.rate})">
+                    <div class="flex-shrink-0">${logoHtml}</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap mb-1">
+                            <p class="font-bold text-gray-900 text-sm">${esc(c.name)}</p>
+                            ${badges.join('')}
+                        </div>
+                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                ${esc(etd)}
+                            </span>
+                            ${c.delivery_performance ? '<span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' + esc(c.delivery_performance) + '% on-time</span>' : ''}
+                        </div>
+                        ${starHtml ? '<div class="flex items-center gap-0.5 mt-1">' + starHtml + '</div>' : ''}
+                    </div>
+                    <div class="flex-shrink-0 text-right">
+                        <p class="text-xl font-black text-gray-900">₹${c.rate.toFixed(0)}</p>
+                        ${codCharge}
+                        <button class="mt-2 px-4 py-1.5 bg-orange-500 text-white text-xs font-bold rounded-xl hover:bg-orange-600 transition-colors group-hover:bg-orange-600 shadow-sm">
+                            Select & Ship
+                        </button>
+                    </div>
+                </div>`;
+        }).join('');
+
+        body.innerHTML = routeBar + `
+            <div class="p-5 space-y-3 max-h-[60vh] overflow-y-auto">
+                <p class="text-xs text-gray-400 font-medium">${couriers.length} courier${couriers.length > 1 ? 's' : ''} available — sorted by price</p>
+                ${cards}
+            </div>`;
+
+    } catch (e) {
+        body.innerHTML = `
+            <div class="flex flex-col items-center justify-center py-16 gap-3">
+                <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </div>
+                <p class="text-sm font-semibold text-gray-700">Failed to load couriers</p>
+                <p class="text-xs text-gray-400 text-center max-w-xs">${esc(e.message)}</p>
+                <button onclick="loadCouriers(srCurrentOrderId)" class="px-4 py-2 bg-orange-500 text-white text-xs font-bold rounded-xl hover:bg-orange-600">Retry</button>
+            </div>`;
+    }
+}
+
+async function selectCourier(courierId, courierName, rate) {
+    if (!srCurrentOrderId) return;
+    if (!confirm('Ship with ' + courierName + ' for ₹' + rate.toFixed(0) + '?')) return;
+
+    const capturedOrderId = srCurrentOrderId; // capture before async
+    const body = document.getElementById('courierModalBody');
+    body.innerHTML = `
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 20px;gap:16px;">
+            <svg style="width:40px;height:40px;color:#fb923c;animation:spin 1s linear infinite;" fill="none" viewBox="0 0 24 24">
+                <circle style="opacity:0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                <path style="opacity:0.75;" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+            <p style="font-size:14px;color:#4b5563;font-weight:500;">Creating Shiprocket order with <strong>${esc(courierName)}</strong>...</p>
+        </div>`;
+
+    try {
+        const r    = await fetch('/admin/shiprocket/orders/' + capturedOrderId + '/create', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ courier_id: courierId })
+        });
+        const data = await r.json();
+
+        if (data.success) {
+            const d = data.data;
+            const srStatus = d.sr_status || d.status || 'NEW';
+            const isNew    = srStatus === 'NEW' || srStatus === 'READY TO SHIP';
+
+            body.innerHTML = `
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;gap:16px;">
+                    <div style="width:72px;height:72px;background:#f0fdf4;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                        <svg style="width:36px;height:36px;color:#22c55e;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <p style="font-size:18px;font-weight:700;color:#111827;margin:0;">Pushed to Shiprocket!</p>
+                    <p style="font-size:13px;color:#6b7280;margin:0;">Courier: <strong>${esc(courierName)}</strong></p>
+                    <div style="background:#f9fafb;border-radius:12px;padding:16px;text-align:center;width:100%;max-width:280px;">
+                        <p style="font-size:11px;color:#9ca3af;margin:0 0 2px;">Shiprocket Order ID</p>
+                        <p style="font-family:monospace;font-weight:700;color:#111827;font-size:15px;margin:0 0 8px;">${esc(String(d.sr_order_id||'—'))}</p>
+                        <p style="font-size:11px;color:#9ca3af;margin:0 0 2px;">Shipment ID</p>
+                        <p style="font-family:monospace;font-weight:700;color:#111827;font-size:15px;margin:0 0 8px;">${esc(String(d.sr_shipment_id||'—'))}</p>
+                        <p style="font-size:11px;color:#9ca3af;margin:0 0 2px;">Status</p>
+                        <p style="font-weight:700;color:${isNew?'#16a34a':'#d97706'};font-size:13px;margin:0;">${esc(srStatus)}</p>
+                    </div>
+                    <p style="font-size:12px;color:#9ca3af;text-align:center;max-width:260px;margin:0;">
+                        Go to <strong>app.shiprocket.in → Orders → New</strong> to generate AWB &amp; schedule pickup
+                    </p>
+                    <button onclick="closeCourierModal()" style="padding:10px 24px;background:#16a34a;color:#fff;font-weight:700;font-size:14px;border:none;border-radius:12px;cursor:pointer;">Done</button>
+                </div>`;
+
+            loadOrders();
+            // Refresh detail panel to show Shiprocket section
+            setTimeout(() => {
+                if (!document.getElementById('detailModal').classList.contains('hidden')) {
+                    viewOrder(capturedOrderId);
+                }
+            }, 500);
+        } else {
+            throw new Error(data.message || 'Failed to create order');
+        }
+    } catch (e) {
+        showToast('error', e.message);
+        loadCouriers(capturedOrderId);
+    }
 }
 
 function generateInvoice(orderId) {

@@ -79,6 +79,111 @@ class ImageKitService
     }
 
     /**
+     * Get ImageKit usage/storage stats
+     */
+    public function getUsage(): array
+    {
+        $response = Http::withBasicAuth($this->privateKey, '')
+            ->get('https://api.imagekit.io/v1/files', [
+                'limit' => 1,
+                'skip'  => 0,
+                'type'  => 'file',
+            ]);
+
+        // Get total file count via search
+        $countRes = Http::withBasicAuth($this->privateKey, '')
+            ->get('https://api.imagekit.io/v1/files', [
+                'limit' => 1000,
+                'skip'  => 0,
+                'type'  => 'file',
+            ]);
+
+        $files     = $countRes->successful() ? ($countRes->json() ?? []) : [];
+        $totalSize = array_sum(array_column($files, 'size'));
+        $totalFiles= count($files);
+
+        return [
+            'total_files' => $totalFiles,
+            'total_size'  => $totalSize,
+            'url_endpoint'=> $this->urlEndpoint,
+        ];
+    }
+
+    /**
+     * List files in a folder
+     */
+    public function listFiles(string $path = '/', int $skip = 0, int $limit = 50): array
+    {
+        $params = [
+            'path'   => $path,
+            'skip'   => $skip,
+            'limit'  => $limit,
+            'sort'   => 'ASC_NAME',
+            'type'   => 'file',
+        ];
+
+        $response = Http::withBasicAuth($this->privateKey, '')
+            ->get('https://api.imagekit.io/v1/files', $params);
+
+        if ($response->successful()) {
+            return $response->json() ?? [];
+        }
+        throw new \Exception('ImageKit list files failed: ' . $response->body());
+    }
+
+    /**
+     * List folders in a path
+     */
+    public function listFolders(string $path = '/'): array
+    {
+        $response = Http::withBasicAuth($this->privateKey, '')
+            ->get('https://api.imagekit.io/v1/folder', ['parentFolderPath' => $path]);
+
+        if ($response->successful()) {
+            return $response->json() ?? [];
+        }
+        return [];
+    }
+
+    /**
+     * Create folder
+     */
+    public function createFolder(string $folderName, string $parentPath = '/'): array
+    {
+        $response = Http::withBasicAuth($this->privateKey, '')
+            ->post('https://api.imagekit.io/v1/folder', [
+                'folderName'       => $folderName,
+                'parentFolderPath' => $parentPath,
+            ]);
+
+        if ($response->successful()) {
+            return $response->json() ?? [];
+        }
+        throw new \Exception('Create folder failed: ' . $response->body());
+    }
+
+    /**
+     * Delete folder
+     */
+    public function deleteFolder(string $folderPath): bool
+    {
+        $response = Http::withBasicAuth($this->privateKey, '')
+            ->delete('https://api.imagekit.io/v1/folder', ['folderPath' => $folderPath]);
+        return $response->successful();
+    }
+
+    /**
+     * Get file details
+     */
+    public function getFile(string $fileId): array
+    {
+        $response = Http::withBasicAuth($this->privateKey, '')
+            ->get("https://api.imagekit.io/v1/files/{$fileId}/details");
+        if ($response->successful()) return $response->json() ?? [];
+        throw new \Exception('Get file failed: ' . $response->body());
+    }
+
+    /**
      * Delete image from ImageKit
      */
     public function delete($fileId)

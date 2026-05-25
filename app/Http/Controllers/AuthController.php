@@ -51,7 +51,8 @@ class AuthController extends Controller
                 'admin_logged_in' => true, 
                 'admin_id' => $user->id,
                 'admin_email' => $user->email, 
-                'admin_name' => $user->name
+                'admin_name' => $user->name,
+                'admin_role' => $user->role?->display_name ?? $user->role?->name ?? 'Administrator',
             ]);
 
             // Log activity

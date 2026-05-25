@@ -199,28 +199,94 @@ async function loadSysInfo() {
                 </div>
             `).join('')}
         </div>
-        <h3 class="text-sm font-semibold text-gray-700 mb-3">Database Tables</h3>
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-3 py-2 text-left text-xs font-semibold text-gray-600">Table</th>
-                        <th class="px-3 py-2 text-right text-xs font-semibold text-gray-600">Rows</th>
-                        <th class="px-3 py-2 text-right text-xs font-semibold text-gray-600">Size (KB)</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    ${d.tables.map(t => `
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-3 py-2 font-mono text-xs text-gray-700">${t.table_name}</td>
-                            <td class="px-3 py-2 text-right text-gray-600">${t.table_rows || 0}</td>
-                            <td class="px-3 py-2 text-right text-gray-600">${t.size_kb}</td>
+
+        {{-- Database Tables --}}
+        <div class="mt-5">
+            <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582 4 8 4s8 1.79 8 4"/>
+                    </svg>
+                    Database Tables
+                    <span class="text-xs bg-[#0082C3] text-white font-bold px-2 py-0.5 rounded-full" id="tableCountBadge">${d.table_count || d.tables.length}</span>
+                </h3>
+                <div class="flex items-center gap-2">
+                    <input type="text" id="tableSearch" placeholder="Search tables..." oninput="filterTables(this.value)"
+                        class="text-xs border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#0082C3] w-44">
+                    <select id="tableSortBy" onchange="sortTables(this.value)"
+                        class="text-xs border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
+                        <option value="name">Sort: Name</option>
+                        <option value="rows">Sort: Rows</option>
+                        <option value="size">Sort: Size</option>
+                    </select>
+                </div>
+            </div>
+            <div class="overflow-x-auto rounded-xl border border-gray-100">
+                <table class="w-full text-sm" id="dbTablesTable">
+                    <thead class="bg-gray-50 border-b border-gray-100">
+                        <tr>
+                            <th class="px-4 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">#</th>
+                            <th class="px-4 py-2.5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Table Name</th>
+                            <th class="px-4 py-2.5 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Engine</th>
+                            <th class="px-4 py-2.5 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Rows</th>
+                            <th class="px-4 py-2.5 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Data (KB)</th>
+                            <th class="px-4 py-2.5 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Index (KB)</th>
+                            <th class="px-4 py-2.5 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Total (KB)</th>
                         </tr>
-                    `).join('')}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody id="dbTablesTbody" class="divide-y divide-gray-50">
+                        ${renderTableRows(d.tables)}
+                    </tbody>
+                </table>
+            </div>
+            <p id="tableFilterInfo" class="text-xs text-gray-400 mt-2 text-right">${d.tables.length} tables total</p>
         </div>
     `;
+
+    // Store tables globally for filter/sort
+    window._allDbTables = d.tables;
 }
+
+function renderTableRows(tables) {
+    if (!tables.length) return '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-400 text-sm">No tables found</td></tr>';
+    return tables.map((t, i) => {
+        const sizeKb = parseFloat(t.size_kb) || 0;
+        const sizeBar = Math.min(100, (sizeKb / 100) * 100);
+        const rowColor = sizeKb > 500 ? 'text-orange-600' : sizeKb > 100 ? 'text-blue-600' : 'text-gray-700';
+        return `
+        <tr class="hover:bg-gray-50 transition-colors">
+            <td class="px-4 py-2.5 text-xs text-gray-400">${i + 1}</td>
+            <td class="px-4 py-2.5">
+                <span class="font-mono text-xs font-semibold text-gray-800">${esc(t.table_name)}</span>
+            </td>
+            <td class="px-4 py-2.5 text-center">
+                <span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-semibold rounded">${esc(t.engine || 'InnoDB')}</span>
+            </td>
+            <td class="px-4 py-2.5 text-right font-semibold text-gray-700 text-xs">${Number(t.table_rows || 0).toLocaleString()}</td>
+            <td class="px-4 py-2.5 text-right text-xs text-gray-500">${t.data_kb || 0}</td>
+            <td class="px-4 py-2.5 text-right text-xs text-gray-500">${t.index_kb || 0}</td>
+            <td class="px-4 py-2.5 text-right text-xs font-bold ${rowColor}">${t.size_kb || 0}</td>
+        </tr>`;
+    }).join('');
+}
+
+function filterTables(q) {
+    const all = window._allDbTables || [];
+    const filtered = q ? all.filter(t => t.table_name.toLowerCase().includes(q.toLowerCase())) : all;
+    document.getElementById('dbTablesTbody').innerHTML = renderTableRows(filtered);
+    document.getElementById('tableFilterInfo').textContent = filtered.length + ' of ' + all.length + ' tables';
+}
+
+function sortTables(by) {
+    const all = window._allDbTables || [];
+    const sorted = [...all].sort((a, b) => {
+        if (by === 'rows') return (b.table_rows || 0) - (a.table_rows || 0);
+        if (by === 'size') return (parseFloat(b.size_kb) || 0) - (parseFloat(a.size_kb) || 0);
+        return a.table_name.localeCompare(b.table_name);
+    });
+    document.getElementById('dbTablesTbody').innerHTML = renderTableRows(sorted);
+}
+
+function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 </script>
 @endpush

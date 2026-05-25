@@ -232,6 +232,48 @@ class AdminUserController extends Controller
     }
 
 
+    // ── My Profile ───────────────────────────────────────────────
+    public function profile()
+    {
+        $user = User::find(session('admin_id'));
+        if (!$user) abort(404);
+        return view('admin.pages.profile.index', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = User::find(session('admin_id'));
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'User not found'], 404);
+        }
+
+        $request->validate([
+            'name'             => 'required|string|max:255',
+            'email'            => 'required|email|unique:users,email,' . $user->id,
+            'current_password' => 'nullable|string',
+            'new_password'     => 'nullable|min:6|confirmed',
+        ]);
+
+        // Verify current password if changing password
+        if ($request->filled('new_password')) {
+            if (!$request->filled('current_password') || !Hash::check($request->current_password, $user->password)) {
+                return response()->json(['success' => false, 'message' => 'Current password is incorrect'], 422);
+            }
+            $user->password = Hash::make($request->new_password);
+        }
+
+        $user->name  = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        // Update session
+        session(['admin_name' => $user->name, 'admin_email' => $user->email]);
+
+        \App\Models\ActivityLog::log('updated', 'profile', 'Updated own profile', ['user_id' => $user->id]);
+
+        return response()->json(['success' => true, 'message' => 'Profile updated successfully', 'data' => ['name' => $user->name, 'email' => $user->email]]);
+    }
+
     public function toggleStatus($id)
     {
         $user = User::with('role')->find($id);

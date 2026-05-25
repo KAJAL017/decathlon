@@ -30,6 +30,9 @@ Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('adm
 Route::get('/admin/dashboard/stats', [DashboardController::class, 'stats'])->name('admin.dashboard.stats');
 
 // Admin Users Management
+Route::get('/admin/profile', [AdminUserController::class, 'profile'])->name('admin.profile');
+Route::put('/admin/profile', [AdminUserController::class, 'updateProfile'])->name('admin.profile.update');
+
 Route::get('/admin/admin-users', [AdminUserController::class, 'index'])->name('admin.users.index');
 Route::get('/admin/admin-users/list', [AdminUserController::class, 'list'])->name('admin.users.list');
 Route::post('/admin/admin-users', [AdminUserController::class, 'store'])->name('admin.users.store');
@@ -226,6 +229,7 @@ Route::post('/admin/system-tools/clear-cache', [App\Http\Controllers\Admin\Syste
 Route::get('/admin/system-tools/system-info', [App\Http\Controllers\Admin\SystemToolsController::class, 'systemInfo'])->name('admin.system-tools.info');
 Route::get('/admin/system-tools/logs', [App\Http\Controllers\Admin\SystemToolsController::class, 'getLogs'])->name('admin.system-tools.logs');
 Route::post('/admin/system-tools/clear-logs', [App\Http\Controllers\Admin\SystemToolsController::class, 'clearLogs'])->name('admin.system-tools.clear-logs');
+Route::post('/admin/system-tools/shiprocket-pickup-locations', [App\Http\Controllers\Admin\SystemToolsController::class, 'shiprocketPickupLocations'])->name('admin.system-tools.shiprocket-pickup');
 
 // AI Tools
 Route::get('/admin/ai-tools', [App\Http\Controllers\Admin\AIToolsController::class, 'index'])->name('admin.ai-tools.index');
@@ -270,6 +274,13 @@ Route::post('/admin/warehouses/{id}/toggle-status', [App\Http\Controllers\Admin\
 Route::post('/admin/warehouses/{id}/set-default', [App\Http\Controllers\Admin\WarehouseController::class, 'setDefault'])->name('admin.warehouses.default');
 Route::post('/admin/warehouses/bulk-action', [App\Http\Controllers\Admin\WarehouseController::class, 'bulkAction'])->name('admin.warehouses.bulk');
 
+// Shiprocket
+Route::get('/admin/shiprocket/orders/{orderId}/couriers', [App\Http\Controllers\Admin\ShiprocketController::class, 'getCouriers'])->name('admin.shiprocket.couriers');
+Route::post('/admin/shiprocket/orders/{orderId}/create', [App\Http\Controllers\Admin\ShiprocketController::class, 'createOrder'])->name('admin.shiprocket.create');
+Route::post('/admin/shiprocket/orders/{orderId}/sync', [App\Http\Controllers\Admin\ShiprocketController::class, 'syncStatus'])->name('admin.shiprocket.sync');
+Route::get('/admin/shiprocket/track', [App\Http\Controllers\Admin\ShiprocketController::class, 'track'])->name('admin.shiprocket.track');
+Route::post('/admin/shiprocket/orders/{orderId}/cancel', [App\Http\Controllers\Admin\ShiprocketController::class, 'cancelOrder'])->name('admin.shiprocket.cancel');
+
 // Orders Management
 Route::get('/admin/orders', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders.index');
 Route::get('/admin/orders/list', [App\Http\Controllers\Admin\OrderController::class, 'list'])->name('admin.orders.list');
@@ -301,9 +312,41 @@ Route::get('/admin/invoices/{id}', [App\Http\Controllers\Admin\InvoiceController
 Route::put('/admin/invoices/{id}', [App\Http\Controllers\Admin\InvoiceController::class, 'update'])->name('admin.invoices.update');
 Route::delete('/admin/invoices/{id}', [App\Http\Controllers\Admin\InvoiceController::class, 'destroy'])->name('admin.invoices.destroy');
 
+// SMTP Test
+Route::post('/admin/smtp/test', [App\Http\Controllers\Admin\SettingController::class, 'testSmtp'])->name('admin.smtp.test');
+// Brevo
+Route::post('/admin/brevo/save',           [App\Http\Controllers\Admin\BrevoController::class, 'save'])->name('admin.brevo.save');
+Route::post('/admin/brevo/test',           [App\Http\Controllers\Admin\BrevoController::class, 'test'])->name('admin.brevo.test');
+Route::get('/admin/brevo/account',         [App\Http\Controllers\Admin\BrevoController::class, 'account'])->name('admin.brevo.account');
+Route::get('/admin/brevo/lists',           [App\Http\Controllers\Admin\BrevoController::class, 'lists'])->name('admin.brevo.lists');
+Route::get('/admin/brevo/stats',           [App\Http\Controllers\Admin\BrevoController::class, 'stats'])->name('admin.brevo.stats');
+Route::post('/admin/brevo/disconnect',     [App\Http\Controllers\Admin\BrevoController::class, 'disconnect'])->name('admin.brevo.disconnect');
+// Brevo Templates
+Route::get('/admin/brevo/seed-templates',         [App\Http\Controllers\Admin\BrevoController::class, 'seedTemplates'])->name('admin.brevo.seed-templates');
+Route::get('/admin/brevo/templates',              [App\Http\Controllers\Admin\BrevoController::class, 'getTemplates'])->name('admin.brevo.templates');
+Route::post('/admin/brevo/templates',             [App\Http\Controllers\Admin\BrevoController::class, 'createTemplate'])->name('admin.brevo.templates.create');
+Route::get('/admin/brevo/templates/{id}',         [App\Http\Controllers\Admin\BrevoController::class, 'getTemplate'])->name('admin.brevo.templates.show');
+Route::put('/admin/brevo/templates/{id}',         [App\Http\Controllers\Admin\BrevoController::class, 'updateTemplate'])->name('admin.brevo.templates.update');
+Route::delete('/admin/brevo/templates/{id}',      [App\Http\Controllers\Admin\BrevoController::class, 'deleteTemplate'])->name('admin.brevo.templates.delete');
+Route::post('/admin/brevo/templates/{id}/test',   [App\Http\Controllers\Admin\BrevoController::class, 'sendTestTemplate'])->name('admin.brevo.templates.test');
+Route::get('/admin/brevo/senders',         [App\Http\Controllers\Admin\BrevoController::class, 'getSenders'])->name('admin.brevo.senders');
+Route::post('/admin/brevo/senders',        [App\Http\Controllers\Admin\BrevoController::class, 'createSender'])->name('admin.brevo.senders.create');
+Route::put('/admin/brevo/senders/{id}',    [App\Http\Controllers\Admin\BrevoController::class, 'updateSender'])->name('admin.brevo.senders.update');
+Route::delete('/admin/brevo/senders/{id}', [App\Http\Controllers\Admin\BrevoController::class, 'deleteSender'])->name('admin.brevo.senders.delete');
+Route::post('/admin/brevo/senders/{id}/verify', [App\Http\Controllers\Admin\BrevoController::class, 'validateSenderOTP'])->name('admin.brevo.senders.verify');
+
+// Notifications
+Route::get('/admin/notifications', [App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('admin.notifications');
+
 // ImageKit Integration
 Route::get('/api/imagekit-auth', [App\Http\Controllers\ImageKitController::class, 'auth'])->name('imagekit.auth');
 Route::post('/api/imagekit-upload', [App\Http\Controllers\ImageKitController::class, 'upload'])->name('imagekit.upload');
 Route::delete('/api/imagekit-delete', [App\Http\Controllers\ImageKitController::class, 'delete'])->name('imagekit.delete');
+// ImageKit File Manager
+Route::get('/api/imagekit-usage', [App\Http\Controllers\ImageKitController::class, 'usage'])->name('imagekit.usage');
+Route::get('/api/imagekit-files', [App\Http\Controllers\ImageKitController::class, 'listFiles'])->name('imagekit.files');
+Route::post('/api/imagekit-folder', [App\Http\Controllers\ImageKitController::class, 'createFolder'])->name('imagekit.folder.create');
+Route::delete('/api/imagekit-folder', [App\Http\Controllers\ImageKitController::class, 'deleteFolder'])->name('imagekit.folder.delete');
+Route::post('/api/imagekit-upload-folder', [App\Http\Controllers\ImageKitController::class, 'uploadToFolder'])->name('imagekit.upload.folder');
 
 }); // end admin.auth middleware group

@@ -436,6 +436,9 @@ function renderTable(rows){
             </td>
             <td class="px-5 py-3.5">
                 <div class="flex items-center justify-end gap-1">
+                    <button onclick="copyCode('${c.code}')" class="p-2 rounded-lg text-gray-500 hover:text-green-600 hover:bg-green-50 transition-colors" title="Copy Code">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    </button>
                     <button onclick="openEdit(${c.id})" class="p-2 rounded-lg text-gray-500 hover:text-[#0082C3] hover:bg-blue-50 transition-colors" title="Edit">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     </button>
@@ -453,6 +456,23 @@ function renderStats(rows,total){
     document.getElementById('sScheduled').textContent=rows.filter(c=>c.status==='scheduled').length;
     document.getElementById('sExpired').textContent=rows.filter(c=>c.status==='expired'||c.status==='exhausted').length;
     document.getElementById('sUsed').textContent=rows.reduce((a,c)=>a+(c.used_count||0),0);
+}
+
+function copyCode(code){
+    navigator.clipboard.writeText(code).then(()=>{
+        toast(code + ' copied to clipboard');
+    }).catch(()=>{
+        // Fallback for older browsers
+        const el=document.createElement('textarea');
+        el.value=code;
+        el.style.position='fixed';
+        el.style.opacity='0';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        toast(code + ' copied to clipboard');
+    });
 }
 
 function renderPagination(p,cur){

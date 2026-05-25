@@ -53,14 +53,20 @@ class SystemToolsController extends Controller
         try {
             $dbVersion = DB::select('SELECT VERSION() as version')[0]->version ?? 'Unknown';
 
-            // Table sizes
+            // Table sizes — ALL tables
             $tables = DB::select("
-                SELECT table_name, table_rows, 
-                       ROUND((data_length + index_length) / 1024, 2) AS size_kb
+                SELECT 
+                    table_name,
+                    COALESCE(table_rows, 0) AS table_rows,
+                    ROUND((data_length + index_length) / 1024, 2) AS size_kb,
+                    ROUND(data_length / 1024, 2) AS data_kb,
+                    ROUND(index_length / 1024, 2) AS index_kb,
+                    create_time,
+                    update_time,
+                    engine
                 FROM information_schema.tables
                 WHERE table_schema = DATABASE()
-                ORDER BY (data_length + index_length) DESC
-                LIMIT 20
+                ORDER BY table_name ASC
             ");
 
             // Total DB size
@@ -78,6 +84,7 @@ class SystemToolsController extends Controller
                     'db_version'     => $dbVersion,
                     'db_size_mb'     => $dbSize,
                     'tables'         => $tables,
+                    'table_count'    => count($tables),
                     'env'            => app()->environment(),
                     'debug_mode'     => config('app.debug') ? 'On' : 'Off',
                     'timezone'       => config('app.timezone'),
@@ -135,6 +142,61 @@ class SystemToolsController extends Controller
                 File::put($logFile, '');
             }
             return response()->json(['success' => true, 'message' => 'Log file cleared']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // ── Shiprocket Proxy: Fetch Pickup Locations ──────────────────
+    public function shiprocketPickupLocations(\Illuminate\Http\Request $request)
+    {
+        try {
+            $email    = $request->email ?? \App\Models\Setting::get('shiprocket_email', '');
+            $password = $request->password ?? '';
+
+            // Decrypt stored password if not provided
+            if (!$password) {
+                $enc = \App\Models\Setting::get('shiprocket_password', '');
+                if ($enc) {
+                    try { $password = decrypt($enc); } catch (\Exception $e) { $password = $enc; }
+                }
+            }
+
+            if (!$email || !$password) {
+                return response()->json(['success' => false, 'message' => 'Shiprocket credentials not configured. Save email & password first.'], 422);
+            }
+
+            // Step 1: Login to get token
+            $loginRes = \Illuminate\Support\Facades\Http::post('https://apiv2.shiprocket.in/v1/external/auth/login', [
+                'email'    => $email,
+                'password' => $password,
+            ]);
+
+            $loginData = $loginRes->json();
+
+            if (!isset($loginData['token'])) {
+                return response()->json(['success' => false, 'message' => $loginData['message'] ?? 'Login failed — check credentials'], 401);
+            }
+
+            // Step 2: Fetch pickup locations
+            $locRes = \Illuminate\Support\Facades\Http::withToken($loginData['token'])
+                ->get('https://apiv2.shiprocket.in/v1/external/settings/company/pickup');
+
+            $locData = $locRes->json();
+            $locations = $locData['data']['shipping_address'] ?? [];
+
+            if (empty($locations)) {
+                return response()->json(['success' => false, 'message' => 'No pickup locations found in your Shiprocket account'], 404);
+            }
+
+            return response()->json([
+                'success'   => true,
+                'locations' => array_map(fn($l) => [
+                    'name'    => $l['pickup_location'] ?? '',
+                    'address' => ($l['address'] ?? '') . ', ' . ($l['city'] ?? '') . ' ' . ($l['pin_code'] ?? ''),
+                ], $locations),
+            ]);
+
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }

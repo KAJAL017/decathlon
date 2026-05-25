@@ -1732,7 +1732,6 @@ function toggleCollapsible(sectionId) {
         }
         
         saveCollapsibleState();
-        console.log('Section toggled:', sectionId, 'Active:', !isActive);
         return;
     }
     
@@ -1758,12 +1757,10 @@ function toggleCollapsible(sectionId) {
     }
     
     saveCollapsibleState();
-    console.log('Section toggled (old pattern):', sectionId, 'Active:', !isActive);
 }
 
 // Initialize collapsible sections
 function initCollapsibleSections() {
-    console.log('Initializing collapsible sections...');
     loadCollapsibleState();
     
     // Define default open sections
@@ -1790,9 +1787,6 @@ function initCollapsibleSections() {
         const shouldBeOpen = collapsibleState.hasOwnProperty(sectionId) 
             ? collapsibleState[sectionId] 
             : defaultOpenSections.includes(sectionId);
-        
-        console.log('Section:', sectionId, 'Should be open:', shouldBeOpen);
-        
         if (shouldBeOpen) {
             header.classList.add('active');
             content.classList.add('active');
@@ -1818,9 +1812,6 @@ function initCollapsibleSections() {
         const shouldBeOpen = collapsibleState.hasOwnProperty(sectionId) 
             ? collapsibleState[sectionId] 
             : defaultOpenSections.includes(sectionId);
-        
-        console.log('Section (old pattern):', sectionId, 'Should be open:', shouldBeOpen);
-        
         if (shouldBeOpen) {
             header.classList.add('active');
             content.classList.add('active');
@@ -1834,7 +1825,6 @@ function initCollapsibleSections() {
     
     // Save initial state
     saveCollapsibleState();
-    console.log('Collapsible sections initialized!');
 }
 
 // Character counter function
@@ -2138,8 +2128,6 @@ function generateSKU() {
     
     // Show success message
     showToast('SKU generated successfully: ' + generatedSKU, 'success');
-    
-    console.log('Generated SKU:', generatedSKU);
 }
 
 // Old tag functions removed - now using searchable multi-select
@@ -2244,8 +2232,6 @@ function loadCategories() {
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            console.log('Categories loaded:', data.data.length);
-            
             const categorySelect = document.getElementById('productPrimaryCategory');
             const additionalCategoriesSelect = document.getElementById('productAdditionalCategories');
             const categoryFilter = document.getElementById('categoryFilter');
@@ -2257,8 +2243,6 @@ function loadCategories() {
                 data.data.forEach(category => {
                     categorySelect.innerHTML += `<option value="${category.id}">${category.name}</option>`;
                 });
-                console.log('Primary category options updated');
-                
                 // Refresh SearchableSelect instance
                 const instance = searchableSelectInstances.find(inst => inst.select === categorySelect);
                 if (instance) {
@@ -2273,8 +2257,6 @@ function loadCategories() {
                 data.data.forEach(category => {
                     additionalCategoriesSelect.innerHTML += `<option value="${category.id}">${category.name}</option>`;
                 });
-                console.log('Additional categories options updated');
-                
                 // Refresh SearchableSelect instance
                 const instance = searchableSelectInstances.find(inst => inst.select === additionalCategoriesSelect);
                 if (instance) {
@@ -2288,8 +2270,6 @@ function loadCategories() {
                 data.data.forEach(category => {
                     categoryFilter.innerHTML += `<option value="${category.id}">${category.name}</option>`;
                 });
-                console.log('Category filter options updated');
-                
                 // Refresh SearchableSelect instance
                 const instance = searchableSelectInstances.find(inst => inst.select === categoryFilter);
                 if (instance) {
@@ -2314,8 +2294,6 @@ function loadTags() {
     .then(res => res.json())
     .then(data => {
         if (data.success && data.tags && data.tags.data) {
-            console.log('Tags loaded:', data.tags.data.length);
-            
             const tagsSelect = document.getElementById('productTags');
             
             if (tagsSelect) {
@@ -2324,14 +2302,11 @@ function loadTags() {
                 data.tags.data.forEach(tag => {
                     tagsSelect.innerHTML += `<option value="${tag.id}">${tag.name}</option>`;
                 });
-                console.log('Product tags options updated');
-                
                 // Find and refresh the SearchableSelect instance
                 if (typeof searchableSelectInstances !== 'undefined') {
                     const instance = searchableSelectInstances.find(inst => inst.select === tagsSelect);
                     if (instance) {
                         instance.refresh();
-                        console.log('SearchableSelect instance refreshed');
                     }
                 }
             }
@@ -3161,8 +3136,6 @@ function uploadMultipleToImageKit(files) {
         fetch("{{ route('imagekit.auth') }}")
             .then(response => response.json())
             .then(authParams => {
-                console.log(`Auth params for file ${index + 1}:`, authParams);
-                
                 const imageKitConfig = {
                     publicKey: "{{ \App\Models\Setting::get('imagekit_public_key') ?: config('imagekit.public_key', '') }}",
                     urlEndpoint: "{{ \App\Models\Setting::get('imagekit_url_endpoint') ?: config('imagekit.url_endpoint', '') }}",
@@ -3179,9 +3152,6 @@ function uploadMultipleToImageKit(files) {
                 }
 
                 const imagekit = new ImageKit(imageKitConfig);
-                
-                console.log(`Uploading file ${index + 1}:`, file.name);
-                
                 imagekit.upload({
                     file: file,
                     fileName: `product_${Date.now()}_${index}_${file.name}`,
@@ -3202,8 +3172,6 @@ function uploadMultipleToImageKit(files) {
                             showToast(`${file.name}: ${err.message}`, 'error');
                         }
                     } else {
-                        console.log(`Upload success for file ${index + 1}:`, result);
-                        
                         // Add image with responsive URLs to productImages array
                         productImages.push({
                             image_url: result.url,
@@ -3939,15 +3907,6 @@ async function uploadToImageKit(file) {
         };
         reader.readAsDataURL(file);
     });
-    
-    // TODO: Implement actual ImageKit upload
-    // const formData = new FormData();
-    // formData.append('file', file);
-    // const response = await fetch('/api/imagekit/upload', {
-    //     method: 'POST',
-    //     body: formData
-    // });
-    // const data = await response.json();
     // return data.url;
 }
 

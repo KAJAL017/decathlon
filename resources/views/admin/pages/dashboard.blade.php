@@ -378,8 +378,6 @@ function renderDashboard(d) {
     setText('catAttributes',  d.total_attributes || '—');
     setText('catCustomers',   d.total_customers || '—');
     setText('catStock',       d.low_stock_count + d.out_of_stock_count);
-    setText('catPromotions',  d.active_promotions);
-    setText('catWarehouses',  d.total_warehouses);
 
     // Recent Reviews
     const rrEl = document.getElementById('recentReviews');

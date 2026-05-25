@@ -594,19 +594,16 @@ function saveBrand() {
         if (data.success) {
             closeModal();
             loadBrands(currentPage);
-            alert(data.message);
+            showBrandToast(data.message, 'success');
         } else {
-            alert(data.message || 'Error saving brand');
+            showBrandToast(data.message || 'Error saving brand', 'error');
         }
     })
     .catch(error => {
-        // Hide loader on error
         saveBtn.disabled = false;
         loader.classList.add('hidden');
         btnText.textContent = id ? 'Update Brand' : 'Create Brand';
-        
-        console.error('Error:', error);
-        alert('Error saving brand');
+        showBrandToast('Error saving brand', 'error');
     });
 }
 
@@ -625,9 +622,9 @@ function deleteBrand(id) {
     .then(data => {
         if (data.success) {
             loadBrands(currentPage);
-            alert(data.message);
+            showBrandToast(data.message, 'success');
         } else {
-            alert(data.message || 'Error deleting brand');
+            showBrandToast(data.message || 'Error deleting brand', 'error');
         }
     });
 }
@@ -696,7 +693,7 @@ function applyBulkAction() {
             loadBrands(currentPage);
             document.getElementById('selectAll').checked = false;
             updateBulkActions();
-            alert(data.message);
+            showBrandToast(data.message, 'success');
         }
     });
 }
@@ -721,7 +718,7 @@ function openImageKit() {
         }, function(err, result) {
             if (err) {
                 console.error('ImageKit upload error:', err);
-                alert('Error uploading image: ' + (err.message || JSON.stringify(err)));
+                showBrandToast('Error uploading image: ' + (err.message || JSON.stringify(err)), 'error');
                 return;
             }
             document.getElementById('brandLogoUrl').value = result.url;
@@ -731,6 +728,14 @@ function openImageKit() {
         });
     };
     input.click();
+}
+
+function showBrandToast(msg, type) {
+    const t = document.createElement('div');
+    t.className = 'fixed bottom-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-medium text-white min-w-[220px] ' + (type === 'success' ? 'bg-green-600' : 'bg-red-600');
+    t.innerHTML = '<span>' + (type === 'success' ? '✓' : '✕') + '</span><span>' + msg + '</span>';
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3500);
 }
 </script>
 

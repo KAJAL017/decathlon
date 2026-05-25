@@ -63,20 +63,6 @@
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('-translate-x-full');
         }
-
-        function toggleDropdown(id) {
-            const dropdown = document.getElementById(id);
-            dropdown.classList.toggle('hidden');
-        }
-
-        document.addEventListener('click', function(event) {
-            const dropdowns = document.querySelectorAll('[id$="Dropdown"]');
-            dropdowns.forEach(dropdown => {
-                if (!event.target.closest('.dropdown-trigger')) {
-                    dropdown.classList.add('hidden');
-                }
-            });
-        });
     </script>
     @stack('scripts')
 </body>
