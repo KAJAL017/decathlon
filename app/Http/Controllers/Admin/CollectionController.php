@@ -10,9 +10,38 @@ use Illuminate\Support\Facades\DB;
 
 class CollectionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.pages.collections.index');
+        $query = \App\Models\Collection::query();
+
+        // Search
+        if ($request->filled('search')) {
+            $s = $request->search;
+            $query->where(function($q) use ($s) {
+                $q->where('name', 'like', "%{$s}%")
+                  ->orWhere('slug', 'like', "%{$s}%")
+                  ->orWhere('description', 'like', "%{$s}%");
+            });
+        }
+
+        // Filters
+        if ($request->filled('type'))       $query->where('type', $request->type);
+        if ($request->filled('visibility')) $query->where('visibility', $request->visibility);
+        if ($request->filled('status'))     $query->where('status', (bool)(int)$request->status);
+
+        $perPage = $request->get('per_page', 15);
+        $collections = $query->orderBy('sort_order')->paginate($perPage)->withQueryString();
+
+        $all   = \App\Models\Collection::all();
+        $stats = [
+            'total'    => $all->count(),
+            'active'   => $all->where('status', true)->count(),
+            'featured' => $all->where('is_featured', true)->count(),
+            'manual'   => $all->where('type', 'manual')->count(),
+            'auto'     => $all->where('type', 'auto')->count(),
+        ];
+
+        return view('admin.pages.collections.index', compact('collections', 'stats'));
     }
 
     public function list(Request $request)
@@ -36,7 +65,7 @@ class CollectionController extends Controller
 
         // Filter by status
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            $query->where('status', (bool)(int)$request->status);
         }
 
         // Filter by visibility
@@ -89,7 +118,7 @@ class CollectionController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->except(['product_ids']);
-            $data['created_by'] = auth()->id();
+            $data['created_by'] = session('admin_id');
             
             if (empty($data['slug']) || trim($data['slug']) === '') {
                 unset($data['slug']);

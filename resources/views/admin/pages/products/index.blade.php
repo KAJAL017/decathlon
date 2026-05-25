@@ -296,7 +296,7 @@
     <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm"></div>
     
     <!-- Modal Content -->
-    <div id="productModalContent" class="fixed right-0 top-0 h-full w-full max-w-5xl bg-white shadow-2xl flex flex-col" style="transform: translateX(100%); transition: transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);" onclick="event.stopPropagation()">
+    <div id="productModalContent" class="fixed right-0 top-0 h-full w-full max-w-5xl bg-white shadow-2xl flex flex-col overflow-hidden" style="transform: translateX(100%); transition: transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);" onclick="event.stopPropagation()">
         <!-- Modal Header -->
         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-gray-50 flex-shrink-0">
             <div class="flex items-center gap-4">
@@ -319,106 +319,125 @@
         </div>
 
         <!-- Tabs Navigation -->
-        <div class="px-6 py-3 border-b border-gray-200 bg-white flex-shrink-0">
-            <div class="flex items-center gap-2">
-                <button onclick="switchTab('basic')" id="tab-basic" class="tab-btn active px-4 py-2 text-sm font-medium rounded-lg transition-colors">
-                    <span class="flex items-center gap-2">
+        <div class="px-4 py-2.5 border-b border-gray-200 bg-gray-50 flex-shrink-0">
+            <div class="flex items-center gap-1 overflow-x-auto">
+
+                {{-- 1. Details --}}
+                <button onclick="switchTab('basic')" id="tab-basic" class="tab-btn active flex-shrink-0 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors">
+                    <span class="flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
-                        Product Details
+                        Details
                     </span>
                 </button>
-                <button onclick="switchTab('media')" id="tab-media" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg transition-colors">
-                    <span class="flex items-center gap-2">
+
+                {{-- 2. Pricing --}}
+                <button onclick="switchTab('pricing')" id="tab-pricing" class="tab-btn flex-shrink-0 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors">
+                    <span class="flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Pricing
+                    </span>
+                </button>
+
+                {{-- 3. Media --}}
+                <button onclick="switchTab('media')" id="tab-media" class="tab-btn flex-shrink-0 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors">
+                    <span class="flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
                         Media
                     </span>
                 </button>
-                <button onclick="switchTab('variants')" id="tab-variants" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg transition-colors">
-                    <span class="flex items-center gap-2">
+
+                {{-- 4. Variants --}}
+                <button onclick="switchTab('variants')" id="tab-variants" class="tab-btn flex-shrink-0 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors">
+                    <span class="flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
                         </svg>
                         Variants
                     </span>
                 </button>
-                <button onclick="switchTab('organization')" id="tab-organization" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg transition-colors">
-                    <span class="flex items-center gap-2">
+
+                {{-- 5. Organization --}}
+                <button onclick="switchTab('organization')" id="tab-organization" class="tab-btn flex-shrink-0 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors">
+                    <span class="flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                         </svg>
                         Organization
                     </span>
                 </button>
-                <button onclick="switchTab('advanced')" id="tab-advanced" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg transition-colors">
-                    <span class="flex items-center gap-2">
+
+                {{-- 6. SEO --}}
+                <button onclick="switchTab('seo')" id="tab-seo" class="tab-btn flex-shrink-0 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors">
+                    <span class="flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        Advanced
-                    </span>
-                </button>
-                <button onclick="switchTab('seo')" id="tab-seo" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg transition-colors">
-                    <span class="flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                         </svg>
                         SEO
+                    </span>
+                </button>
+
+                {{-- 7. Advanced --}}
+                <button onclick="switchTab('advanced')" id="tab-advanced" class="tab-btn flex-shrink-0 px-3.5 py-2 text-sm font-medium rounded-lg transition-colors">
+                    <span class="flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Advanced
                     </span>
                 </button>
             </div>
         </div>
 
         <!-- Modal Body with Tabs -->
-        <form id="productForm" class="flex-1 overflow-y-auto">
+        <form id="productForm" class="flex-1 overflow-y-auto" style="visibility:hidden">
             <input type="hidden" id="productId">
             
-            <!-- Tab: Basic Info -->
-            <div id="content-basic" class="tab-content active px-6 py-4">
+            <!-- ══════════════════════════════════════════════════════
+                 TAB 1: DETAILS
+                 Name · Slug · Type · Brand · Description
+            ══════════════════════════════════════════════════════ -->
+            <div id="content-basic" class="tab-content active px-6 py-5" style="display:none">
                 <div class="space-y-4">
-                    <h4 class="text-sm font-semibold text-gray-900">Basic Information</h4>
-                    
+
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                            Product Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="productName" maxlength="200"
+                               class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                      focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                               placeholder="e.g., Kipsta Football Size 5" required>
+                        <div class="flex items-center justify-between mt-1">
+                            <p id="productNameError" class="hidden text-xs text-red-600"></p>
+                            <p class="text-xs text-gray-400 ml-auto"><span id="productNameCount">0</span>/200</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                            Slug <span class="text-gray-400 text-xs">(auto-generated)</span>
+                        </label>
+                        <input type="text" id="productSlug"
+                               class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                      focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                               placeholder="kipsta-football-size-5">
+                        <p id="productSlugError" class="hidden text-xs text-red-600 mt-1"></p>
+                    </div>
+
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                Product Name <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" id="productName" maxlength="200" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="e.g., Nike Air Max 270" required>
-                            <div class="flex items-center justify-between mt-1">
-                                <p id="productNameError" class="hidden text-xs text-red-600"></p>
-                                <p class="text-xs text-gray-500"><span id="productNameCount">0</span>/200 characters</p>
-                            </div>
-                        </div>
-
-                        <div class="col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Slug <span class="text-gray-500 text-xs">(Auto-generated)</span></label>
-                            <input type="text" id="productSlug" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="nike-air-max-270">
-                            <p id="productSlugError" class="hidden text-xs text-red-600 mt-1"></p>
-                        </div>
-
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">
                                 Product Type <span class="text-red-500">*</span>
-                                <span class="relative inline-block ml-1 group">
-                                    <svg class="w-4 h-4 text-gray-400 cursor-help inline-block" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                                    </svg>
-                                    <div class="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute left-0 top-6 z-[10000] w-80 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-lg">
-                                        <div class="space-y-2">
-                                            <div><strong class="text-blue-300">Simple Product:</strong> Single item without variations (e.g., a book, single t-shirt)</div>
-                                            <div><strong class="text-purple-300">Variable Product:</strong> Product with multiple variants like size, color (e.g., t-shirt in S/M/L)</div>
-                                            <div><strong class="text-green-300">Digital Product:</strong> Downloadable items like software, ebooks, music files</div>
-                                            <div><strong class="text-yellow-300">Service:</strong> Non-physical offerings like consulting, repairs, subscriptions</div>
-                                        </div>
-                                        <div class="absolute -top-1 left-4 w-2 h-2 bg-gray-900 transform rotate-45"></div>
-                                    </div>
-                                </span>
                             </label>
-                            <select id="productType" data-searchable data-placeholder="Select Type" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" required>
+                            <select id="productType" data-searchable data-placeholder="Select Type"
+                                    class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                           focus:outline-none focus:ring-2 focus:ring-[#0082C3]" required>
                                 <option value="simple">Simple Product</option>
                                 <option value="variable">Variable Product (with variants)</option>
                                 <option value="digital">Digital Product</option>
@@ -428,426 +447,342 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">Brand</label>
-                            <select id="productBrand" data-searchable data-placeholder="Select Brand" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
+                            <select id="productBrand" data-searchable data-placeholder="Select Brand"
+                                    class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                           focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
                                 <option value="">Select Brand</option>
                             </select>
                         </div>
-
-                        <div class="col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Short Description</label>
-                            <textarea id="productShortDescription" data-editor="simple" rows="2" maxlength="500" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Brief product description (max 500 chars)"></textarea>
-                            <p class="text-xs text-gray-500 mt-1"><span id="shortDescCount">0</span>/500 characters</p>
-                        </div>
-
-                        <div class="col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Description</label>
-                            <textarea id="productDescription" data-editor="full" rows="4" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Detailed product description"></textarea>
-                            <p class="text-xs text-gray-500 mt-1">Full product description with formatting</p>
-                        </div>
                     </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Short Description</label>
+                        <textarea id="productShortDescription" rows="2" maxlength="500"
+                                  class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                         focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                  placeholder="Brief product description (max 500 chars)"></textarea>
+                        <p class="text-xs text-gray-400 mt-1 text-right"><span id="shortDescCount">0</span>/500</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Description</label>
+                        <textarea id="productDescription" rows="5"
+                                  class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                         focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                  placeholder="Full product description with features, benefits, usage…"></textarea>
+                    </div>
+
                 </div>
+            </div>
 
-                <!-- Product Status (Collapsible - Default Open) -->
-                <div class="collapsible-section mt-6" data-section="product-status">
-                    <div class="collapsible-header active" onclick="toggleCollapsible('product-status')">
-                        <div class="flex items-center gap-2">
-                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span>Product Status</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="section-badge required">Required</span>
-                            <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="collapsible-content active">
-                        <div class="collapsible-body">
-                            <p class="helper-text">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                Control product visibility and availability status
-                            </p>
-                            
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Status <span class="text-red-500">*</span></label>
-                                    <select id="productStatus" data-searchable data-placeholder="Select Status" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" required>
-                                        <option value="draft">Draft</option>
-                                        <option value="active">Active</option>
-                                        <option value="inactive">Inactive</option>
-                                    </select>
-                                    <p class="text-xs text-gray-500 mt-1">Product publication status</p>
-                                </div>
+            <!-- ══════════════════════════════════════════════════════
+                 TAB 2: PRICING
+                 Status · Availability · Pricing · SKU · Shipping · Digital
+            ══════════════════════════════════════════════════════ -->
+            <div id="content-pricing" class="tab-content px-6 py-5 space-y-6" style="display:none">
 
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Availability <span class="text-red-500">*</span></label>
-                                    <select id="productAvailability" data-searchable data-placeholder="Select Availability" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" onchange="toggleAvailableDate()" required>
-                                        <option value="in_stock">In Stock</option>
-                                        <option value="out_of_stock">Out of Stock</option>
-                                        <option value="pre_order">Pre-Order</option>
-                                        <option value="backorder">Backorder</option>
-                                    </select>
-                                    <p class="text-xs text-gray-500 mt-1">Stock availability status</p>
-                                </div>
-
-                                <div id="availableDateContainer" class="hidden">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Available Date</label>
-                                    <input type="date" id="productAvailableDate" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                                    <p class="text-xs text-gray-500 mt-1">When will this product be available?</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Visibility</label>
-                                    <select id="productVisibility" data-searchable data-placeholder="Select Visibility" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                                        <option value="visible">Visible (Everywhere)</option>
-                                        <option value="hidden">Hidden</option>
-                                        <option value="catalog_only">Catalog Only</option>
-                                        <option value="search_only">Search Only</option>
-                                    </select>
-                                    <p class="text-xs text-gray-500 mt-1">Where product appears</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Categories Section (Collapsible - Default Open) -->
-                <div class="collapsible-section mt-6" data-section="product-categories">
-                    <div class="collapsible-header active" onclick="toggleCollapsible('product-categories')">
-                        <div class="flex items-center gap-2">
-                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                            </svg>
-                            <span>Categories</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="section-badge optional">Optional</span>
-                            <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="collapsible-content active">
-                        <div class="collapsible-body">
-                            <p class="helper-text">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                Organize your product into one or more categories for better navigation
-                            </p>
-                            
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Primary Category</label>
-                                    <select id="productPrimaryCategory" data-searchable data-placeholder="Select Primary Category" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                                        <option value="">Select Primary Category</option>
-                                    </select>
-                                    <p class="text-xs text-gray-500 mt-1">Main category for this product</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Additional Categories</label>
-                                    <select id="productAdditionalCategories" multiple data-searchable data-placeholder="Select Additional Categories" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                                        <!-- Categories will be loaded here -->
-                                    </select>
-                                    <p class="text-xs text-gray-500 mt-1">Product can appear in multiple categories</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tags Section (Collapsible - Default Open) -->
-                <div class="collapsible-section mt-6" data-section="product-tags">
-                    <div class="collapsible-header active" onclick="toggleCollapsible('product-tags')">
-                        <div class="flex items-center gap-2">
-                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                            </svg>
-                            <span>Product Tags</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="section-badge optional">Optional</span>
-                            <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="collapsible-content active">
-                        <div class="collapsible-body">
-                            <p class="helper-text">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                Select tags from database for better search and filtering
-                            </p>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1.5">Select Tags</label>
-                                <select id="productTags" multiple data-searchable data-placeholder="Select Tags" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                                    <!-- Tags will be loaded here -->
-                                </select>
-                                <p class="text-xs text-gray-500 mt-1">Tags help customers find your product. You can select multiple tags.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pricing & Inventory Section - COLLAPSIBLE -->
-                <div class="collapsible-section mt-6">
-                    <div class="collapsible-header active" data-collapsible="section-pricing" data-default="open" onclick="toggleCollapsible('section-pricing')">
-                        <div class="collapsible-title">
-                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span>Pricing & Inventory</span>
-                            <span class="section-badge required">Required</span>
-                        </div>
-                        <svg class="collapsible-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                {{-- Status & Availability --}}
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                    </div>
-                    <div id="section-pricing" class="collapsible-content active">
-                        <div class="collapsible-body">
-                            <p class="helper-text mb-4">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                Set product pricing and cost information
-                            </p>
-                            
-                            <!-- Pricing -->
-                            <div class="space-y-4 mb-6">
-                                <h5 class="text-sm font-semibold text-gray-800">Pricing</h5>
-                                <div class="grid grid-cols-3 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                            Regular Price <span class="text-red-500">*</span>
-                                        </label>
-                                        <div class="relative">
-                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
-                                            <input type="number" step="0.01" min="0" id="productRegularPrice" class="w-full pl-8 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00" required>
-                                        </div>
-                                        <p class="helper-text">Base selling price</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                            Sale Price
-                                        </label>
-                                        <div class="relative">
-                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
-                                            <input type="number" step="0.01" min="0" id="productSalePrice" class="w-full pl-8 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
-                                        </div>
-                                        <p class="helper-text">Discounted price (optional)</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                            Cost Per Item
-                                        </label>
-                                        <div class="relative">
-                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
-                                            <input type="number" step="0.01" min="0" id="productCostPrice" class="w-full pl-8 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
-                                        </div>
-                                        <p class="helper-text">Your cost (for profit calc)</p>
-                                    </div>
-                                </div>
-                                
-                                <!-- Profit Margin Display -->
-                                <div id="profitMarginDisplay" class="hidden p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                                    <div class="flex items-center justify-between text-sm">
-                                        <span class="text-gray-700">Profit Margin:</span>
-                                        <span class="font-semibold text-blue-700" id="profitMarginValue">0%</span>
-                                    </div>
-                                    <div class="flex items-center justify-between text-sm mt-1">
-                                        <span class="text-gray-700">Profit Amount:</span>
-                                        <span class="font-semibold text-green-700" id="profitAmountValue">$0.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- SKU & Barcode -->
-                            <div class="space-y-4 border-t pt-4 mt-4">
-                                <h5 class="text-sm font-semibold text-gray-800">Product Identifiers</h5>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                            SKU (Stock Keeping Unit)
-                                        </label>
-                                        <div class="flex gap-2">
-                                            <input type="text" id="productSku" class="flex-1 px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Auto-generated or custom">
-                                            <button type="button" onclick="generateSKU()" class="px-3 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5" title="Generate SKU">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                                                </svg>
-                                                Generate
-                                            </button>
-                                        </div>
-                                        <p class="helper-text">Unique product identifier (auto-generated based on product data)</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                            Barcode (ISBN, UPC, GTIN, etc.)
-                                        </label>
-                                        <input type="text" id="productBarcode" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Enter barcode">
-                                        <p class="helper-text">For scanning and tracking</p>
-                                    </div>
-                                </div>
-                            </div>
+                        Status & Visibility
+                    </h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Status <span class="text-red-500">*</span></label>
+                            <select id="productStatus" data-searchable data-placeholder="Select Status"
+                                    class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                           focus:outline-none focus:ring-2 focus:ring-[#0082C3]" required>
+                                <option value="draft">Draft</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Availability <span class="text-red-500">*</span></label>
+                            <select id="productAvailability" data-searchable data-placeholder="Select Availability"
+                                    class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                           focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                    onchange="toggleAvailableDate()" required>
+                                <option value="in_stock">In Stock</option>
+                                <option value="out_of_stock">Out of Stock</option>
+                                <option value="pre_order">Pre-Order</option>
+                                <option value="backorder">Backorder</option>
+                            </select>
+                        </div>
+                        <div id="availableDateContainer" class="hidden">
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Available Date</label>
+                            <input type="date" id="productAvailableDate"
+                                   class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                          focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Visibility</label>
+                            <select id="productVisibility" data-searchable data-placeholder="Select Visibility"
+                                    class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                           focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
+                                <option value="visible">Visible (Everywhere)</option>
+                                <option value="hidden">Hidden</option>
+                                <option value="catalog_only">Catalog Only</option>
+                                <option value="search_only">Search Only</option>
+                            </select>
                         </div>
                     </div>
                 </div>
 
-                <!-- Shipping Section - COLLAPSIBLE -->
-                <div class="collapsible-section mt-6">
-                    <div class="collapsible-header" data-collapsible="section-shipping" data-default="closed" onclick="toggleCollapsible('section-shipping')">
-                        <div class="collapsible-title">
-                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path>
-                            </svg>
-                            <span>Shipping & Dimensions</span>
-                            <span class="section-badge optional">Optional</span>
-                        </div>
-                        <svg class="collapsible-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                <hr class="border-gray-100">
+
+                {{-- Pricing --}}
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
+                        Pricing
+                    </h4>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Regular Price <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
+                                <input type="number" step="0.01" min="0" id="productRegularPrice"
+                                       class="w-full pl-8 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                              focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                       placeholder="0.00" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Sale Price</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
+                                <input type="number" step="0.01" min="0" id="productSalePrice"
+                                       class="w-full pl-8 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                              focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                       placeholder="0.00">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Cost Per Item</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
+                                <input type="number" step="0.01" min="0" id="productCostPrice"
+                                       class="w-full pl-8 pr-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                              focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                       placeholder="0.00">
+                            </div>
+                        </div>
                     </div>
-                    <div id="section-shipping" class="collapsible-content">
-                        <div class="collapsible-body">
-                            <p class="helper-text mb-4">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                Add shipping details for accurate delivery cost calculations
-                            </p>
-                            
-                            <!-- Shipping Options -->
-                            <div class="space-y-4 mb-6">
-                                <h5 class="text-sm font-semibold text-gray-800">Shipping Options</h5>
-                                <div class="flex items-center gap-6">
-                                    <label class="flex items-center gap-2 cursor-pointer">
-                                        <input type="checkbox" id="productRequiresShipping" checked class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]" onchange="toggleShippingFields()">
-                                        <span class="text-sm font-medium text-gray-700">This product requires shipping</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 cursor-pointer">
-                                        <input type="checkbox" id="productShipsSeparately" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
-                                        <span class="text-sm font-medium text-gray-700">Ships separately</span>
-                                    </label>
-                                </div>
-                                <p class="helper-text">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    <div id="profitMarginDisplay" class="hidden mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Profit Margin:</span>
+                            <span class="font-semibold text-blue-700" id="profitMarginValue">0%</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm mt-1">
+                            <span class="text-gray-600">Profit Amount:</span>
+                            <span class="font-semibold text-green-700" id="profitAmountValue">₹0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-gray-100">
+
+                {{-- Stock / Inventory --}}
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                        </svg>
+                        Inventory & Stock
+                    </h4>
+
+                    <div class="flex items-center gap-3 mb-4 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+                        <input type="checkbox" id="productManageStock"
+                               class="w-4 h-4 text-[#0082C3] border-gray-300 rounded"
+                               onchange="toggleStockFields()">
+                        <label for="productManageStock" class="text-sm font-medium text-gray-700 cursor-pointer">
+                            Track stock quantity for this product
+                        </label>
+                    </div>
+
+                    <div id="stockFieldsContainer" class="grid grid-cols-2 gap-4" style="display:none">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Stock Quantity <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number" min="0" id="productStockQuantity"
+                                   class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                          focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                   placeholder="0" oninput="updateStockBadge()">
+                            <p class="text-xs text-gray-400 mt-1">Units currently in stock</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Low Stock Alert</label>
+                            <input type="number" min="0" id="productLowStockThreshold"
+                                   class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                          focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                   placeholder="5" value="5">
+                            <p class="text-xs text-gray-400 mt-1">Alert when stock ≤ this number</p>
+                        </div>
+                        <div class="col-span-2 flex items-center gap-3">
+                            <input type="checkbox" id="productAllowBackorder"
+                                   class="w-4 h-4 text-[#0082C3] border-gray-300 rounded">
+                            <label for="productAllowBackorder" class="text-sm text-gray-700 cursor-pointer">
+                                Allow backorders (sell even when out of stock)
+                            </label>
+                        </div>
+                        <div id="stockStatusBadge" class="col-span-2 hidden">
+                            <div id="stockStatusInner" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-gray-100">
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10M7 11h10M7 15h10"/>
+                        </svg>
+                        Identifiers
+                    </h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">SKU</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="productSku"
+                                       class="flex-1 px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                              focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                       placeholder="Auto-generated or enter custom">
+                                <button type="button" onclick="generateSKU()"
+                                        class="px-3 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm
+                                               font-medium rounded-lg transition-colors flex items-center gap-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                                     </svg>
-                                    Uncheck "Requires shipping" for digital products or services
-                                </p>
+                                    Generate
+                                </button>
                             </div>
-                            
-                            <!-- Weight & Dimensions -->
-                            <div id="shippingDetailsFields" class="space-y-4">
-                                <h5 class="text-sm font-semibold text-gray-800">Weight & Dimensions</h5>
-                                
-                                <!-- Weight -->
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Weight</label>
-                                        <div class="flex gap-2">
-                                            <input type="number" step="0.01" min="0" id="productWeight" class="flex-1 px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
-                                            <select id="productWeightUnit" class="px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                                                <option value="kg">kg</option>
-                                                <option value="g">g</option>
-                                                <option value="lb">lb</option>
-                                                <option value="oz">oz</option>
-                                            </select>
-                                        </div>
-                                        <p class="helper-text">Product weight for shipping</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Dimension Unit</label>
-                                        <select id="productDimensionUnit" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                                            <option value="cm">Centimeters (cm)</option>
-                                            <option value="m">Meters (m)</option>
-                                            <option value="in">Inches (in)</option>
-                                            <option value="ft">Feet (ft)</option>
-                                        </select>
-                                        <p class="helper-text">Unit for dimensions below</p>
-                                    </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Barcode (UPC / EAN)</label>
+                            <input type="text" id="productBarcode"
+                                   class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                          focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                   placeholder="Enter barcode">
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-gray-100">
+
+                {{-- Shipping --}}
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1"/>
+                        </svg>
+                        Shipping & Dimensions
+                    </h4>
+                    <div class="flex items-center gap-6 mb-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" id="productRequiresShipping" checked
+                                   class="w-4 h-4 text-[#0082C3] border-gray-300 rounded"
+                                   onchange="toggleShippingFields()">
+                            <span class="text-sm text-gray-700">Requires shipping</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" id="productShipsSeparately"
+                                   class="w-4 h-4 text-[#0082C3] border-gray-300 rounded">
+                            <span class="text-sm text-gray-700">Ships separately</span>
+                        </label>
+                    </div>
+                    <div id="shippingDetailsFields" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5">Weight</label>
+                                <div class="flex gap-2">
+                                    <input type="number" step="0.01" min="0" id="productWeight"
+                                           class="flex-1 px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                                  focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                           placeholder="0.00">
+                                    <select id="productWeightUnit"
+                                            class="px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                                   focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
+                                        <option value="kg">kg</option>
+                                        <option value="g">g</option>
+                                        <option value="lb">lb</option>
+                                    </select>
                                 </div>
-                                
-                                <!-- Dimensions -->
-                                <div class="grid grid-cols-3 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Length</label>
-                                        <input type="number" step="0.01" min="0" id="productLength" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
-                                        <p class="helper-text">Longest side</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Width</label>
-                                        <input type="number" step="0.01" min="0" id="productWidth" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
-                                        <p class="helper-text">Middle side</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Height</label>
-                                        <input type="number" step="0.01" min="0" id="productHeight" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0.00">
-                                        <p class="helper-text">Shortest side</p>
-                                    </div>
-                                </div>
-                                
-                                <!-- Package Info -->
-                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                                    <div class="flex items-start gap-2">
-                                        <svg class="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <div class="text-xs text-gray-600">
-                                            <p class="font-medium mb-1">Shipping Tips:</p>
-                                            <ul class="list-disc list-inside space-y-0.5">
-                                                <li>Accurate dimensions help calculate shipping costs</li>
-                                                <li>Include packaging weight and dimensions</li>
-                                                <li>Measure the longest, middle, and shortest sides</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5">Dimension Unit</label>
+                                <select id="productDimensionUnit"
+                                        class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                               focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                    <option value="in">in</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5">Length</label>
+                                <input type="number" step="0.01" min="0" id="productLength"
+                                       class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                              focus:outline-none focus:ring-2 focus:ring-[#0082C3]" placeholder="0.00">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5">Width</label>
+                                <input type="number" step="0.01" min="0" id="productWidth"
+                                       class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                              focus:outline-none focus:ring-2 focus:ring-[#0082C3]" placeholder="0.00">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5">Height</label>
+                                <input type="number" step="0.01" min="0" id="productHeight"
+                                       class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                              focus:outline-none focus:ring-2 focus:ring-[#0082C3]" placeholder="0.00">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Digital Product Settings (shown when is_digital is checked) -->
-                <div id="digitalProductSettings" class="space-y-4 border-t pt-6 mt-6 hidden">
-                    <h4 class="text-sm font-semibold text-gray-900">Digital Product Settings</h4>
-                    
+                {{-- Digital Product Settings --}}
+                <div id="digitalProductSettings" class="hidden space-y-4 border-t pt-6">
+                    <h4 class="text-sm font-semibold text-gray-800 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        Digital Product Settings
+                    </h4>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="col-span-2">
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">Download URL</label>
-                            <input type="url" id="productDownloadUrl" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="https://example.com/download/file.zip">
-                            <p class="text-xs text-gray-500 mt-1">Direct link to downloadable file</p>
+                            <input type="url" id="productDownloadUrl"
+                                   class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                          focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                   placeholder="https://example.com/download/file.zip">
                         </div>
-
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">Download Limit</label>
-                            <input type="number" min="0" id="productDownloadLimit" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="0">
-                            <p class="text-xs text-gray-500 mt-1">Max downloads per purchase (0 = unlimited)</p>
+                            <input type="number" min="0" id="productDownloadLimit"
+                                   class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                          focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                   placeholder="0 = unlimited">
                         </div>
                     </div>
                 </div>
 
-
             </div>
 
-
-            <!-- Tab: Media -->
-            <div id="content-media" class="tab-content hidden px-6 py-4">
+            <!-- ══════════════════════════════════════════════════════
+                 TAB 3: MEDIA  (unchanged)
+            ══════════════════════════════════════════════════════ -->
+            <div id="content-media" class="tab-content px-6 py-4" style="display:none">
                 <div class="space-y-6">
                     <!-- Images Section -->
                     <div class="space-y-4">
@@ -945,7 +880,7 @@
             </div>
 
             <!-- Tab: Variants -->
-            <div id="content-variants" class="tab-content hidden px-6 py-4">
+            <div id="content-variants" class="tab-content px-6 py-4" style="display:none">
                 <div class="space-y-4">
                     <div class="flex items-center justify-between">
                         <div>
@@ -980,150 +915,252 @@
                     <div id="variantsListContainer" class="space-y-2">
                         <p class="text-sm text-gray-500 text-center py-8">No variants yet. Click "Generate Variants" to create them.</p>
                     </div>
-                </div>
-            </div>
 
-            <!-- Tab: Organization -->
-            <div id="content-organization" class="tab-content hidden px-6 py-4">
-                <div class="space-y-6">
-                    
-                    <!-- Collections Section (Collapsible - Default Closed) -->
-                    <div class="collapsible-section border-t pt-6" data-section="product-collections">
-                        <div class="collapsible-header" onclick="toggleCollapsible('product-collections')">
-                            <div class="flex items-center gap-2">
-                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                                </svg>
-                                <span>Collections</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="section-badge optional">Optional</span>
-                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="collapsible-content">
-                            <div class="collapsible-body">
-                                <p class="helper-text">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    Add product to curated collections (e.g., "Summer Sale", "Best Sellers")
-                                </p>
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Select Collections</label>
-                                    <select id="productCollections" multiple data-searchable data-placeholder="Select Collections" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                                        <!-- Collections will be loaded here -->
-                                    </select>
-                                    <p class="text-xs text-gray-500 mt-1">Product can be part of multiple collections</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Product Attributes Section (Collapsible - Default Closed) -->
-                    <div class="collapsible-section border-t pt-6" data-section="product-attributes">
-                        <div class="collapsible-header" onclick="toggleCollapsible('product-attributes')">
+                    <!-- Divider -->
+                    <div class="border-t border-gray-200 pt-6 mt-6">
+                        <!-- Product Attributes Section -->
+                        <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-2">
                                 <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                                 </svg>
-                                <span>Product Attributes</span>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-gray-900">Product Attributes</h4>
+                                    <p class="text-xs text-gray-500 mt-0.5">Non-variant specs — Material, Warranty, Country of Origin, etc.</p>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="section-badge optional">Optional</span>
-                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            <button type="button" onclick="openAddAttributeModal()"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                 </svg>
+                                Add Attribute
+                            </button>
+                        </div>
+
+                        <div id="productAttributesList" class="space-y-2">
+                            <div class="text-center py-6 text-gray-500 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                                <svg class="w-8 h-8 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                                <p class="font-medium text-gray-400">No attributes added yet</p>
+                                <p class="text-xs mt-1 text-gray-400">Click "Add Attribute" above to add product specs</p>
                             </div>
                         </div>
-                        <div class="collapsible-content">
-                            <div class="collapsible-body">
-                                <p class="helper-text">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    Add non-variant attributes (e.g., Material, Warranty, Country of Origin)
-                                </p>
-                                
-                                <div class="space-y-3">
-                                    <div class="flex items-center justify-between">
-                                        <p class="text-sm font-medium text-gray-700">Attribute List</p>
-                                        <button type="button" onclick="openAddAttributeModal()" class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 transition-colors">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                            </svg>
-                                            Add Attribute
-                                        </button>
-                                    </div>
 
-                                    <div id="productAttributesList" class="space-y-2">
-                                        <div class="text-center py-6 text-gray-500 text-sm border-2 border-dashed border-gray-200 rounded-lg">
-                                            <svg class="w-10 h-10 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                                            </svg>
-                                            <p class="font-medium">No attributes added yet</p>
-                                            <p class="text-xs mt-1">Click "Add Attribute" to add product specifications</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Attributes Tips -->
-                                <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-                                    <div class="flex gap-2">
-                                        <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <div class="text-xs text-green-800">
-                                            <p class="font-semibold mb-1">Attribute Tips:</p>
-                                            <ul class="list-disc list-inside space-y-0.5 text-green-700">
-                                                <li>Use attributes for product specifications (Material, Warranty, etc.)</li>
-                                                <li>For variant options (Size, Color), use the Variants tab instead</li>
-                                                <li>Attributes help customers make informed decisions</li>
-                                                <li>Keep attribute names consistent across products</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                            <div class="flex gap-2 text-xs text-green-800">
+                                <svg class="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span><strong>Tip:</strong> Product Attributes are for specs like Material, Warranty, Origin. For Size/Color variants, use "Generate Variants" above.</span>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
-            <!-- Tab: SEO -->
-            <div id="content-seo" class="tab-content hidden px-6 py-4">
-                <div class="space-y-4">
-                    <h4 class="text-sm font-semibold text-gray-900">SEO Settings</h4>
-                    <p class="text-xs text-gray-500">Optimize your product for search engines</p>
-                    
-                    <div class="grid grid-cols-1 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">SEO Title</label>
-                            <input type="text" id="productSeoTitle" maxlength="60" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Product title for search engines">
-                            <p class="text-xs text-gray-500 mt-1"><span id="seoTitleCount">0</span>/60 characters</p>
-                        </div>
+            <!-- ══════════════════════════════════════════════════════
+                 TAB 5: ORGANIZATION
+                 Categories · Tags · Collections · Product Flags
+            ══════════════════════════════════════════════════════ -->
+            <div id="content-organization" class="tab-content px-6 py-5 space-y-6" style="display:none">
 
+                {{-- Categories --}}
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                        </svg>
+                        Categories
+                    </h4>
+                    <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">SEO Description</label>
-                            <textarea id="productSeoDescription" maxlength="160" rows="3" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="Product description for search engines"></textarea>
-                            <p class="text-xs text-gray-500 mt-1"><span id="seoDescCount">0</span>/160 characters</p>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Primary Category</label>
+                            <select id="productPrimaryCategory" data-searchable data-placeholder="Select Primary Category"
+                                    class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                           focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
+                                <option value="">Select Primary Category</option>
+                            </select>
                         </div>
-
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">SEO Keywords</label>
-                            <input type="text" id="productSeoKeywords" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent" placeholder="keyword1, keyword2, keyword3">
-                            <p class="text-xs text-gray-500 mt-1">Separate keywords with commas</p>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Additional Categories</label>
+                            <select id="productAdditionalCategories" multiple data-searchable data-placeholder="Select Categories"
+                                    class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                           focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
+                            </select>
                         </div>
                     </div>
+                </div>
+
+                <hr class="border-gray-100">
+
+                {{-- Tags --}}
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                        </svg>
+                        Tags
+                    </h4>
+                    <select id="productTags" multiple data-searchable data-placeholder="Select Tags"
+                            class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                   focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
+                    </select>
+                    <p class="text-xs text-gray-400 mt-1">Tags improve searchability and help customers find this product</p>
+                </div>
+
+                <hr class="border-gray-100">
+
+                {{-- Collections --}}
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                        Collections
+                    </h4>
+                    <select id="productCollections" multiple data-searchable data-placeholder="Select Collections"
+                            class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                   focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
+                    </select>
+                    <p class="text-xs text-gray-400 mt-1">Add to curated collections — Best Sellers, Summer Sale, etc.</p>
+                </div>
+
+                <hr class="border-gray-100">
+
+                {{-- Product Flags --}}
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+                        </svg>
+                        Product Flags
+                    </h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                            <input type="checkbox" id="productIsFeatured"
+                                   class="w-4 h-4 text-[#0082C3] border-gray-300 rounded">
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">⭐ Featured</p>
+                                <p class="text-xs text-gray-400">Show in featured sections</p>
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                            <input type="checkbox" id="productIsNew"
+                                   class="w-4 h-4 text-[#0082C3] border-gray-300 rounded">
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">🆕 New Arrival</p>
+                                <p class="text-xs text-gray-400">Badge: New</p>
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                            <input type="checkbox" id="productIsBestSeller"
+                                   class="w-4 h-4 text-[#0082C3] border-gray-300 rounded">
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">🔥 Best Seller</p>
+                                <p class="text-xs text-gray-400">Badge: Best Seller</p>
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                            <input type="checkbox" id="productIsDigital"
+                                   class="w-4 h-4 text-[#0082C3] border-gray-300 rounded">
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">💾 Digital Product</p>
+                                <p class="text-xs text-gray-400">No physical shipping</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Tab: SEO -->
+            <div id="content-seo" class="tab-content px-6 py-5" style="display:none">
+                <div class="space-y-5">
+
+                    <!-- Header -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-900">SEO Settings</h4>
+                            <p class="text-xs text-gray-500 mt-0.5">Optimize your product for search engines</p>
+                        </div>
+                        <button type="button" onclick="autoGenerateSEO()"
+                                class="inline-flex items-center gap-2 px-3.5 py-2 bg-[#0082C3] text-white
+                                       text-xs font-semibold rounded-lg hover:bg-[#006ba3] transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                            Auto Generate
+                        </button>
+                    </div>
+
+                    <!-- SEO Title -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-sm font-medium text-gray-700">SEO Title</label>
+                            <span id="seoTitleCount" class="text-xs text-gray-400">0/60</span>
+                        </div>
+                        <input type="text" id="productSeoTitle" maxlength="60"
+                               class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                      focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                               placeholder="e.g., Kipsta Football Size 5 — Buy Online | Decathlon"
+                               oninput="updateSeoCounter('productSeoTitle','seoTitleCount',60); updateSeoPreview()">
+                        <div class="mt-1.5 h-1 rounded-full bg-gray-200 overflow-hidden">
+                            <div id="seoTitleProgress" class="h-full bg-green-500 transition-all duration-300" style="width:0%"></div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Ideal: 50–60 characters</p>
+                    </div>
+
+                    <!-- SEO Description -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-sm font-medium text-gray-700">SEO Description</label>
+                            <span id="seoDescCount" class="text-xs text-gray-400">0/160</span>
+                        </div>
+                        <textarea id="productSeoDescription" maxlength="160" rows="3"
+                                  class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                         focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                                  placeholder="Brief product description for Google search results…"
+                                  oninput="updateSeoCounter('productSeoDescription','seoDescCount',160); updateSeoPreview()"></textarea>
+                        <div class="mt-1.5 h-1 rounded-full bg-gray-200 overflow-hidden">
+                            <div id="seoDescProgress" class="h-full bg-green-500 transition-all duration-300" style="width:0%"></div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Ideal: 120–160 characters</p>
+                    </div>
+
+                    <!-- SEO Keywords -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">SEO Keywords</label>
+                        <input type="text" id="productSeoKeywords"
+                               class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                                      focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+                               placeholder="football, size 5, kipsta, decathlon, outdoor sport"
+                               oninput="updateSeoPreview()">
+                        <p class="text-xs text-gray-400 mt-1">Separate with commas</p>
+                    </div>
+
+                    <!-- Google Preview -->
+                    <div class="border border-gray-200 rounded-xl p-4 bg-gray-50">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">🔍 Google Search Preview</p>
+                        <div class="bg-white border border-gray-100 rounded-lg p-4 space-y-1 shadow-sm">
+                            <p id="seoPreviewUrl" class="text-xs text-green-700 truncate font-mono">
+                                yoursite.com › products › product-slug
+                            </p>
+                            <p id="seoPreviewTitle" class="text-base font-medium text-blue-700 leading-snug truncate">
+                                Product Title — Decathlon
+                            </p>
+                            <p id="seoPreviewDesc" class="text-sm text-gray-600 leading-snug" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">
+                                Product description will appear here in Google search results…
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
             <!-- Tab: Advanced -->
-            <div id="content-advanced" class="tab-content hidden px-6 py-4">
+            <div id="content-advanced" class="tab-content px-6 py-4" style="display:none">
                 <div class="space-y-6">
                     
                     <!-- Related Products Section (Collapsible - Default Closed) -->
@@ -1347,170 +1384,6 @@
                         </div>
                     </div>
 
-                    <!-- Product Flags (Collapsible - Default Closed) -->
-                    <div class="collapsible-section border-t pt-6 mt-6" data-section="product-flags">
-                        <div class="collapsible-header" onclick="toggleCollapsible('product-flags')">
-                            <div class="flex items-center gap-2">
-                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"></path>
-                                </svg>
-                                <span>Product Flags</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="section-badge optional">Optional</span>
-                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="collapsible-content">
-                            <div class="collapsible-body">
-                                <p class="helper-text">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    Mark product with special badges and categories
-                                </p>
-                                
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="col-span-2 flex items-center gap-6">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" id="productFeatured" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
-                                            <span class="text-sm font-medium text-gray-700">Featured Product</span>
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" id="productNew" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
-                                            <span class="text-sm font-medium text-gray-700">New Arrival</span>
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" id="productBestSeller" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
-                                            <span class="text-sm font-medium text-gray-700">Best Seller</span>
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" id="productIsDigital" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
-                                            <span class="text-sm font-medium text-gray-700">Digital Product</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Scheduling & Dates (Collapsible - Default Closed) -->
-                    <div class="collapsible-section border-t pt-6 mt-6" data-section="product-scheduling">
-                        <div class="collapsible-header" onclick="toggleCollapsible('product-scheduling')">
-                            <div class="flex items-center gap-2">
-                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                                <span>Scheduling & Dates</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="section-badge optional">Optional</span>
-                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="collapsible-content">
-                            <div class="collapsible-body">
-                                <p class="helper-text">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    Schedule automatic publish and unpublish dates
-                                </p>
-                                
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Publish Date</label>
-                                        <input type="datetime-local" id="productPublishedAt" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                                        <p class="text-xs text-gray-500 mt-1">Schedule when product goes live</p>
-                                    </div>
-
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Unpublish Date</label>
-                                        <input type="datetime-local" id="productUnpublishedAt" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent">
-                                        <p class="text-xs text-gray-500 mt-1">Auto-unpublish after this date</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Custom Fields Section (Collapsible - Default Closed) -->
-                    <div class="collapsible-section border-t pt-6" data-section="custom-fields">
-                        <div class="collapsible-header" onclick="toggleCollapsible('custom-fields')">
-                            <div class="flex items-center gap-2">
-                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
-                                </svg>
-                                <span>Custom Fields</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="section-badge optional">Optional</span>
-                                <svg class="collapsible-icon w-5 h-5 text-gray-400 transition-transform duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="collapsible-content">
-                            <div class="collapsible-body">
-                                <p class="helper-text">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    Add custom metadata fields for special product information
-                                </p>
-                                
-                                <div class="space-y-4">
-                                    <div class="flex items-center justify-between">
-                                        <div>
-                                            <p class="text-sm font-medium text-gray-700">Custom Field List</p>
-                                            <p class="text-xs text-gray-500">Additional product metadata</p>
-                                        </div>
-                                        <button type="button" onclick="addCustomField()" class="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded-lg hover:bg-indigo-700 transition-colors">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                            </svg>
-                                            Add Field
-                                        </button>
-                                    </div>
-
-                                    <div id="customFieldsList" class="space-y-3">
-                                        <div class="text-center py-6 text-gray-500 text-sm border-2 border-dashed border-gray-200 rounded-lg">
-                                            <svg class="w-10 h-10 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
-                                            </svg>
-                                            <p class="font-medium">No custom fields added</p>
-                                            <p class="text-xs mt-1">Click "Add Field" to add custom metadata</p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Custom Fields Tips -->
-                                    <div class="p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
-                                        <div class="flex gap-2">
-                                            <svg class="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                            <div class="text-xs text-indigo-800">
-                                                <p class="font-semibold mb-1">Custom Field Examples:</p>
-                                                <ul class="list-disc list-inside space-y-0.5 text-indigo-700">
-                                                    <li>Manufacturer Part Number</li>
-                                                    <li>Import/Export Codes (HS Code, ECCN)</li>
-                                                    <li>Internal SKU References</li>
-                                                    <li>Special Handling Instructions</li>
-                                                    <li>Warranty Information</li>
-                                                    <li>Any other custom metadata</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </form>
@@ -1609,11 +1482,27 @@
     color: #0082C3;
     background: #e0f2fe;
 }
-.tab-content {
-    display: none;
+/* tab show/hide is handled via inline style by switchTab() */
+
+/* Nuclear option — hide all tab contents by ID until JS shows them */
+#content-basic,
+#content-pricing,
+#content-media,
+#content-variants,
+#content-organization,
+#content-seo,
+#content-advanced {
+    display: none !important;
 }
-.tab-content.active {
-    display: block;
+/* Active tab — overrides the ID rule above using same specificity + !important */
+#content-basic.tab-active,
+#content-pricing.tab-active,
+#content-media.tab-active,
+#content-variants.tab-active,
+#content-organization.tab-active,
+#content-seo.tab-active,
+#content-advanced.tab-active {
+    display: block !important;
 }
 
 /* Sortable.js Drag & Drop Styles */
@@ -1976,6 +1865,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadBrands();
         loadCategories();
         loadTags();
+        loadCollections();
     }
     
     // Initialize collapsible sections
@@ -2001,40 +1891,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('shortDescCount').textContent = this.value.length;
     });
     
-    // SEO character counters
-    document.getElementById('productSeoTitle')?.addEventListener('input', function() {
-        const count = this.value.length;
-        const counter = document.getElementById('seoTitleCount');
-        counter.textContent = count;
-        // Color code based on length
-        if (count > 60) {
-            counter.parentElement.classList.add('text-red-600');
-            counter.parentElement.classList.remove('text-gray-500', 'text-yellow-600');
-        } else if (count > 50) {
-            counter.parentElement.classList.add('text-yellow-600');
-            counter.parentElement.classList.remove('text-gray-500', 'text-red-600');
-        } else {
-            counter.parentElement.classList.add('text-gray-500');
-            counter.parentElement.classList.remove('text-yellow-600', 'text-red-600');
-        }
-    });
-    
-    document.getElementById('productSeoDescription')?.addEventListener('input', function() {
-        const count = this.value.length;
-        const counter = document.getElementById('seoDescCount');
-        counter.textContent = count;
-        // Color code based on length
-        if (count > 160) {
-            counter.parentElement.classList.add('text-red-600');
-            counter.parentElement.classList.remove('text-gray-500', 'text-yellow-600');
-        } else if (count > 140) {
-            counter.parentElement.classList.add('text-yellow-600');
-            counter.parentElement.classList.remove('text-gray-500', 'text-red-600');
-        } else {
-            counter.parentElement.classList.add('text-gray-500');
-            counter.parentElement.classList.remove('text-yellow-600', 'text-red-600');
-        }
-    });
+    // SEO character counters handled by updateSeoCounter() in SEO tab
 
     // Digital product toggle
     document.getElementById('productIsDigital')?.addEventListener('change', function() {
@@ -2342,33 +2199,46 @@ function loadProducts(page = 1) {
 
 function loadBrands() {
     fetch('/admin/brands/list?per_page=1000&status=1', {
+        credentials: 'same-origin',
         headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+    })
     .then(data => {
-        if (data.success) {
+        if (data.success && data.data) {
             const brandSelect = document.getElementById('productBrand');
             const brandFilter = document.getElementById('brandFilter');
-            
+
             if (brandSelect) {
                 brandSelect.innerHTML = '<option value="">Select Brand</option>';
                 data.data.forEach(brand => {
                     brandSelect.innerHTML += `<option value="${brand.id}">${brand.name}</option>`;
                 });
+                // Refresh SearchableSelect instance
+                const instance = searchableSelectInstances.find(inst => inst.select === brandSelect);
+                if (instance) instance.refresh();
             }
-            
+
             if (brandFilter) {
                 brandFilter.innerHTML = '<option value="">All Brands</option>';
                 data.data.forEach(brand => {
                     brandFilter.innerHTML += `<option value="${brand.id}">${brand.name}</option>`;
                 });
+                const filterInstance = searchableSelectInstances.find(inst => inst.select === brandFilter);
+                if (filterInstance) filterInstance.refresh();
             }
+        } else {
+            console.error('loadBrands failed:', data);
         }
-    });
+    })
+    .catch(err => console.error('loadBrands error:', err));
 }
 
 function loadCategories() {
     fetch('/admin/categories/list?per_page=1000&status=1', {
+        credentials: 'same-origin',
         headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
     })
     .then(res => res.json())
@@ -2438,6 +2308,7 @@ function loadCategories() {
 // Load Tags from Database
 function loadTags() {
     fetch('/admin/tags/list?per_page=1000&status=1', {
+        credentials: 'same-origin',
         headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
     })
     .then(res => res.json())
@@ -2471,6 +2342,38 @@ function loadTags() {
     .catch(error => {
         console.error('Error loading tags:', error);
     });
+}
+
+// Load Collections from Database
+function loadCollections() {
+    fetch('/admin/collections/list?per_page=1000&status=1', {
+        credentials: 'same-origin',
+        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+    })
+    .then(data => {
+        if (data.success && data.data) {
+            const collectionsSelect = document.getElementById('productCollections');
+            if (collectionsSelect) {
+                collectionsSelect.innerHTML = '';
+                data.data.forEach(col => {
+                    const opt = document.createElement('option');
+                    opt.value = col.id;
+                    opt.textContent = col.name;
+                    collectionsSelect.appendChild(opt);
+                });
+                // Refresh SearchableSelect instance
+                const instance = searchableSelectInstances.find(inst => inst.select === collectionsSelect);
+                if (instance) instance.refresh();
+            }
+        } else {
+            console.error('loadCollections failed:', data);
+        }
+    })
+    .catch(err => console.error('loadCollections error:', err));
 }
 
 function debounceSearch() {
@@ -2651,38 +2554,47 @@ function renderPagination(pagination) {
 }
 
 // Tab Navigation
+const TAB_ORDER = ['basic', 'pricing', 'media', 'variants', 'organization', 'seo', 'advanced'];
+
 function switchTab(tabName) {
     currentTab = tabName;
-    
+
     // Update tab buttons
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(`tab-${tabName}`).classList.add('active');
-    
-    // Update tab content
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    document.getElementById(`content-${tabName}`).classList.add('active');
-    
-    // Update navigation buttons
+    const tabBtn = document.getElementById(`tab-${tabName}`);
+    if (tabBtn) tabBtn.classList.add('active');
+
+    // Toggle tab-active class (CSS uses ID+class specificity to override display:none !important)
+    TAB_ORDER.forEach(t => {
+        const el = document.getElementById(`content-${t}`);
+        if (!el) return;
+        if (t === tabName) {
+            el.classList.add('tab-active');
+        } else {
+            el.classList.remove('tab-active');
+        }
+    });
+
     updateTabNavigation();
 }
 
+// On page load — ensure no tab has tab-active (all hidden by CSS)
+document.addEventListener('DOMContentLoaded', () => {
+    TAB_ORDER.forEach(t => {
+        const el = document.getElementById(`content-${t}`);
+        if (el) el.classList.remove('tab-active');
+    });
+});
+
 function updateTabNavigation() {
-    const tabs = ['basic', 'media', 'variants', 'related', 'seo'];
-    const currentIndex = tabs.indexOf(currentTab);
-    
-    const prevBtn = document.getElementById('prevTabBtn');
-    const nextBtn = document.getElementById('nextTabBtn');
+    const idx = TAB_ORDER.indexOf(currentTab);
+    const prevBtn   = document.getElementById('prevTabBtn');
+    const nextBtn   = document.getElementById('nextTabBtn');
     const submitBtn = document.getElementById('submitBtn');
-    
-    // Show/hide previous button
-    if (currentIndex > 0) {
-        prevBtn.classList.remove('hidden');
-    } else {
-        prevBtn.classList.add('hidden');
-    }
-    
-    // Show/hide next/submit button
-    if (currentIndex < tabs.length - 1) {
+
+    idx > 0 ? prevBtn.classList.remove('hidden') : prevBtn.classList.add('hidden');
+
+    if (idx < TAB_ORDER.length - 1) {
         nextBtn.classList.remove('hidden');
         submitBtn.classList.add('hidden');
     } else {
@@ -2692,19 +2604,13 @@ function updateTabNavigation() {
 }
 
 function nextTab() {
-    const tabs = ['basic', 'media', 'variants', 'related', 'seo'];
-    const currentIndex = tabs.indexOf(currentTab);
-    if (currentIndex < tabs.length - 1) {
-        switchTab(tabs[currentIndex + 1]);
-    }
+    const idx = TAB_ORDER.indexOf(currentTab);
+    if (idx < TAB_ORDER.length - 1) switchTab(TAB_ORDER[idx + 1]);
 }
 
 function previousTab() {
-    const tabs = ['basic', 'media', 'variants', 'related', 'seo'];
-    const currentIndex = tabs.indexOf(currentTab);
-    if (currentIndex > 0) {
-        switchTab(tabs[currentIndex - 1]);
-    }
+    const idx = TAB_ORDER.indexOf(currentTab);
+    if (idx > 0) switchTab(TAB_ORDER[idx - 1]);
 }
 
 
@@ -2806,58 +2712,103 @@ function editProduct(id) {
 }
 
 function resetForm() {
-    document.getElementById('productId').value = '';
-    document.getElementById('productName').value = '';
-    document.getElementById('productSlug').value = '';
-    document.getElementById('productType').value = 'simple';
-    document.getElementById('productBrand').value = '';
-    document.getElementById('productPrimaryCategory').value = '';
-    document.getElementById('productShortDescription').value = '';
-    document.getElementById('productDescription').value = '';
-    document.getElementById('productStatus').value = 'draft';
-    document.getElementById('productAvailability').value = 'in_stock';
-    document.getElementById('productAvailableDate').value = '';
-    document.getElementById('availableDateContainer').classList.add('hidden');
-    document.getElementById('productVisibility').value = 'visible';
-    document.getElementById('productPublishedAt').value = '';
-    document.getElementById('productUnpublishedAt').value = '';
-    document.getElementById('productFeatured').checked = false;
-    document.getElementById('productNew').checked = false;
-    document.getElementById('productBestSeller').checked = false;
-    document.getElementById('productIsDigital').checked = false;
-    document.getElementById('productDownloadUrl').value = '';
-    document.getElementById('productDownloadLimit').value = '';
-    document.getElementById('digitalProductSettings').classList.add('hidden');
-    document.getElementById('productWeight').value = '';
-    document.getElementById('productLength').value = '';
-    document.getElementById('productWidth').value = '';
-    document.getElementById('productHeight').value = '';
-    document.getElementById('productSeoTitle').value = '';
-    document.getElementById('productSeoDescription').value = '';
-    document.getElementById('productSeoKeywords').value = '';
-    productImages = [];
-    productVideos = [];
-    productFaqs = [];
+    // Helper — safe set, skip if element missing
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+    const chk = (id, val) => { const el = document.getElementById(id); if (el) el.checked = val; };
+    const cls = (id, add, cls2) => { const el = document.getElementById(id); if (el) el.classList[add ? 'add' : 'remove'](cls2); };
+
+    set('productId',                '');
+    set('productName',              '');
+    set('productSlug',              '');
+    set('productType',              'simple');
+    set('productBrand',             '');
+    set('productPrimaryCategory',   '');
+    set('productShortDescription',  '');
+    set('productDescription',       '');
+    set('productStatus',            'draft');
+    set('productAvailability',      'in_stock');
+    set('productAvailableDate',     '');
+    cls('availableDateContainer', true, 'hidden');
+    set('productVisibility',        'visible');
+
+    // Stock toggle
+    cls('stockFieldsContainer', true, 'hidden');
+
+    // Flags (new IDs)
+    chk('productIsFeatured',   false);
+    chk('productIsNew',        false);
+    chk('productIsBestSeller', false);
+    chk('productIsDigital',    false);
+
+    // Digital product fields
+    set('productDownloadUrl',   '');
+    set('productDownloadLimit', '');
+    cls('digitalProductSettings', true, 'hidden');
+
+    // Shipping
+    set('productWeight', '');
+    set('productLength', '');
+    set('productWidth',  '');
+    set('productHeight', '');
+
+    // SEO
+    set('productSeoTitle',       '');
+    set('productSeoDescription', '');
+    set('productSeoKeywords',    '');
+
+    // Pricing
+    set('productRegularPrice', '');
+    set('productSalePrice',    '');
+    set('productCostPrice',    '');
+    set('productSku',          '');
+    set('productBarcode',      '');
+    cls('profitMarginDisplay', true, 'hidden');
+    chk('productManageStock',    false);
+    set('productStockQuantity',  '');
+    set('productLowStockThreshold', '5');
+    chk('productAllowBackorder', false);
+    const stockCont = document.getElementById('stockFieldsContainer');
+    if (stockCont) stockCont.style.display = 'none';
+    const stockBadge = document.getElementById('stockStatusBadge');
+    if (stockBadge) stockBadge.classList.add('hidden');
+
+    // Arrays
+    productImages   = [];
+    productVideos   = [];
+    productFaqs     = [];
     productVariants = [];
-    productTagIds = [];
+    productTagIds   = [];
+    _productAttrs   = [];
     relatedProducts = { related: [], upsell: [], cross_sell: [] };
-    
+
     // Reset tags multi-select
     const tagsSelect = document.getElementById('productTags');
     if (tagsSelect) {
-        Array.from(tagsSelect.options).forEach(opt => opt.selected = false);
-        // Update searchable select display
-        updateSearchableMultiSelectDisplay(tagsSelect);
+        Array.from(tagsSelect.options).forEach(o => o.selected = false);
+        const inst = searchableSelectInstances.find(i => i.select === tagsSelect);
+        if (inst) inst.refresh();
     }
-    
-    // Reset additional categories multi-select
-    const additionalCategoriesSelect = document.getElementById('productAdditionalCategories');
-    if (additionalCategoriesSelect) {
-        Array.from(additionalCategoriesSelect.options).forEach(opt => opt.selected = false);
-        // Update searchable select display
-        updateSearchableMultiSelectDisplay(additionalCategoriesSelect);
+
+    // Reset additional categories
+    const addCatSelect = document.getElementById('productAdditionalCategories');
+    if (addCatSelect) {
+        Array.from(addCatSelect.options).forEach(o => o.selected = false);
+        const inst = searchableSelectInstances.find(i => i.select === addCatSelect);
+        if (inst) inst.refresh();
     }
-    
+
+    // Reset collections
+    const colSelect = document.getElementById('productCollections');
+    if (colSelect) {
+        Array.from(colSelect.options).forEach(o => o.selected = false);
+        const inst = searchableSelectInstances.find(i => i.select === colSelect);
+        if (inst) inst.refresh();
+    }
+
+    // Reset product attributes list
+    _productAttrs = [];
+    _renderProductAttrs();
+
     renderVideosList();
     renderFaqsList();
     renderRelatedProducts();
@@ -2876,20 +2827,23 @@ function populateForm(product) {
     document.getElementById('productStatus').value = product.status;
     document.getElementById('productVisibility').value = product.visibility || 'visible';
     
-    // Format datetime for input fields
-    if (product.published_at) {
-        const publishedDate = new Date(product.published_at);
-        document.getElementById('productPublishedAt').value = publishedDate.toISOString().slice(0, 16);
-    }
-    if (product.unpublished_at) {
-        const unpublishedDate = new Date(product.unpublished_at);
-        document.getElementById('productUnpublishedAt').value = unpublishedDate.toISOString().slice(0, 16);
-    }
+    // Format datetime for input fields (fields removed, skip gracefully)
+    // published_at / unpublished_at handled server-side only
     
-    document.getElementById('productFeatured').checked = product.is_featured;
-    document.getElementById('productNew').checked = product.is_new;
-    document.getElementById('productBestSeller').checked = product.is_best_seller;
+    document.getElementById('productIsFeatured').checked = product.is_featured;
+    document.getElementById('productIsNew').checked = product.is_new;
+    document.getElementById('productIsBestSeller').checked = product.is_best_seller;
     document.getElementById('productIsDigital').checked = product.is_digital;
+
+    // Stock / Inventory
+    const manageStock = !!product.manage_stock;
+    document.getElementById('productManageStock').checked = manageStock;
+    document.getElementById('productStockQuantity').value = product.stock_quantity || 0;
+    document.getElementById('productLowStockThreshold').value = product.low_stock_threshold || 5;
+    document.getElementById('productAllowBackorder').checked = !!product.allow_backorder;
+    const stockCont = document.getElementById('stockFieldsContainer');
+    if (stockCont) stockCont.style.display = manageStock ? 'grid' : 'none';
+    if (manageStock) updateStockBadge();
     
     // Availability status
     document.getElementById('productAvailability').value = product.availability_status || 'in_stock';
@@ -2920,28 +2874,24 @@ function populateForm(product) {
         productTagIds = product.tags.map(t => t.id);
         const tagsSelect = document.getElementById('productTags');
         if (tagsSelect) {
-            // Select the tags
             Array.from(tagsSelect.options).forEach(opt => {
                 opt.selected = productTagIds.includes(parseInt(opt.value));
             });
-            // Update searchable select display
-            updateSearchableMultiSelectDisplay(tagsSelect);
+            const inst = searchableSelectInstances.find(i => i.select === tagsSelect);
+            if (inst) inst.refresh();
         }
     }
-    
-    // Load additional categories - select options in multi-select
+
+    // Load additional categories
     if (product.categories && product.categories.length > 0) {
-        const additionalCategoriesSelect = document.getElementById('productAdditionalCategories');
-        if (additionalCategoriesSelect) {
-            // Get category IDs (excluding primary category)
+        const addCatSelect = document.getElementById('productAdditionalCategories');
+        if (addCatSelect) {
             const categoryIds = product.categories.map(c => c.id);
-            
-            // Select the categories
-            Array.from(additionalCategoriesSelect.options).forEach(opt => {
+            Array.from(addCatSelect.options).forEach(opt => {
                 opt.selected = categoryIds.includes(parseInt(opt.value));
             });
-            // Update searchable select display
-            updateSearchableMultiSelectDisplay(additionalCategoriesSelect);
+            const inst = searchableSelectInstances.find(i => i.select === addCatSelect);
+            if (inst) inst.refresh();
         }
     }
     
@@ -3006,14 +2956,18 @@ function saveProduct() {
         availability_status: document.getElementById('productAvailability').value,
         available_date: document.getElementById('productAvailableDate').value || null,
         visibility: document.getElementById('productVisibility').value,
-        published_at: document.getElementById('productPublishedAt').value || null,
-        unpublished_at: document.getElementById('productUnpublishedAt').value || null,
+        published_at: null,
+        unpublished_at: null,
         is_digital: document.getElementById('productIsDigital').checked ? 1 : 0,
         download_url: document.getElementById('productDownloadUrl').value || null,
         download_limit: document.getElementById('productDownloadLimit').value || null,
-        is_featured: document.getElementById('productFeatured').checked ? 1 : 0,
-        is_new: document.getElementById('productNew').checked ? 1 : 0,
-        is_best_seller: document.getElementById('productBestSeller').checked ? 1 : 0,
+        is_featured: document.getElementById('productIsFeatured').checked ? 1 : 0,
+        is_new: document.getElementById('productIsNew').checked ? 1 : 0,
+        is_best_seller: document.getElementById('productIsBestSeller').checked ? 1 : 0,
+        manage_stock: document.getElementById('productManageStock').checked ? 1 : 0,
+        stock_quantity: document.getElementById('productManageStock').checked ? (parseInt(document.getElementById('productStockQuantity').value) || 0) : null,
+        low_stock_threshold: parseInt(document.getElementById('productLowStockThreshold').value) || 5,
+        allow_backorder: document.getElementById('productAllowBackorder').checked ? 1 : 0,
         weight: document.getElementById('productWeight').value || null,
         length: document.getElementById('productLength').value || null,
         width: document.getElementById('productWidth').value || null,
@@ -3021,10 +2975,19 @@ function saveProduct() {
         seo_title: document.getElementById('productSeoTitle').value,
         seo_description: document.getElementById('productSeoDescription').value,
         seo_keywords: document.getElementById('productSeoKeywords').value,
-        tags: Array.from(document.getElementById('productTags').selectedOptions).map(opt => parseInt(opt.value)),
-        categories: Array.from(document.getElementById('productAdditionalCategories').selectedOptions).map(opt => parseInt(opt.value)),
+        tags: Array.from(document.getElementById('productTags').selectedOptions).map(opt => parseInt(opt.value)).filter(Boolean),
+        categories: Array.from(document.getElementById('productAdditionalCategories').selectedOptions).map(opt => parseInt(opt.value)).filter(Boolean),
+        collections: Array.from(document.getElementById('productCollections').selectedOptions).map(opt => parseInt(opt.value)).filter(Boolean),
         videos: productVideos,
-        faqs: productFaqs
+        faqs: productFaqs,
+        variants: productVariants.map(v => ({
+            sku: v.sku,
+            price: v.price,
+            compare_price: v.compare_price || null,
+            cost_price: v.cost_price || null,
+            stock_quantity: v.stock_quantity || 0,
+            attributes: v.attributes,
+        })),
     };
     
     clearErrors();
@@ -3117,7 +3080,7 @@ function toggleStatus(id) {
 function deleteProduct(id, name, variantsCount) {
     showConfirmDialog(
         'Delete Product',
-        `Delete "${name}"?${variantsCount > 0 ? ` Has ${variantsCount} variant(s).` : ''}`,
+        `Delete "<strong>${name}</strong>"?${variantsCount > 0 ? `<br><span class="text-xs text-orange-500">Has ${variantsCount} variant(s) — will also be deleted.</span>` : ''}`,
         () => {
             fetch(`/admin/products/${id}`, {
                 method: 'DELETE',
@@ -3129,7 +3092,7 @@ function deleteProduct(id, name, variantsCount) {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    showToast(data.message, 'success');
+                    showSuccessDialog('Product deleted successfully');
                     loadProducts(currentPage);
                 } else {
                     showToast(data.message || 'Operation failed', 'error');
@@ -3201,11 +3164,20 @@ function uploadMultipleToImageKit(files) {
                 console.log(`Auth params for file ${index + 1}:`, authParams);
                 
                 const imageKitConfig = {
-                    publicKey: "{{ config('imagekit.public_key') }}",
-                    urlEndpoint: "{{ config('imagekit.url_endpoint') }}",
+                    publicKey: "{{ \App\Models\Setting::get('imagekit_public_key') ?: config('imagekit.public_key', '') }}",
+                    urlEndpoint: "{{ \App\Models\Setting::get('imagekit_url_endpoint') ?: config('imagekit.url_endpoint', '') }}",
                     authenticationEndpoint: "{{ route('imagekit.auth') }}"
                 };
-                
+
+                if (!imageKitConfig.publicKey || !imageKitConfig.urlEndpoint) {
+                    failedCount++;
+                    console.error('ImageKit not configured. Go to Integrations → ImageKit.');
+                    if (uploadedCount + failedCount === files.length) {
+                        finishUpload(uploadedCount, failedCount, uploadedImages);
+                    }
+                    return;
+                }
+
                 const imagekit = new ImageKit(imageKitConfig);
                 
                 console.log(`Uploading file ${index + 1}:`, file.name);
@@ -3611,53 +3583,128 @@ function toggleAttributeValues(attrId) {
 function generateVariants() {
     // Get selected attributes and their values
     const selectedAttrs = [];
-    
+
     document.querySelectorAll('.variant-attr-checkbox:checked').forEach(attrCheckbox => {
         const attrId = attrCheckbox.value;
         const attrName = attrCheckbox.dataset.name;
         const selectedValues = [];
-        
+
         document.querySelectorAll(`.variant-value-checkbox[data-attr="${attrId}"]:checked`).forEach(valCheckbox => {
             selectedValues.push({
                 id: valCheckbox.value,
                 name: valCheckbox.dataset.valueName
             });
         });
-        
+
         if (selectedValues.length > 0) {
-            selectedAttrs.push({
-                id: attrId,
-                name: attrName,
-                values: selectedValues
-            });
+            selectedAttrs.push({ id: attrId, name: attrName, values: selectedValues });
         }
     });
-    
+
     if (selectedAttrs.length === 0) {
         showToast('Please select at least one attribute and its values to generate variants', 'warning');
         return;
     }
-    
+
     // Generate all combinations
     const combinations = generateCombinations(selectedAttrs);
-    
-    // Create variants
+
+    // Build base SKU from product info (same logic as product-level SKU)
+    const baseSku = buildBaseSkuFromProduct();
+
+    // Create variants with auto-generated professional SKUs
     productVariants = combinations.map((combo, index) => {
         const variantName = combo.map(c => c.valueName).join(' / ');
+        const variantSku  = buildVariantSku(baseSku, combo, index);
         return {
             id: null,
             name: variantName,
-            sku: '',
+            sku: variantSku,
             price: '',
             attributes: combo,
-            images: [], // Initialize empty images array
+            images: [],
             status: true
         };
     });
-    
+
     renderVariantsList();
     closeVariantGenerator();
-    showToast(`${productVariants.length} variants generated successfully`, 'success');
+    showToast(`${productVariants.length} variants generated with auto SKUs`, 'success');
+}
+
+/**
+ * Build the product-level base SKU prefix from name / brand / category.
+ * Format: [CAT4]-[BRAND4]-[WORD1][WORD2]-[TYPE3]
+ * e.g.  FOOT-KIPS-FOOT-BALL-SIM
+ */
+function buildBaseSkuFromProduct() {
+    const parts = [];
+
+    const categorySelect = document.getElementById('productPrimaryCategory');
+    if (categorySelect && categorySelect.value) {
+        const catName = categorySelect.selectedOptions[0]?.text || '';
+        const catPrefix = catName.replace(/[^A-Z0-9]/gi, '').substring(0, 4).toUpperCase();
+        if (catPrefix) parts.push(catPrefix);
+    }
+
+    const brandSelect = document.getElementById('productBrand');
+    if (brandSelect && brandSelect.value) {
+        const brandName = brandSelect.selectedOptions[0]?.text || '';
+        const brandPrefix = brandName.replace(/[^A-Z0-9]/gi, '').substring(0, 4).toUpperCase();
+        if (brandPrefix) parts.push(brandPrefix);
+    }
+
+    const productName = (document.getElementById('productName')?.value || '').trim();
+    if (productName) {
+        const nameWords = productName
+            .toUpperCase()
+            .replace(/[^A-Z0-9\s]/g, '')
+            .split(/\s+/)
+            .filter(w => w.length > 2)
+            .slice(0, 2)
+            .map(w => w.substring(0, 4));
+        parts.push(...nameWords);
+    }
+
+    return parts.join('-') || 'PRD';
+}
+
+/**
+ * Build a professional SKU for one variant.
+ * Format: [BASE_SKU]-[ATTR_CODES]-[4-digit-index]
+ *
+ * Attribute codes:
+ *   Color  → hex-like shortcode  e.g. "RED", "BLK", "NVY"
+ *   Size   → value itself        e.g. "XS", "M", "XL", "UK8"
+ *   Others → first 3 chars upper e.g. "CTN", "POL"
+ *
+ * Example: FOOT-KIPS-FTBL-RED-XL-0001
+ */
+function buildVariantSku(baseSku, combo, index) {
+    const attrCodes = combo.map(c => {
+        const val = c.valueName.toString().toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+        // Color names → standard 3-char codes
+        const colorMap = {
+            'BLACK':'BLK','WHITE':'WHT','RED':'RED','BLUE':'BLU','NAVY':'NVY',
+            'NAVYBLUE':'NVY','SKYBLUE':'SKY','GREEN':'GRN','LIMEGREEN':'LGR',
+            'YELLOW':'YLW','ORANGE':'ORG','PINK':'PNK','PURPLE':'PRP',
+            'GREY':'GRY','GRAY':'GRY','DARKGREY':'DGR','BROWN':'BRN',
+            'BEIGE':'BGE','MULTICOLOR':'MLT'
+        };
+        if (colorMap[val]) return colorMap[val];
+
+        // Size values → keep as-is if short enough (≤4 chars)
+        if (val.length <= 4) return val;
+
+        // Everything else → first 3 chars
+        return val.substring(0, 3);
+    });
+
+    // Zero-padded sequential index
+    const seq = String(index + 1).padStart(4, '0');
+
+    return [baseSku, ...attrCodes, seq].join('-');
 }
 
 function generateCombinations(attributes) {
@@ -3701,7 +3748,15 @@ function renderVariantsList() {
         <div class="space-y-3">
             <div class="flex items-center justify-between mb-3">
                 <h5 class="text-sm font-semibold text-gray-900">${productVariants.length} Variants Generated</h5>
-                <button type="button" onclick="clearVariants()" class="text-xs text-red-600 hover:text-red-700">Clear All</button>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="regenAllVariantSkus()" class="inline-flex items-center gap-1 text-xs text-purple-600 hover:text-purple-700 font-medium border border-purple-200 px-2 py-1 rounded hover:bg-purple-50 transition-colors">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        Regen All SKUs
+                    </button>
+                    <button type="button" onclick="clearVariants()" class="text-xs text-red-600 hover:text-red-700">Clear All</button>
+                </div>
             </div>
             ${productVariants.map((variant, index) => `
                 <div class="border border-gray-200 rounded-lg p-4 bg-white">
@@ -3719,8 +3774,23 @@ function renderVariantsList() {
                     
                     <!-- Variant Details -->
                     <div class="grid grid-cols-2 gap-2 mb-3">
-                        <input type="text" placeholder="SKU" value="${variant.sku}" onchange="updateVariant(${index}, 'sku', this.value)" class="px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-purple-500">
-                        <input type="number" step="0.01" placeholder="Price" value="${variant.price}" onchange="updateVariant(${index}, 'price', this.value)" class="px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <div class="relative">
+                            <input type="text" placeholder="SKU" value="${variant.sku}"
+                                   id="variantSku_${index}"
+                                   onchange="updateVariant(${index}, 'sku', this.value)"
+                                   class="w-full px-2 py-1.5 pr-8 border border-gray-300 rounded text-xs font-mono focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <button type="button" title="Regenerate SKU"
+                                    onclick="regenVariantSku(${index})"
+                                    class="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-600 transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <input type="number" step="0.01" placeholder="Price (₹)" value="${variant.price}" onchange="updateVariant(${index}, 'price', this.value)" class="px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <input type="number" min="0" placeholder="Stock Qty" value="${variant.stock_quantity || 0}" onchange="updateVariant(${index}, 'stock_quantity', this.value)" class="px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <input type="number" min="0" placeholder="Compare Price (₹)" value="${variant.compare_price || ''}" onchange="updateVariant(${index}, 'compare_price', this.value)" class="px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     
                     <!-- Variant Images Section -->
@@ -3775,6 +3845,36 @@ function clearVariants() {
         renderVariantsList();
         showToast('All variants cleared', 'success');
     }
+}
+
+/**
+ * Regenerate SKU for a single variant and update the input field live.
+ */
+function regenVariantSku(index) {
+    if (!productVariants[index]) return;
+    const baseSku = buildBaseSkuFromProduct();
+    const newSku  = buildVariantSku(baseSku, productVariants[index].attributes, index);
+    productVariants[index].sku = newSku;
+    const input = document.getElementById('variantSku_' + index);
+    if (input) {
+        input.value = newSku;
+        input.classList.add('ring-2', 'ring-purple-400');
+        setTimeout(() => input.classList.remove('ring-2', 'ring-purple-400'), 800);
+    }
+    showToast('SKU regenerated: ' + newSku, 'success');
+}
+
+/**
+ * Regenerate SKUs for ALL variants at once.
+ */
+function regenAllVariantSkus() {
+    if (productVariants.length === 0) return;
+    const baseSku = buildBaseSkuFromProduct();
+    productVariants.forEach((v, i) => {
+        v.sku = buildVariantSku(baseSku, v.attributes, i);
+    });
+    renderVariantsList();
+    showToast('All variant SKUs regenerated', 'success');
 }
 
 // Variant Image Functions
@@ -3856,16 +3956,31 @@ async function uploadToImageKit(file) {
 function openModal() {
     const modal = document.getElementById('productModal');
     const modalContent = document.getElementById('productModalContent');
-    
+
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
-    
+
     requestAnimationFrame(() => {
         modalContent.style.transform = 'translateX(0)';
-        
+
+        // Show form and init tabs
+        const form = document.getElementById('productForm');
+        if (form) form.style.visibility = 'visible';
+
+        // Show only active tab via class (CSS handles display)
+        TAB_ORDER.forEach(t => {
+            const el = document.getElementById(`content-${t}`);
+            if (!el) return;
+            if (t === (currentTab || 'basic')) {
+                el.classList.add('tab-active');
+            } else {
+                el.classList.remove('tab-active');
+            }
+        });
+
         // Initialize collapsible sections
         initCollapsibleSections();
-        
+
         // Initialize Summernote editors after modal is visible
         setTimeout(() => {
             initSummernote('productShortDescription', 'simple');
@@ -3946,30 +4061,84 @@ function showConfirmDialog(title, message, onConfirm) {
     const dialog = document.createElement('div');
     dialog.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
     dialog.innerHTML = `
-        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="this.parentElement.remove()"></div>
-        <div class="relative bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
-            <div class="flex items-center gap-4 mb-4">
-                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+        <style>
+            @keyframes dlg-backdrop {
+                from { opacity: 0; }
+                to   { opacity: 1; }
+            }
+            @keyframes dlg-pop {
+                0%   { opacity: 0; transform: scale(0.85) translateY(16px); }
+                60%  { opacity: 1; transform: scale(1.03) translateY(-3px); }
+                80%  { transform: scale(0.98) translateY(1px); }
+                100% { opacity: 1; transform: scale(1)    translateY(0); }
+            }
+            .dlg-bg  { animation: dlg-backdrop .2s ease forwards; }
+            .dlg-box { animation: dlg-pop .35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        </style>
+        <div class="dlg-bg fixed inset-0 bg-black/40 backdrop-blur-[2px]" onclick="this.parentElement.remove()"></div>
+        <div class="dlg-box relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6">
+            <div class="flex flex-col items-center text-center gap-3 mb-5">
+                <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center">
+                    <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900">${title}</h3>
-                    <p class="text-sm text-gray-600 mt-1">${message}</p>
+                    <h3 class="text-base font-semibold text-gray-900">${title}</h3>
+                    <p class="text-sm text-gray-500 mt-1 leading-relaxed">${message}</p>
                 </div>
             </div>
-            <div class="flex items-center justify-end gap-3">
-                <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50">
+            <div class="flex gap-2.5">
+                <button onclick="this.closest('.fixed').remove()"
+                        class="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-200 transition-colors">
                     Cancel
                 </button>
-                <button onclick="(${onConfirm.toString()})(); this.closest('.fixed').remove();" class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700">
+                <button onclick="(${onConfirm.toString()})(); this.closest('.fixed').remove();"
+                        class="flex-1 px-4 py-2.5 bg-red-500 text-white text-sm font-semibold rounded-xl hover:bg-red-600 transition-colors">
                     Delete
                 </button>
             </div>
-        </div>
-    `;
+        </div>`;
     document.body.appendChild(dialog);
+}
+
+// ── Success Dialog ───────────────────────────────────────────────
+function showSuccessDialog(message = 'Deleted successfully') {
+    const dialog = document.createElement('div');
+    dialog.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4';
+    dialog.innerHTML = `
+        <style>
+            @keyframes succ-backdrop { from{opacity:0} to{opacity:1} }
+            @keyframes succ-pop {
+                0%   { opacity:0; transform:scale(0.5); }
+                60%  { opacity:1; transform:scale(1.1); }
+                80%  { transform:scale(0.95); }
+                100% { opacity:1; transform:scale(1); }
+            }
+            @keyframes succ-ring  { 0%{stroke-dashoffset:166;opacity:0} 20%{opacity:1} 100%{stroke-dashoffset:0} }
+            @keyframes succ-check { 0%{stroke-dashoffset:48;opacity:0} 40%{opacity:0} 100%{stroke-dashoffset:0;opacity:1} }
+            @keyframes succ-msg   { 0%{opacity:0;transform:translateY(8px)} 100%{opacity:1;transform:translateY(0)} }
+            .succ-bg    { animation: succ-backdrop .2s ease forwards; }
+            .succ-box   { animation: succ-pop .4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+            .succ-ring  { stroke-dasharray:166; stroke-dashoffset:166; animation: succ-ring  .6s .1s cubic-bezier(0.65,0,0.45,1) forwards; }
+            .succ-check { stroke-dasharray:48;  stroke-dashoffset:48;  animation: succ-check .4s .5s cubic-bezier(0.65,0,0.45,1) forwards; }
+            .succ-msg   { animation: succ-msg .3s .7s ease forwards; opacity:0; }
+        </style>
+        <div class="succ-bg fixed inset-0 bg-black/30 backdrop-blur-[2px]"></div>
+        <div class="succ-box relative bg-white rounded-2xl shadow-2xl p-8 flex flex-col items-center gap-4 w-64">
+            <svg class="w-20 h-20" viewBox="0 0 52 52">
+                <circle class="succ-ring" cx="26" cy="26" r="25" fill="none" stroke="#22c55e" stroke-width="2"/>
+                <path class="succ-check" fill="none" stroke="#22c55e" stroke-width="3"
+                      stroke-linecap="round" stroke-linejoin="round" d="M14 27 l8 8 l16-16"/>
+            </svg>
+            <p class="succ-msg text-sm font-semibold text-gray-700 text-center">${message}</p>
+        </div>`;
+    document.body.appendChild(dialog);
+    setTimeout(() => {
+        dialog.style.transition = 'opacity .25s ease';
+        dialog.style.opacity = '0';
+        setTimeout(() => dialog.remove(), 260);
+    }, 1600);
 }
 
 // Related Products Management
@@ -4664,140 +4833,159 @@ function showNotification(message, type = 'success') {
 
 // Demo Data Fill Function
 async function fillDemoData() {
-    console.log('Starting fillDemoData...');
-    
     try {
-        // Fetch brands and categories from database
-        console.log('Fetching brands and categories...');
-        
-        const [brandsRes, categoriesRes] = await Promise.all([
-            fetch('/admin/brands/list?per_page=100&status=1', {
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
-            }),
-            fetch('/admin/categories/list?per_page=100&status=1', {
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
-            })
+        // Fetch brands, categories, tags, collections from DB
+        const [brandsRes, categoriesRes, tagsRes, collectionsRes] = await Promise.all([
+            fetch('/admin/brands/list?per_page=100&status=1',      { credentials:'same-origin', headers:{'X-Requested-With':'XMLHttpRequest','Accept':'application/json'} }),
+            fetch('/admin/categories/list?per_page=100&status=1',  { credentials:'same-origin', headers:{'X-Requested-With':'XMLHttpRequest','Accept':'application/json'} }),
+            fetch('/admin/tags/list?per_page=100&status=1',        { credentials:'same-origin', headers:{'X-Requested-With':'XMLHttpRequest','Accept':'application/json'} }),
+            fetch('/admin/collections/list?per_page=100&status=1', { credentials:'same-origin', headers:{'X-Requested-With':'XMLHttpRequest','Accept':'application/json'} }),
         ]);
-        
-        console.log('Brands response status:', brandsRes.status);
-        console.log('Categories response status:', categoriesRes.status);
-        
-        const brandsData = await brandsRes.json();
-        const categoriesData = await categoriesRes.json();
-        
-        console.log('Brands data:', brandsData);
-        console.log('Categories data:', categoriesData);
-        
-        if (!brandsData.success || !categoriesData.success) {
-            console.error('API returned success: false');
-            showNotification('Failed to load demo data from API', 'error');
+
+        const [bd, cd, td, cold] = await Promise.all([brandsRes.json(), categoriesRes.json(), tagsRes.json(), collectionsRes.json()]);
+
+        const brands      = bd.data   || [];
+        const categories  = cd.data   || [];
+        const tags        = (td.tags?.data || td.data || []);
+        const collections = cold.data || [];
+
+        if (!brands.length || !categories.length) {
+            showToast('Please seed brands and categories first', 'warning');
             return;
         }
-        
-        const brands = brandsData.data;
-        const categories = categoriesData.data;
-        
-        console.log('Brands count:', brands.length);
-        console.log('Categories count:', categories.length);
-        
-        if (brands.length === 0 || categories.length === 0) {
-            showNotification('Please create at least one brand and category first', 'error');
-            return;
+
+        const pick  = arr => arr[Math.floor(Math.random() * arr.length)];
+        const rBrand  = pick(brands);
+        const rCat    = pick(categories);
+
+        // ── TAB 1: DETAILS ──────────────────────────────────
+        const demoProducts = [
+            { name: 'Kipsta Football Size 5',     slug: 'kipsta-football-size-5',     desc: 'Official-size football for training and matches. Durable thermobonded construction.',  short: 'Durable size 5 football for all levels of play.' },
+            { name: 'Kalenji Running Shoes',       slug: 'kalenji-running-shoes-blue', desc: 'Lightweight road running shoes with responsive cushioning and breathable mesh upper.', short: 'Lightweight running shoes for road training.' },
+            { name: 'Domyos Yoga Mat 5mm',         slug: 'domyos-yoga-mat-5mm',        desc: 'Non-slip yoga mat with 5mm cushioning for comfort. Easy to roll and carry.',          short: '5mm non-slip yoga mat for home and studio use.' },
+            { name: 'Quechua Hiking Backpack 30L', slug: 'quechua-hiking-backpack-30l', desc: '30L hiking backpack with rain cover, padded straps and multiple pockets.',            short: '30L hiking backpack with rain cover included.' },
+            { name: 'Artengo Badminton Racket',    slug: 'artengo-badminton-racket',   desc: 'Lightweight aluminium badminton racket for beginners and intermediate players.',       short: 'Aluminium badminton racket for casual play.' },
+        ];
+        const demo = pick(demoProducts);
+
+        const _s = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+        const _c = (id, val) => { const el = document.getElementById(id); if (el) el.checked = val; };
+        const _inst = id => searchableSelectInstances.find(i => i.select === document.getElementById(id));
+
+        _s('productName',             demo.name);
+        _s('productSlug',             demo.slug);
+
+        // Product type — variable for variety
+        _s('productType', 'variable');
+        const typeInst = _inst('productType');
+        if (typeInst) typeInst.setValue('variable');
+
+        // Brand
+        _s('productBrand', rBrand.id);
+        const brandInst = _inst('productBrand');
+        if (brandInst) brandInst.setValue(String(rBrand.id));
+
+        // Descriptions
+        _s('productShortDescription', demo.short);
+        const descEl = document.getElementById('productDescription');
+        if (descEl) {
+            if (typeof $ !== 'undefined' && $(descEl).data('summernote')) {
+                $(descEl).summernote('code', `<p>${demo.desc}</p><ul><li>High quality materials</li><li>Designed for performance</li><li>Available in multiple sizes</li><li>1 year warranty</li></ul>`);
+            } else {
+                descEl.value = demo.desc;
+            }
         }
-        
-        console.log('Filling form fields...');
-        
-        // Fill basic info
-        const productName = document.getElementById('productName');
-        const productSlug = document.getElementById('productSlug');
-        const productSku = document.getElementById('productSku');
-        
-        if (productName) productName.value = 'Premium Wireless Headphones';
-        if (productSlug) productSlug.value = 'premium-wireless-headphones';
-        if (productSku) productSku.value = 'PWH-' + Math.floor(Math.random() * 10000);
-        
-        // Select random brand
-        const randomBrand = brands[Math.floor(Math.random() * brands.length)];
-        console.log('Selected brand:', randomBrand);
-        
-        const brandSelect = document.getElementById('productBrand');
-        if (brandSelect) {
-            brandSelect.value = randomBrand.id;
-            console.log('Brand select value set to:', brandSelect.value);
-            // Update SearchableSelect display
-            updateSearchableSelectDisplay(brandSelect, randomBrand.id);
-        } else {
-            console.error('Brand select element not found!');
+
+        // ── TAB 2: PRICING ──────────────────────────────────
+        _s('productStatus',           'active');
+        const statusInst = _inst('productStatus');
+        if (statusInst) statusInst.setValue('active');
+
+        _s('productAvailability',     'in_stock');
+        const availInst = _inst('productAvailability');
+        if (availInst) availInst.setValue('in_stock');
+
+        _s('productVisibility',       'visible');
+        const visInst = _inst('productVisibility');
+        if (visInst) visInst.setValue('visible');
+
+        _s('productRegularPrice',  '2499.00');
+        _s('productSalePrice',     '1999.00');
+        _s('productCostPrice',     '900.00');
+        _s('productSku',           `${rBrand.name.substring(0,4).toUpperCase()}-${demo.slug.substring(0,6).toUpperCase()}-${Math.floor(1000+Math.random()*9000)}`);
+        _s('productBarcode',       `890${Math.floor(1000000000 + Math.random()*9000000000)}`);
+
+        // Stock
+        _c('productManageStock', true);
+        toggleStockFields();
+        _s('productStockQuantity',      '75');
+        _s('productLowStockThreshold',  '10');
+        _c('productAllowBackorder', false);
+        updateStockBadge();
+
+        // Shipping
+        _s('productWeight', '0.45');
+        _s('productLength', '22');
+        _s('productWidth',  '18');
+        _s('productHeight', '10');
+
+        // ── TAB 3: MEDIA ────────────────────────────────────
+        // (Images require actual file upload — skipped)
+
+        // ── TAB 4: VARIANTS ─────────────────────────────────
+        // Generate demo variants after attributes load
+        setTimeout(() => {
+            productVariants = [
+                { id:null, name:'Red / M',   sku: `${demo.slug.substring(0,4).toUpperCase()}-RED-M-0001`,   price:'1999.00', compare_price:'2499.00', stock_quantity:20, attributes:[{attrId:null,attrName:'Color',valueId:null,valueName:'Red'},{attrId:null,attrName:'Size',valueId:null,valueName:'M'}],   images:[], status:true },
+                { id:null, name:'Blue / L',  sku: `${demo.slug.substring(0,4).toUpperCase()}-BLU-L-0002`,   price:'1999.00', compare_price:'2499.00', stock_quantity:15, attributes:[{attrId:null,attrName:'Color',valueId:null,valueName:'Blue'},{attrId:null,attrName:'Size',valueId:null,valueName:'L'}],  images:[], status:true },
+                { id:null, name:'Black / S', sku: `${demo.slug.substring(0,4).toUpperCase()}-BLK-S-0003`,   price:'1999.00', compare_price:'2499.00', stock_quantity:10, attributes:[{attrId:null,attrName:'Color',valueId:null,valueName:'Black'},{attrId:null,attrName:'Size',valueId:null,valueName:'S'}], images:[], status:true },
+                { id:null, name:'Black / XL',sku: `${demo.slug.substring(0,4).toUpperCase()}-BLK-XL-0004`,  price:'2099.00', compare_price:'2499.00', stock_quantity: 5, attributes:[{attrId:null,attrName:'Color',valueId:null,valueName:'Black'},{attrId:null,attrName:'Size',valueId:null,valueName:'XL'}],images:[], status:true },
+            ];
+            renderVariantsList();
+        }, 200);
+
+        // ── TAB 5: ORGANIZATION ─────────────────────────────
+        // Primary category
+        _s('productPrimaryCategory', rCat.id);
+        const primaryCatInst = _inst('productPrimaryCategory');
+        if (primaryCatInst) primaryCatInst.setValue(String(rCat.id));
+
+        // Tags — pick up to 3 random
+        const tagsSelect = document.getElementById('productTags');
+        if (tagsSelect && tags.length) {
+            const pickedTags = tags.sort(() => 0.5 - Math.random()).slice(0,3);
+            Array.from(tagsSelect.options).forEach(o => { o.selected = pickedTags.some(t => String(t.id) === o.value); });
+            const tagInst = searchableSelectInstances.find(i => i.select === tagsSelect);
+            if (tagInst) tagInst.refresh();
         }
-        
-        // Select random category
-        const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-        console.log('Selected category:', randomCategory);
-        
-        const categorySelect = document.getElementById('productCategory');
-        if (categorySelect) {
-            categorySelect.value = randomCategory.id;
-            console.log('Category select value set to:', categorySelect.value);
-            // Update SearchableSelect display
-            updateSearchableSelectDisplay(categorySelect, randomCategory.id);
-        } else {
-            console.error('Category select element not found!');
+
+        // Collections — pick up to 2 random
+        const colSelect = document.getElementById('productCollections');
+        if (colSelect && collections.length) {
+            const pickedCols = collections.sort(() => 0.5 - Math.random()).slice(0,2);
+            Array.from(colSelect.options).forEach(o => { o.selected = pickedCols.some(c => String(c.id) === o.value); });
+            const colInst = searchableSelectInstances.find(i => i.select === colSelect);
+            if (colInst) colInst.refresh();
         }
-        
-        // Fill pricing
-        const productPrice = document.getElementById('productPrice');
-        const productComparePrice = document.getElementById('productComparePrice');
-        const productCost = document.getElementById('productCost');
-        
-        if (productPrice) productPrice.value = '2999.00';
-        if (productComparePrice) productComparePrice.value = '3999.00';
-        if (productCost) productCost.value = '1500.00';
-        
-        // Fill inventory
-        const productStock = document.getElementById('productStock');
-        const productLowStock = document.getElementById('productLowStock');
-        
-        if (productStock) productStock.value = '50';
-        if (productLowStock) productLowStock.value = '10';
-        
-        // Fill description
-        const descriptionEditor = document.getElementById('productDescription');
-        if (descriptionEditor && typeof $ !== 'undefined' && $(descriptionEditor).data('summernote')) {
-            $(descriptionEditor).summernote('code', '<p>Experience premium sound quality with our wireless headphones. Features include:</p><ul><li>Active Noise Cancellation</li><li>40-hour battery life</li><li>Bluetooth 5.0 connectivity</li><li>Premium leather ear cushions</li></ul>');
-            console.log('Description filled');
-        } else {
-            console.warn('Summernote editor not initialized');
-        }
-        
-        // Fill short description
-        const productShortDescription = document.getElementById('productShortDescription');
-        if (productShortDescription) {
-            productShortDescription.value = 'Premium wireless headphones with active noise cancellation and 40-hour battery life.';
-        }
-        
-        // Fill SEO
-        const productMetaTitle = document.getElementById('productMetaTitle');
-        const productMetaDescription = document.getElementById('productMetaDescription');
-        const productMetaKeywords = document.getElementById('productMetaKeywords');
-        
-        if (productMetaTitle) productMetaTitle.value = 'Premium Wireless Headphones - Best Sound Quality';
-        if (productMetaDescription) productMetaDescription.value = 'Buy premium wireless headphones with active noise cancellation. 40-hour battery, Bluetooth 5.0, and premium comfort.';
-        if (productMetaKeywords) productMetaKeywords.value = 'wireless headphones, noise cancellation, bluetooth headphones, premium audio';
-        
-        // Set status
-        const productStatus = document.getElementById('productStatus');
-        const productFeatured = document.getElementById('productFeatured');
-        
-        if (productStatus) productStatus.checked = true;
-        if (productFeatured) productFeatured.checked = true;
-        
-        console.log('Demo data filled successfully!');
-        showNotification('Demo data filled! Brand: ' + randomBrand.name + ', Category: ' + randomCategory.name, 'success');
-        
-    } catch (error) {
-        console.error('Error filling demo data:', error);
-        console.error('Error stack:', error.stack);
-        showNotification('Error: ' + error.message, 'error');
+
+        // Flags
+        _c('productIsFeatured',   Math.random() > 0.5);
+        _c('productIsNew',        true);
+        _c('productIsBestSeller', Math.random() > 0.7);
+        _c('productIsDigital',    false);
+
+        // ── TAB 6: SEO ──────────────────────────────────────
+        // Auto-generate SEO after filling name/brand/category
+        setTimeout(() => autoGenerateSEO(), 100);
+
+        // ── Done ────────────────────────────────────────────
+        // Switch to Details tab to show filled data
+        switchTab('basic');
+        showToast(`Demo data filled — ${demo.name} | Brand: ${rBrand.name}`, 'success');
+
+    } catch (err) {
+        console.error('fillDemoData error:', err);
+        showToast('Error filling demo data: ' + err.message, 'error');
     }
 }
 
@@ -4877,9 +5065,465 @@ function updateSearchableMultiSelectDisplay(selectElement) {
     }
 }
 
+// ═══════════════════════════════════════════════════════════
+// STOCK / INVENTORY
+// ═══════════════════════════════════════════════════════════
+
+function toggleStockFields() {
+    const checkbox = document.getElementById('productManageStock');
+    const container = document.getElementById('stockFieldsContainer');
+    if (!checkbox || !container) return;
+    container.style.display = checkbox.checked ? 'grid' : 'none';
+    if (checkbox.checked) updateStockBadge();
+}
+
+function updateStockBadge() {
+    const qty       = parseInt(document.getElementById('productStockQuantity')?.value || 0);
+    const threshold = parseInt(document.getElementById('productLowStockThreshold')?.value || 5);
+    const badge     = document.getElementById('stockStatusBadge');
+    const inner     = document.getElementById('stockStatusInner');
+    if (!badge || !inner) return;
+
+    badge.classList.remove('hidden');
+    if (qty <= 0) {
+        inner.className = 'inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-red-100 text-red-700';
+        inner.innerHTML = '🔴 Out of Stock (0 units)';
+    } else if (qty <= threshold) {
+        inner.className = 'inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-orange-100 text-orange-700';
+        inner.innerHTML = `⚠️ Low Stock (${qty} units remaining)`;
+    } else {
+        inner.className = 'inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-green-100 text-green-700';
+        inner.innerHTML = `✅ In Stock (${qty} units)`;
+    }
+}
+
+// ═══════════════════════════════════════════════════════════
+// SEO — Auto Generate + Live Preview + Counters
+// ═══════════════════════════════════════════════════════════
+
+function updateSeoCounter(fieldId, counterId, max) {
+    const field   = document.getElementById(fieldId);
+    const counter = document.getElementById(counterId);
+    const progId  = fieldId === 'productSeoTitle' ? 'seoTitleProgress' : 'seoDescProgress';
+    const prog    = document.getElementById(progId);
+    if (!field || !counter) return;
+
+    const len   = field.value.length;
+    const pct   = Math.min((len / max) * 100, 100);
+    counter.textContent = `${len}/${max}`;
+
+    if (prog) {
+        prog.style.width = pct + '%';
+        if (pct < 60)       prog.className = 'h-full bg-red-400 transition-all duration-300';
+        else if (pct <= 100) prog.className = 'h-full bg-green-500 transition-all duration-300';
+        else                 prog.className = 'h-full bg-orange-400 transition-all duration-300';
+    }
+}
+
+function updateSeoPreview() {
+    const slug  = document.getElementById('productSlug')?.value   || 'product-slug';
+    const title = document.getElementById('productSeoTitle')?.value;
+    const desc  = document.getElementById('productSeoDescription')?.value;
+    const name  = document.getElementById('productName')?.value    || 'Product Title';
+    const appName = 'Decathlon';
+
+    const previewTitle = (title || `${name} | ${appName}`).substring(0, 60);
+    const previewDesc  = (desc  || document.getElementById('productShortDescription')?.value || 'Product description will appear here in Google search results…').substring(0, 160);
+    const previewUrl   = `yoursite.com › products › ${slug || 'product-slug'}`;
+
+    const elUrl   = document.getElementById('seoPreviewUrl');
+    const elTitle = document.getElementById('seoPreviewTitle');
+    const elDesc  = document.getElementById('seoPreviewDesc');
+
+    if (elUrl)   elUrl.textContent   = previewUrl;
+    if (elTitle) elTitle.textContent = previewTitle;
+    if (elDesc)  elDesc.textContent  = previewDesc;
+}
+
+function autoGenerateSEO() {
+    const name        = (document.getElementById('productName')?.value || '').trim();
+    const brandEl     = document.getElementById('productBrand');
+    const brandName   = brandEl?.selectedOptions[0]?.value ? brandEl.selectedOptions[0].text : '';
+    const categoryEl  = document.getElementById('productPrimaryCategory');
+    const categoryName= categoryEl?.selectedOptions[0]?.value ? categoryEl.selectedOptions[0].text : '';
+    const shortDesc   = (document.getElementById('productShortDescription')?.value || '').replace(/<[^>]+>/g,'').trim();
+    const tagsEl      = document.getElementById('productTags');
+    const tagNames    = tagsEl ? Array.from(tagsEl.selectedOptions).map(o => o.text.toLowerCase()) : [];
+    const slug        = document.getElementById('productSlug')?.value || '';
+    const appName     = 'Decathlon';
+
+    if (!name) { showToast('Please enter a product name first', 'warning'); return; }
+
+    // ── SEO Title (max 60) ──────────────────────────────────
+    // Pattern: "ProductName | Brand — Category | Store"
+    let titleParts = [name];
+    if (brandName && brandName !== 'Select Brand') titleParts.push(brandName);
+    if (categoryName && categoryName !== 'Select Primary Category') titleParts.push(categoryName);
+    titleParts.push(appName);
+
+    let seoTitle = titleParts.join(' | ');
+    if (seoTitle.length > 60) {
+        seoTitle = `${name} | ${appName}`;
+    }
+    if (seoTitle.length > 60) {
+        seoTitle = name.substring(0, 57) + '…';
+    }
+
+    // ── SEO Description (max 160) ───────────────────────────
+    let base = shortDesc || name;
+    let parts = [];
+    if (brandName && brandName !== 'Select Brand') parts.push(`by ${brandName}`);
+    if (categoryName && categoryName !== 'Select Primary Category') parts.push(`in ${categoryName}`);
+    parts.push(`at ${appName} India`);
+
+    let seoDesc = `${base}. Shop ${name}${parts.length ? ' ' + parts.join(', ') : ''}. Free delivery on orders above ₹999.`;
+    if (seoDesc.length > 160) seoDesc = seoDesc.substring(0, 157) + '…';
+
+    // ── SEO Keywords ────────────────────────────────────────
+    let keywords = [name.toLowerCase()];
+    if (brandName && brandName !== 'Select Brand') keywords.push(brandName.toLowerCase());
+    if (categoryName && categoryName !== 'Select Primary Category') keywords.push(categoryName.toLowerCase());
+    keywords.push(...tagNames.slice(0, 5));
+    keywords.push(appName.toLowerCase());
+    keywords.push('buy online', 'india');
+
+    // Remove duplicates
+    const uniqueKeywords = [...new Set(keywords)].slice(0, 10);
+
+    // ── Fill fields ─────────────────────────────────────────
+    const titleInput = document.getElementById('productSeoTitle');
+    const descInput  = document.getElementById('productSeoDescription');
+    const kwInput    = document.getElementById('productSeoKeywords');
+
+    if (titleInput) { titleInput.value = seoTitle;                    updateSeoCounter('productSeoTitle', 'seoTitleCount', 60); }
+    if (descInput)  { descInput.value  = seoDesc;                     updateSeoCounter('productSeoDescription', 'seoDescCount', 160); }
+    if (kwInput)    { kwInput.value    = uniqueKeywords.join(', '); }
+
+    updateSeoPreview();
+    showToast('SEO generated successfully', 'success');
+}
+
+// Auto-update preview when user types in name/slug fields
+document.addEventListener('DOMContentLoaded', () => {
+    ['productName', 'productSlug', 'productShortDescription'].forEach(id => {
+        document.getElementById(id)?.addEventListener('input', updateSeoPreview);
+    });
+});
+// ═══════════════════════════════════════════════════════════
+
+let _attrGroups   = [];   // cached groups with their attributes+values
+let _productAttrs = [];   // currently added product attributes [{attributeId, valueId, customValue}]
+
+function openAddAttributeModal() {
+    const modal = document.getElementById('addAttributeModal');
+    if (!modal) return;
+
+    // Reset selects
+    const groupSel = document.getElementById('attrModalGroup');
+    const attrSel  = document.getElementById('attrModalAttribute');
+    const valSel   = document.getElementById('attrModalValue');
+    const customIn = document.getElementById('attrModalCustomValue');
+
+    groupSel.innerHTML = '<option value="">Loading…</option>';
+    attrSel.innerHTML  = '<option value="">— select attribute group first —</option>';
+    valSel.innerHTML   = '<option value="">— select attribute first —</option>';
+    customIn.value     = '';
+    document.getElementById('attrModalValueRow').classList.add('hidden');
+    document.getElementById('attrModalCustomRow').classList.add('hidden');
+
+    modal.classList.remove('hidden');
+
+    // Load groups with attributes & values
+    if (_attrGroups.length === 0) {
+        fetch('/admin/attribute-groups/list?per_page=100&status=1', {
+            credentials: 'same-origin',
+            headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (!data.success) return;
+            // For each group fetch attributes with values
+            const groupIds = data.data.map(g => g.id);
+            return Promise.all(groupIds.map(gid =>
+                fetch(`/admin/attribute-groups/${gid}`, {
+                    credentials: 'same-origin',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+                }).then(r => r.json())
+            )).then(details => {
+                // Also fetch attributes per group
+                return fetch('/admin/attributes/list?per_page=1000&status=1', {
+                    credentials: 'same-origin',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+                }).then(r => r.json()).then(attrData => {
+                    _attrGroups = data.data.map(g => ({
+                        ...g,
+                        attributes: (attrData.data || []).filter(a => a.group_id == g.id)
+                    }));
+                    _populateAttrGroupSelect();
+                });
+            });
+        })
+        .catch(e => console.error('loadAttrGroups error:', e));
+    } else {
+        _populateAttrGroupSelect();
+    }
+}
+
+function _populateAttrGroupSelect() {
+    const groupSel = document.getElementById('attrModalGroup');
+    groupSel.innerHTML = '<option value="">— Select Group —</option>';
+    _attrGroups.forEach(g => {
+        groupSel.innerHTML += `<option value="${g.id}">${g.name}</option>`;
+    });
+}
+
+function onAttrGroupChange(groupId) {
+    const attrSel  = document.getElementById('attrModalAttribute');
+    const valSel   = document.getElementById('attrModalValue');
+    const valRow   = document.getElementById('attrModalValueRow');
+    const customRow= document.getElementById('attrModalCustomRow');
+
+    attrSel.innerHTML  = '<option value="">— Select Attribute —</option>';
+    valSel.innerHTML   = '<option value="">— Select Value —</option>';
+    valRow.classList.add('hidden');
+    customRow.classList.add('hidden');
+
+    if (!groupId) return;
+    const group = _attrGroups.find(g => g.id == groupId);
+    if (!group) return;
+
+    group.attributes.forEach(a => {
+        attrSel.innerHTML += `<option value="${a.id}" data-type="${a.type}">${a.name}</option>`;
+    });
+}
+
+function onAttrAttributeChange(attrId) {
+    const valSel    = document.getElementById('attrModalValue');
+    const valRow    = document.getElementById('attrModalValueRow');
+    const customRow = document.getElementById('attrModalCustomRow');
+
+    valSel.innerHTML = '<option value="">Loading values…</option>';
+    valRow.classList.add('hidden');
+    customRow.classList.add('hidden');
+
+    if (!attrId) return;
+
+    const attrEl   = document.getElementById('attrModalAttribute');
+    const selOpt   = attrEl.options[attrEl.selectedIndex];
+    const attrType = selOpt ? selOpt.dataset.type : '';
+
+    // text / number / boolean → custom input
+    if (['text', 'number', 'boolean'].includes(attrType)) {
+        valSel.innerHTML = '';
+        customRow.classList.remove('hidden');
+        return;
+    }
+
+    // Fetch values for this attribute
+    fetch(`/admin/attribute-values/list?attribute_id=${attrId}&per_page=500&status=1`, {
+        credentials: 'same-origin',
+        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+    })
+    .then(r => r.json())
+    .then(data => {
+        const values = data.data || data.attribute_values?.data || [];
+        if (values.length === 0) {
+            valSel.innerHTML = '<option value="">No values found</option>';
+            valRow.classList.remove('hidden');
+            return;
+        }
+        valSel.innerHTML = '<option value="">— Select Value —</option>';
+        values.forEach(v => {
+            valSel.innerHTML += `<option value="${v.id}">${v.value}</option>`;
+        });
+        valRow.classList.remove('hidden');
+    })
+    .catch(e => {
+        console.error('loadAttrValues error:', e);
+        valSel.innerHTML = '<option value="">Failed to load</option>';
+        valRow.classList.remove('hidden');
+    });
+}
+
+function saveAttributeToProduct() {
+    const groupSel  = document.getElementById('attrModalGroup');
+    const attrSel   = document.getElementById('attrModalAttribute');
+    const valSel    = document.getElementById('attrModalValue');
+    const customIn  = document.getElementById('attrModalCustomValue');
+    const customRow = document.getElementById('attrModalCustomRow');
+
+    const attrId    = attrSel.value;
+    const attrName  = attrSel.options[attrSel.selectedIndex]?.text || '';
+
+    if (!attrId) { showToast('Please select an attribute', 'error'); return; }
+
+    let valueId    = null;
+    let valueName  = '';
+    let customVal  = '';
+
+    if (!customRow.classList.contains('hidden')) {
+        customVal = customIn.value.trim();
+        if (!customVal) { showToast('Please enter a value', 'error'); return; }
+        valueName = customVal;
+    } else {
+        valueId = valSel.value;
+        valueName = valSel.options[valSel.selectedIndex]?.text || '';
+        if (!valueId) { showToast('Please select a value', 'error'); return; }
+    }
+
+    // Check duplicate
+    const exists = _productAttrs.find(a => a.attributeId == attrId &&
+        (valueId ? a.valueId == valueId : a.customValue === customVal));
+    if (exists) { showToast('This attribute+value is already added', 'warning'); return; }
+
+    _productAttrs.push({ attributeId: attrId, attrName, valueId, valueName, customValue: customVal });
+    _renderProductAttrs();
+    closeAddAttributeModal();
+    showToast(`Attribute "${attrName}: ${valueName}" added`, 'success');
+}
+
+function _renderProductAttrs() {
+    const container = document.getElementById('productAttributesList');
+    if (!container) return;
+
+    if (_productAttrs.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-6 text-gray-500 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                <svg class="w-8 h-8 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2
+                             M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                <p class="font-medium text-gray-400">No attributes added yet</p>
+                <p class="text-xs mt-1 text-gray-400">Click "Add Attribute" above to add product specs</p>
+            </div>`;
+        return;
+    }
+
+    container.innerHTML = _productAttrs.map((a, i) => `
+        <div class="flex items-center justify-between px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold text-gray-600 bg-white border border-gray-200 px-2 py-0.5 rounded">
+                    ${a.attrName}
+                </span>
+                <span class="text-xs text-gray-500">:</span>
+                <span class="text-xs text-gray-800 font-medium">${a.valueName}</span>
+            </div>
+            <button type="button" onclick="removeProductAttr(${i})"
+                    class="text-red-400 hover:text-red-600 transition-colors ml-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>`).join('');
+}
+
+function removeProductAttr(index) {
+    _productAttrs.splice(index, 1);
+    _renderProductAttrs();
+}
+
+function closeAddAttributeModal() {
+    document.getElementById('addAttributeModal')?.classList.add('hidden');
+}
+
+// Reset product attributes on form reset
+const _origResetForm = typeof resetForm === 'function' ? resetForm : null;
+
 </script>
 
-<!-- Import Modal -->
+<!-- ── Add Attribute Modal ── -->
+<div id="addAttributeModal"
+     class="hidden fixed inset-0 bg-black bg-opacity-50 z-[200] flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2
+                             M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3"/>
+                </svg>
+                <h3 class="text-base font-semibold text-gray-900">Add Product Attribute</h3>
+            </div>
+            <button type="button" onclick="closeAddAttributeModal()"
+                    class="text-gray-400 hover:text-gray-600 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="px-6 py-5 space-y-4">
+
+            <!-- Step 1: Group -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                    Attribute Group <span class="text-red-500">*</span>
+                </label>
+                <select id="attrModalGroup"
+                        onchange="onAttrGroupChange(this.value)"
+                        class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                               focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                    <option value="">— Select Group —</option>
+                </select>
+            </div>
+
+            <!-- Step 2: Attribute -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                    Attribute <span class="text-red-500">*</span>
+                </label>
+                <select id="attrModalAttribute"
+                        onchange="onAttrAttributeChange(this.value)"
+                        class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                               focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                    <option value="">— Select attribute group first —</option>
+                </select>
+            </div>
+
+            <!-- Step 3a: Value select (for select/multiselect/color) -->
+            <div id="attrModalValueRow" class="hidden">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                    Value <span class="text-red-500">*</span>
+                </label>
+                <select id="attrModalValue"
+                        class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                               focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                    <option value="">— Select Value —</option>
+                </select>
+            </div>
+
+            <!-- Step 3b: Custom value (for text/number/boolean) -->
+            <div id="attrModalCustomRow" class="hidden">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                    Value <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="attrModalCustomValue"
+                       placeholder="e.g. Cotton, 2 Years, Yes…"
+                       class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm
+                              focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+            <button type="button" onclick="closeAddAttributeModal()"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300
+                           rounded-lg hover:bg-gray-50 transition-colors">
+                Cancel
+            </button>
+            <button type="button" onclick="saveAttributeToProduct()"
+                    class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg
+                           hover:bg-green-700 transition-colors">
+                Add Attribute
+            </button>
+        </div>
+    </div>
+</div>
 <div id="importModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">

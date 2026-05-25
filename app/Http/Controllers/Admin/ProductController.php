@@ -78,45 +78,74 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|unique:products,slug',
-            'sku_prefix' => 'nullable|string|max:50',
-            'brand_id' => 'nullable|exists:brands,id',
-            'category_id' => 'nullable|exists:categories,id',
-            'short_description' => 'nullable|string|max:500',
-            'description' => 'nullable|string',
-            'product_type' => 'required|in:simple,variable,digital,service',
-            'status' => 'required|in:draft,active,inactive',
-            'availability_status' => 'nullable|in:in_stock,out_of_stock,pre_order,backorder',
-            'available_date' => 'nullable|date|after:today',
-            'published_at' => 'nullable|date',
-            'unpublished_at' => 'nullable|date|after:published_at',
-            'visibility' => 'nullable|in:visible,hidden,catalog_only,search_only',
-            'is_digital' => 'boolean',
-            'download_url' => 'nullable|string|max:500',
-            'download_limit' => 'nullable|integer|min:0',
-            'is_featured' => 'boolean',
-            'is_new' => 'boolean',
-            'is_best_seller' => 'boolean',
-            'weight' => 'nullable|numeric|min:0',
-            'length' => 'nullable|numeric|min:0',
-            'width' => 'nullable|numeric|min:0',
-            'height' => 'nullable|numeric|min:0',
-            'seo_title' => 'nullable|string|max:255',
-            'seo_description' => 'nullable|string|max:500',
-            'seo_keywords' => 'nullable|string|max:255',
-            'tags' => 'nullable|array',
-            'tags.*' => 'string|max:50',
-            'videos' => 'nullable|array',
-            'videos.*.title' => 'nullable|string|max:255',
-            'videos.*.provider' => 'required_with:videos|in:youtube,vimeo,direct',
-            'videos.*.video_url' => 'required_with:videos|string|max:500',
-            'videos.*.video_id' => 'nullable|string|max:100',
-            'videos.*.thumbnail_url' => 'nullable|string|max:500',
-            'videos.*.is_featured' => 'nullable|boolean',
-            'faqs' => 'nullable|array',
-            'faqs.*.question' => 'required_with:faqs|string|max:500',
-            'faqs.*.answer' => 'required_with:faqs|string',
+            // ── Required ──────────────────────────────
+            'name'                  => 'required|string|max:255',
+            'product_type'          => 'required|in:simple,variable,digital,service',
+            'status'                => 'required|in:draft,active,inactive',
+            // ── Optional / nullable ────────────────────
+            'slug'                  => 'nullable|string|unique:products,slug',
+            'sku_prefix'            => 'nullable|string|max:50',
+            'brand_id'              => 'nullable|exists:brands,id',
+            'category_id'           => 'nullable|exists:categories,id',
+            'short_description'     => 'nullable|string|max:500',
+            'description'           => 'nullable|string',
+            'availability_status'   => 'nullable|in:in_stock,out_of_stock,pre_order,backorder',
+            'available_date'        => 'nullable|date',
+            'published_at'          => 'nullable|date',
+            'unpublished_at'        => 'nullable|date',
+            'visibility'            => 'nullable|in:visible,hidden,catalog_only,search_only',
+            // ── Booleans ──────────────────────────────
+            'is_digital'            => 'boolean',
+            'is_featured'           => 'boolean',
+            'is_new'                => 'boolean',
+            'is_best_seller'        => 'boolean',
+            'manage_stock'          => 'boolean',
+            'allow_backorder'       => 'boolean',
+            // ── Digital ────────────────────────────────
+            'download_url'          => 'nullable|string|max:500',
+            'download_limit'        => 'nullable|integer|min:0',
+            // ── Stock ──────────────────────────────────
+            'stock_quantity'        => 'nullable|integer|min:0',
+            'low_stock_threshold'   => 'nullable|integer|min:0',
+            // ── Pricing ────────────────────────────────
+            'regular_price'         => 'nullable|numeric|min:0',
+            'sale_price'            => 'nullable|numeric|min:0',
+            'cost_price'            => 'nullable|numeric|min:0',
+            'barcode'               => 'nullable|string|max:100',
+            // ── Shipping ───────────────────────────────
+            'weight'                => 'nullable|numeric|min:0',
+            'length'                => 'nullable|numeric|min:0',
+            'width'                 => 'nullable|numeric|min:0',
+            'height'                => 'nullable|numeric|min:0',
+            // ── SEO ────────────────────────────────────
+            'seo_title'             => 'nullable|string|max:255',
+            'seo_description'       => 'nullable|string|max:500',
+            'seo_keywords'          => 'nullable|string|max:500',
+            // ── Relations (arrays) ─────────────────────
+            'tags'                  => 'nullable|array',
+            'tags.*'                => 'integer|exists:product_tags,id',
+            'categories'            => 'nullable|array',
+            'categories.*'          => 'integer|exists:categories,id',
+            'collections'           => 'nullable|array',
+            'collections.*'         => 'integer|exists:collections,id',
+            // ── Videos ────────────────────────────────
+            'videos'                => 'nullable|array',
+            'videos.*.title'        => 'nullable|string|max:255',
+            'videos.*.provider'     => 'required_with:videos|in:youtube,vimeo,direct',
+            'videos.*.video_url'    => 'required_with:videos|string|max:500',
+            'videos.*.video_id'     => 'nullable|string|max:100',
+            'videos.*.thumbnail_url'=> 'nullable|string|max:500',
+            'videos.*.is_featured'  => 'nullable|boolean',
+            // ── FAQs ───────────────────────────────────
+            'faqs'                  => 'nullable|array',
+            'faqs.*.question'       => 'required_with:faqs|string|max:500',
+            'faqs.*.answer'         => 'required_with:faqs|string',
+            // ── Variants ───────────────────────────────
+            'variants'              => 'nullable|array',
+            'variants.*.sku'        => 'nullable|string|max:100',
+            'variants.*.price'      => 'nullable|numeric|min:0',
+            'variants.*.stock_quantity' => 'nullable|integer|min:0',
+            'variants.*.compare_price'  => 'nullable|numeric|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -128,78 +157,92 @@ class ProductController extends Controller
 
         DB::beginTransaction();
         try {
-            $data = $request->all();
+            $data = $request->except(['videos', 'faqs', 'tags', 'categories', 'collections', 'variants']);
             $data['created_by'] = auth()->id();
-            
-            if (empty($data['slug']) || trim($data['slug']) === '') {
-                unset($data['slug']);
+
+            if (empty($data['slug'])) unset($data['slug']);
+
+            // These are variant-level fields, not product-level — remove them
+            foreach (['regular_price', 'sale_price', 'cost_price', 'price', 'compare_price', 'barcode'] as $f) {
+                unset($data[$f]);
             }
 
-            // Remove videos and faqs from main data
-            $videos = $data['videos'] ?? [];
-            $faqs = $data['faqs'] ?? [];
-            unset($data['videos'], $data['faqs']);
+            // Remove stock fields if columns don't exist yet (migration pending)
+            $stockColumns = ['manage_stock', 'stock_quantity', 'low_stock_threshold', 'allow_backorder'];
+            $hasStockColumns = \Illuminate\Support\Facades\Schema::hasColumn('products', 'manage_stock');
+            if (!$hasStockColumns) {
+                foreach ($stockColumns as $col) unset($data[$col]);
+            }
 
             $product = Product::create($data);
 
-            // Handle categories (multiple)
-            if ($request->has('category_ids') && is_array($request->category_ids)) {
-                $product->categories()->sync($request->category_ids);
+            // Categories
+            $catIds = array_filter((array)$request->input('categories', []));
+            if ($request->filled('category_id')) $catIds[] = $request->category_id;
+            if (!empty($catIds)) $product->categories()->sync(array_unique($catIds));
+
+            // Tags (array of IDs)
+            $tagIds = array_filter((array)$request->input('tags', []));
+            if (!empty($tagIds)) $product->tags()->sync($tagIds);
+
+            // Collections
+            $collectionIds = array_filter((array)$request->input('collections', []));
+            if (!empty($collectionIds)) $product->collections()->sync($collectionIds);
+
+            // Videos
+            foreach ((array)$request->input('videos', []) as $i => $v) {
+                $product->videos()->create([
+                    'title'         => $v['title']         ?? null,
+                    'provider'      => $v['provider'],
+                    'video_url'     => $v['video_url'],
+                    'video_id'      => $v['video_id']       ?? null,
+                    'thumbnail_url' => $v['thumbnail_url']  ?? null,
+                    'is_featured'   => $v['is_featured']    ?? false,
+                    'sort_order'    => $i,
+                    'status'        => true,
+                ]);
             }
 
-            // Handle tags
-            if ($request->has('tags') && is_array($request->tags)) {
-                $product->syncTags($request->tags);
+            // FAQs
+            foreach ((array)$request->input('faqs', []) as $i => $f) {
+                $product->faqs()->create([
+                    'question'   => $f['question'],
+                    'answer'     => $f['answer'],
+                    'sort_order' => $i,
+                    'status'     => true,
+                ]);
             }
 
-            // Handle videos
-            if (!empty($videos)) {
-                foreach ($videos as $index => $videoData) {
-                    $product->videos()->create([
-                        'title' => $videoData['title'] ?? null,
-                        'provider' => $videoData['provider'],
-                        'video_url' => $videoData['video_url'],
-                        'video_id' => $videoData['video_id'] ?? null,
-                        'thumbnail_url' => $videoData['thumbnail_url'] ?? null,
-                        'is_featured' => $videoData['is_featured'] ?? false,
-                        'sort_order' => $index,
-                        'status' => true,
-                    ]);
+            // Variants
+            foreach ((array)$request->input('variants', []) as $v) {
+                if (empty($v['sku']) && empty($v['price'])) continue;
+                $variantData = [
+                    'sku'           => $v['sku']           ?? null,
+                    'price'         => $v['price']         ?? ($v['regular_price'] ?? 0),
+                    'compare_price' => $v['compare_price'] ?? ($v['sale_price'] ?? null),
+                    'cost_price'    => $v['cost_price']    ?? null,
+                    'status'        => true,
+                ];
+                // Only add stock fields if migration ran
+                if (\Illuminate\Support\Facades\Schema::hasColumn('product_variants', 'stock_quantity')) {
+                    $variantData['stock_quantity']  = $v['stock_quantity']  ?? 0;
+                    $variantData['manage_stock']    = $v['manage_stock']    ?? true;
+                    $variantData['allow_backorder'] = $v['allow_backorder'] ?? false;
                 }
+                $product->variants()->create($variantData);
             }
 
-            // Handle FAQs
-            if (!empty($faqs)) {
-                foreach ($faqs as $index => $faqData) {
-                    $product->faqs()->create([
-                        'question' => $faqData['question'],
-                        'answer' => $faqData['answer'],
-                        'sort_order' => $index,
-                        'status' => true,
-                    ]);
-                }
-            }
-
-            \App\Models\ActivityLog::log(
-                'created',
-                'products',
-                "Created product: {$product->name}",
-                ['product_id' => $product->id]
-            );
-
+            \App\Models\ActivityLog::log('created', 'products', "Created product: {$product->name}", ['product_id' => $product->id]);
             DB::commit();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Product created successfully',
-                'data' => $product->load(['brand', 'category', 'categories', 'videos', 'faqs'])
+                'data'    => $product->load(['brand', 'category', 'categories', 'videos', 'faqs', 'variants']),
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to create product: ' . $e->getMessage()
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Failed to create product: ' . $e->getMessage()], 500);
         }
     }
 
@@ -248,45 +291,61 @@ class ProductController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|unique:products,slug,' . $id,
-            'sku_prefix' => 'nullable|string|max:50',
-            'brand_id' => 'nullable|exists:brands,id',
-            'category_id' => 'nullable|exists:categories,id',
-            'short_description' => 'nullable|string|max:500',
-            'description' => 'nullable|string',
-            'product_type' => 'required|in:simple,variable,digital,service',
-            'status' => 'required|in:draft,active,inactive',
-            'availability_status' => 'nullable|in:in_stock,out_of_stock,pre_order,backorder',
-            'available_date' => 'nullable|date|after:today',
-            'published_at' => 'nullable|date',
-            'unpublished_at' => 'nullable|date|after:published_at',
-            'visibility' => 'nullable|in:visible,hidden,catalog_only,search_only',
-            'is_digital' => 'boolean',
-            'download_url' => 'nullable|string|max:500',
-            'download_limit' => 'nullable|integer|min:0',
-            'is_featured' => 'boolean',
-            'is_new' => 'boolean',
-            'is_best_seller' => 'boolean',
-            'weight' => 'nullable|numeric|min:0',
-            'length' => 'nullable|numeric|min:0',
-            'width' => 'nullable|numeric|min:0',
-            'height' => 'nullable|numeric|min:0',
-            'seo_title' => 'nullable|string|max:255',
-            'seo_description' => 'nullable|string|max:500',
-            'seo_keywords' => 'nullable|string|max:255',
-            'tags' => 'nullable|array',
-            'tags.*' => 'string|max:50',
-            'videos' => 'nullable|array',
-            'videos.*.title' => 'nullable|string|max:255',
-            'videos.*.provider' => 'required_with:videos|in:youtube,vimeo,direct',
-            'videos.*.video_url' => 'required_with:videos|string|max:500',
-            'videos.*.video_id' => 'nullable|string|max:100',
-            'videos.*.thumbnail_url' => 'nullable|string|max:500',
-            'videos.*.is_featured' => 'nullable|boolean',
-            'faqs' => 'nullable|array',
-            'faqs.*.question' => 'required_with:faqs|string|max:500',
-            'faqs.*.answer' => 'required_with:faqs|string',
+            'name'                  => 'required|string|max:255',
+            'product_type'          => 'required|in:simple,variable,digital,service',
+            'status'                => 'required|in:draft,active,inactive',
+            'slug'                  => 'nullable|string|unique:products,slug,' . $id,
+            'sku_prefix'            => 'nullable|string|max:50',
+            'brand_id'              => 'nullable|exists:brands,id',
+            'category_id'           => 'nullable|exists:categories,id',
+            'short_description'     => 'nullable|string|max:500',
+            'description'           => 'nullable|string',
+            'availability_status'   => 'nullable|in:in_stock,out_of_stock,pre_order,backorder',
+            'available_date'        => 'nullable|date',
+            'published_at'          => 'nullable|date',
+            'unpublished_at'        => 'nullable|date',
+            'visibility'            => 'nullable|in:visible,hidden,catalog_only,search_only',
+            'is_digital'            => 'boolean',
+            'is_featured'           => 'boolean',
+            'is_new'                => 'boolean',
+            'is_best_seller'        => 'boolean',
+            'manage_stock'          => 'boolean',
+            'allow_backorder'       => 'boolean',
+            'download_url'          => 'nullable|string|max:500',
+            'download_limit'        => 'nullable|integer|min:0',
+            'stock_quantity'        => 'nullable|integer|min:0',
+            'low_stock_threshold'   => 'nullable|integer|min:0',
+            'regular_price'         => 'nullable|numeric|min:0',
+            'sale_price'            => 'nullable|numeric|min:0',
+            'cost_price'            => 'nullable|numeric|min:0',
+            'barcode'               => 'nullable|string|max:100',
+            'weight'                => 'nullable|numeric|min:0',
+            'length'                => 'nullable|numeric|min:0',
+            'width'                 => 'nullable|numeric|min:0',
+            'height'                => 'nullable|numeric|min:0',
+            'seo_title'             => 'nullable|string|max:255',
+            'seo_description'       => 'nullable|string|max:500',
+            'seo_keywords'          => 'nullable|string|max:500',
+            'tags'                  => 'nullable|array',
+            'tags.*'                => 'integer|exists:product_tags,id',
+            'categories'            => 'nullable|array',
+            'categories.*'          => 'integer|exists:categories,id',
+            'collections'           => 'nullable|array',
+            'collections.*'         => 'integer|exists:collections,id',
+            'videos'                => 'nullable|array',
+            'videos.*.title'        => 'nullable|string|max:255',
+            'videos.*.provider'     => 'required_with:videos|in:youtube,vimeo,direct',
+            'videos.*.video_url'    => 'required_with:videos|string|max:500',
+            'videos.*.video_id'     => 'nullable|string|max:100',
+            'videos.*.thumbnail_url'=> 'nullable|string|max:500',
+            'videos.*.is_featured'  => 'nullable|boolean',
+            'faqs'                  => 'nullable|array',
+            'faqs.*.question'       => 'required_with:faqs|string|max:500',
+            'faqs.*.answer'         => 'required_with:faqs|string',
+            'variants'              => 'nullable|array',
+            'variants.*.sku'        => 'nullable|string|max:100',
+            'variants.*.price'      => 'nullable|numeric|min:0',
+            'variants.*.stock_quantity' => 'nullable|integer|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -298,79 +357,94 @@ class ProductController extends Controller
 
         DB::beginTransaction();
         try {
-            $data = $request->all();
-            
-            if (empty($data['slug']) || trim($data['slug']) === '') {
-                unset($data['slug']);
+            $data = $request->except(['videos', 'faqs', 'tags', 'categories', 'collections', 'variants']);
+
+            if (empty($data['slug'])) unset($data['slug']);
+
+            // These are variant-level fields, not product-level — remove them
+            foreach (['regular_price', 'sale_price', 'cost_price', 'price', 'compare_price', 'barcode'] as $f) {
+                unset($data[$f]);
             }
 
-            // Remove videos and faqs from main data
-            $videos = $data['videos'] ?? [];
-            $faqs = $data['faqs'] ?? [];
-            unset($data['videos'], $data['faqs']);
+            // Remove stock fields if columns don't exist yet (migration pending)
+            $hasStockColumns = \Illuminate\Support\Facades\Schema::hasColumn('products', 'manage_stock');
+            if (!$hasStockColumns) {
+                foreach (['manage_stock', 'stock_quantity', 'low_stock_threshold', 'allow_backorder'] as $col) {
+                    unset($data[$col]);
+                }
+            }
 
             $product->update($data);
 
-            // Handle categories (multiple)
-            if ($request->has('category_ids') && is_array($request->category_ids)) {
-                $product->categories()->sync($request->category_ids);
-            }
+            // Categories
+            $catIds = array_filter((array)$request->input('categories', []));
+            if ($request->filled('category_id')) $catIds[] = $request->category_id;
+            $product->categories()->sync(array_unique($catIds));
 
-            // Handle tags
-            if ($request->has('tags') && is_array($request->tags)) {
-                $product->syncTags($request->tags);
-            }
+            // Tags
+            $tagIds = array_filter((array)$request->input('tags', []));
+            $product->tags()->sync($tagIds);
 
-            // Handle videos - delete old and create new
+            // Collections
+            $collectionIds = array_filter((array)$request->input('collections', []));
+            $product->collections()->sync($collectionIds);
+
+            // Videos — replace all
             $product->videos()->delete();
-            if (!empty($videos)) {
-                foreach ($videos as $index => $videoData) {
-                    $product->videos()->create([
-                        'title' => $videoData['title'] ?? null,
-                        'provider' => $videoData['provider'],
-                        'video_url' => $videoData['video_url'],
-                        'video_id' => $videoData['video_id'] ?? null,
-                        'thumbnail_url' => $videoData['thumbnail_url'] ?? null,
-                        'is_featured' => $videoData['is_featured'] ?? false,
-                        'sort_order' => $index,
-                        'status' => true,
-                    ]);
-                }
+            foreach ((array)$request->input('videos', []) as $i => $v) {
+                $product->videos()->create([
+                    'title'         => $v['title']         ?? null,
+                    'provider'      => $v['provider'],
+                    'video_url'     => $v['video_url'],
+                    'video_id'      => $v['video_id']       ?? null,
+                    'thumbnail_url' => $v['thumbnail_url']  ?? null,
+                    'is_featured'   => $v['is_featured']    ?? false,
+                    'sort_order'    => $i,
+                    'status'        => true,
+                ]);
             }
 
-            // Handle FAQs - delete old and create new
+            // FAQs — replace all
             $product->faqs()->delete();
-            if (!empty($faqs)) {
-                foreach ($faqs as $index => $faqData) {
-                    $product->faqs()->create([
-                        'question' => $faqData['question'],
-                        'answer' => $faqData['answer'],
-                        'sort_order' => $index,
-                        'status' => true,
-                    ]);
-                }
+            foreach ((array)$request->input('faqs', []) as $i => $f) {
+                $product->faqs()->create([
+                    'question'   => $f['question'],
+                    'answer'     => $f['answer'],
+                    'sort_order' => $i,
+                    'status'     => true,
+                ]);
             }
 
-            \App\Models\ActivityLog::log(
-                'updated',
-                'products',
-                "Updated product: {$product->name}",
-                ['product_id' => $product->id]
-            );
+            // Variants — replace all
+            $product->variants()->delete();
+            foreach ((array)$request->input('variants', []) as $v) {
+                if (empty($v['sku']) && empty($v['price'])) continue;
+                $variantData = [
+                    'sku'           => $v['sku']           ?? null,
+                    'price'         => $v['price']         ?? ($v['regular_price'] ?? 0),
+                    'compare_price' => $v['compare_price'] ?? ($v['sale_price'] ?? null),
+                    'cost_price'    => $v['cost_price']    ?? null,
+                    'status'        => true,
+                ];
+                if (\Illuminate\Support\Facades\Schema::hasColumn('product_variants', 'stock_quantity')) {
+                    $variantData['stock_quantity']  = $v['stock_quantity']  ?? 0;
+                    $variantData['manage_stock']    = $v['manage_stock']    ?? true;
+                    $variantData['allow_backorder'] = $v['allow_backorder'] ?? false;
+                }
+                $product->variants()->create($variantData);
+            }
 
+            \App\Models\ActivityLog::log('updated', 'products', "Updated product: {$product->name}", ['product_id' => $product->id]);
             DB::commit();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Product updated successfully',
-                'data' => $product->load(['brand', 'category', 'categories', 'videos', 'faqs'])
+                'data'    => $product->load(['brand', 'category', 'categories', 'videos', 'faqs', 'variants']),
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to update product: ' . $e->getMessage()
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Failed to update product: ' . $e->getMessage()], 500);
         }
     }
 

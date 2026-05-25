@@ -41,7 +41,7 @@ class CategoryController extends Controller
 
         // Filter by status
         if ($request->filled('status')) {
-            $query->where('is_active', $request->status);
+            $query->where('is_active', (bool)(int)$request->status);
         }
 
         // Pagination

@@ -1,5 +1,5 @@
 <!-- Topbar -->
-<header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm">
+<header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm flex-shrink-0">
     <!-- Left: Mobile Menu + Breadcrumb -->
     <div class="flex items-center gap-4">
         <button onclick="toggleSidebar()" class="lg:hidden text-gray-500 hover:text-gray-700 p-2 hover:bg-gray-100 rounded-lg transition-colors">

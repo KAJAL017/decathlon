@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use App\Models\Setting;
 
 class ImageKitService
 {
@@ -13,9 +14,10 @@ class ImageKitService
 
     public function __construct()
     {
-        $this->publicKey = config('imagekit.public_key');
-        $this->privateKey = config('imagekit.private_key');
-        $this->urlEndpoint = config('imagekit.url_endpoint');
+        // DB first, then .env fallback
+        $this->publicKey   = Setting::get('imagekit_public_key')   ?: config('imagekit.public_key');
+        $this->privateKey  = Setting::get('imagekit_private_key')  ?: config('imagekit.private_key');
+        $this->urlEndpoint = Setting::get('imagekit_url_endpoint') ?: config('imagekit.url_endpoint');
     }
 
     /**

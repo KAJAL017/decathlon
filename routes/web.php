@@ -22,8 +22,12 @@ Route::get('/admin/login', [AuthController::class, 'showLogin'])->name('admin.lo
 Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login.post');
 Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
+// ── All admin routes protected by AdminAuth middleware ──────────
+Route::middleware(['admin.auth'])->group(function () {
+
 // Admin Dashboard
 Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+Route::get('/admin/dashboard/stats', [DashboardController::class, 'stats'])->name('admin.dashboard.stats');
 
 // Admin Users Management
 Route::get('/admin/admin-users', [AdminUserController::class, 'index'])->name('admin.users.index');
@@ -136,6 +140,76 @@ Route::post('/admin/products/{id}/duplicate', [App\Http\Controllers\Admin\Produc
 Route::get('/admin/products/{id}/related/{type}', [App\Http\Controllers\Admin\ProductController::class, 'getRelatedProducts'])->name('admin.products.related.get');
 Route::post('/admin/products/{id}/related', [App\Http\Controllers\Admin\ProductController::class, 'syncRelatedProducts'])->name('admin.products.related.sync');
 
+// Email Campaigns
+Route::get('/admin/email-campaigns', [App\Http\Controllers\Admin\EmailCampaignController::class, 'index'])->name('admin.email-campaigns.index');
+Route::get('/admin/email-campaigns/list', [App\Http\Controllers\Admin\EmailCampaignController::class, 'list'])->name('admin.email-campaigns.list');
+Route::post('/admin/email-campaigns', [App\Http\Controllers\Admin\EmailCampaignController::class, 'store'])->name('admin.email-campaigns.store');
+Route::post('/admin/email-campaigns/bulk-action', [App\Http\Controllers\Admin\EmailCampaignController::class, 'bulkAction'])->name('admin.email-campaigns.bulk');
+Route::get('/admin/email-campaigns/{id}', [App\Http\Controllers\Admin\EmailCampaignController::class, 'show'])->name('admin.email-campaigns.show');
+Route::put('/admin/email-campaigns/{id}', [App\Http\Controllers\Admin\EmailCampaignController::class, 'update'])->name('admin.email-campaigns.update');
+Route::delete('/admin/email-campaigns/{id}', [App\Http\Controllers\Admin\EmailCampaignController::class, 'destroy'])->name('admin.email-campaigns.destroy');
+Route::post('/admin/email-campaigns/{id}/toggle-status', [App\Http\Controllers\Admin\EmailCampaignController::class, 'toggleStatus'])->name('admin.email-campaigns.toggle');
+Route::post('/admin/email-campaigns/{id}/duplicate', [App\Http\Controllers\Admin\EmailCampaignController::class, 'duplicate'])->name('admin.email-campaigns.duplicate');
+
+// Stock Management
+Route::get('/admin/stock', [App\Http\Controllers\Admin\StockController::class, 'index'])->name('admin.stock.index');
+Route::get('/admin/stock/list', [App\Http\Controllers\Admin\StockController::class, 'list'])->name('admin.stock.list');
+Route::get('/admin/stock/low-stock', [App\Http\Controllers\Admin\StockController::class, 'getLowStock'])->name('admin.stock.low');
+Route::get('/admin/stock/low', function() { return redirect()->route('admin.stock.index', ['tab' => 'low']); })->name('admin.stock.low.page');
+Route::get('/admin/stock/history/{productId}', [App\Http\Controllers\Admin\StockController::class, 'getStockHistory'])->name('admin.stock.history');
+Route::post('/admin/stock', [App\Http\Controllers\Admin\StockController::class, 'store'])->name('admin.stock.store');
+Route::get('/admin/stock/{id}', [App\Http\Controllers\Admin\StockController::class, 'show'])->name('admin.stock.show');
+Route::post('/admin/stock/adjust', [App\Http\Controllers\Admin\StockController::class, 'adjustStock'])->name('admin.stock.adjust');
+
+// Reports & Analytics
+Route::get('/admin/reports', [App\Http\Controllers\Admin\ReportController::class, 'index'])->name('admin.reports.index');
+Route::get('/admin/reports/overview', [App\Http\Controllers\Admin\ReportController::class, 'overview'])->name('admin.reports.overview');
+Route::get('/admin/reports/products', [App\Http\Controllers\Admin\ReportController::class, 'products'])->name('admin.reports.products');
+Route::get('/admin/reports/inventory', [App\Http\Controllers\Admin\ReportController::class, 'inventory'])->name('admin.reports.inventory');
+Route::get('/admin/reports/reviews', [App\Http\Controllers\Admin\ReportController::class, 'reviews'])->name('admin.reports.reviews');
+Route::get('/admin/reports/marketing', [App\Http\Controllers\Admin\ReportController::class, 'marketing'])->name('admin.reports.marketing');
+Route::get('/admin/reports/customers', [App\Http\Controllers\Admin\ReportController::class, 'customers'])->name('admin.reports.customers');
+Route::get('/admin/reports/catalog', [App\Http\Controllers\Admin\ReportController::class, 'catalog'])->name('admin.reports.catalog');
+Route::get('/admin/reports/activity', [App\Http\Controllers\Admin\ReportController::class, 'activity'])->name('admin.reports.activity');
+
+// Settings
+Route::get('/admin/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('admin.settings.index');
+Route::post('/admin/settings/{group}', [App\Http\Controllers\Admin\SettingController::class, 'save'])->name('admin.settings.save');
+Route::get('/admin/settings/{group}', [App\Http\Controllers\Admin\SettingController::class, 'get'])->name('admin.settings.get');
+
+// Reviews Management
+Route::get('/admin/reviews', [App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('admin.reviews.index');
+Route::get('/admin/reviews/list', [App\Http\Controllers\Admin\ReviewController::class, 'list'])->name('admin.reviews.list');
+Route::post('/admin/reviews', [App\Http\Controllers\Admin\ReviewController::class, 'store'])->name('admin.reviews.store');
+Route::post('/admin/reviews/bulk-action', [App\Http\Controllers\Admin\ReviewController::class, 'bulkAction'])->name('admin.reviews.bulk');
+Route::get('/admin/reviews/{id}', [App\Http\Controllers\Admin\ReviewController::class, 'show'])->name('admin.reviews.show');
+Route::put('/admin/reviews/{id}', [App\Http\Controllers\Admin\ReviewController::class, 'update'])->name('admin.reviews.update');
+Route::delete('/admin/reviews/{id}', [App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('admin.reviews.destroy');
+Route::post('/admin/reviews/{id}/reply', [App\Http\Controllers\Admin\ReviewController::class, 'reply'])->name('admin.reviews.reply');
+Route::post('/admin/reviews/{id}/toggle-featured', [App\Http\Controllers\Admin\ReviewController::class, 'toggleFeatured'])->name('admin.reviews.featured');
+Route::post('/admin/reviews/{id}/toggle-status', [App\Http\Controllers\Admin\ReviewController::class, 'toggleStatus'])->name('admin.reviews.toggle');
+
+// Coupons Management
+Route::get('/admin/coupons', [App\Http\Controllers\Admin\CouponController::class, 'index'])->name('admin.coupons.index');
+Route::get('/admin/coupons/list', [App\Http\Controllers\Admin\CouponController::class, 'list'])->name('admin.coupons.list');
+Route::get('/admin/coupons/generate-code', [App\Http\Controllers\Admin\CouponController::class, 'generateCode'])->name('admin.coupons.generate');
+Route::post('/admin/coupons', [App\Http\Controllers\Admin\CouponController::class, 'store'])->name('admin.coupons.store');
+Route::get('/admin/coupons/{id}', [App\Http\Controllers\Admin\CouponController::class, 'show'])->name('admin.coupons.show');
+Route::put('/admin/coupons/{id}', [App\Http\Controllers\Admin\CouponController::class, 'update'])->name('admin.coupons.update');
+Route::delete('/admin/coupons/{id}', [App\Http\Controllers\Admin\CouponController::class, 'destroy'])->name('admin.coupons.destroy');
+Route::post('/admin/coupons/{id}/toggle-status', [App\Http\Controllers\Admin\CouponController::class, 'toggleStatus'])->name('admin.coupons.toggle');
+Route::post('/admin/coupons/bulk-action', [App\Http\Controllers\Admin\CouponController::class, 'bulkAction'])->name('admin.coupons.bulk');
+
+// Promotions Management
+Route::get('/admin/promotions', [App\Http\Controllers\Admin\PromotionController::class, 'index'])->name('admin.promotions.index');
+Route::get('/admin/promotions/list', [App\Http\Controllers\Admin\PromotionController::class, 'list'])->name('admin.promotions.list');
+Route::post('/admin/promotions', [App\Http\Controllers\Admin\PromotionController::class, 'store'])->name('admin.promotions.store');
+Route::get('/admin/promotions/{id}', [App\Http\Controllers\Admin\PromotionController::class, 'show'])->name('admin.promotions.show');
+Route::put('/admin/promotions/{id}', [App\Http\Controllers\Admin\PromotionController::class, 'update'])->name('admin.promotions.update');
+Route::delete('/admin/promotions/{id}', [App\Http\Controllers\Admin\PromotionController::class, 'destroy'])->name('admin.promotions.destroy');
+Route::post('/admin/promotions/{id}/toggle-status', [App\Http\Controllers\Admin\PromotionController::class, 'toggleStatus'])->name('admin.promotions.toggle');
+Route::post('/admin/promotions/bulk-action', [App\Http\Controllers\Admin\PromotionController::class, 'bulkAction'])->name('admin.promotions.bulk');
+
 // Collections Management
 Route::get('/admin/collections', [App\Http\Controllers\Admin\CollectionController::class, 'index'])->name('admin.collections.index');
 Route::get('/admin/collections/list', [App\Http\Controllers\Admin\CollectionController::class, 'list'])->name('admin.collections.list');
@@ -146,7 +220,90 @@ Route::delete('/admin/collections/{id}', [App\Http\Controllers\Admin\CollectionC
 Route::post('/admin/collections/{id}/toggle-status', [App\Http\Controllers\Admin\CollectionController::class, 'toggleStatus'])->name('admin.collections.toggle');
 Route::post('/admin/collections/bulk-action', [App\Http\Controllers\Admin\CollectionController::class, 'bulkAction'])->name('admin.collections.bulk');
 
+// System Tools
+Route::get('/admin/system-tools', [App\Http\Controllers\Admin\SystemToolsController::class, 'index'])->name('admin.system-tools.index');
+Route::post('/admin/system-tools/clear-cache', [App\Http\Controllers\Admin\SystemToolsController::class, 'clearCache'])->name('admin.system-tools.clear-cache');
+Route::get('/admin/system-tools/system-info', [App\Http\Controllers\Admin\SystemToolsController::class, 'systemInfo'])->name('admin.system-tools.info');
+Route::get('/admin/system-tools/logs', [App\Http\Controllers\Admin\SystemToolsController::class, 'getLogs'])->name('admin.system-tools.logs');
+Route::post('/admin/system-tools/clear-logs', [App\Http\Controllers\Admin\SystemToolsController::class, 'clearLogs'])->name('admin.system-tools.clear-logs');
+
+// AI Tools
+Route::get('/admin/ai-tools', [App\Http\Controllers\Admin\AIToolsController::class, 'index'])->name('admin.ai-tools.index');
+Route::post('/admin/ai-tools/test', [App\Http\Controllers\Admin\AIToolsController::class, 'testConnection'])->name('admin.ai-tools.test');
+Route::post('/admin/ai-tools/generate', [App\Http\Controllers\Admin\AIToolsController::class, 'generate'])->name('admin.ai-tools.generate');
+Route::get('/admin/ai-tools/usage', [App\Http\Controllers\Admin\AIToolsController::class, 'usage'])->name('admin.ai-tools.usage');
+
+// Webhooks Management
+Route::get('/admin/webhooks/list', [App\Http\Controllers\Admin\WebhookController::class, 'list'])->name('admin.webhooks.list');
+Route::get('/admin/webhooks/events', [App\Http\Controllers\Admin\WebhookController::class, 'getEvents'])->name('admin.webhooks.events');
+Route::post('/admin/webhooks', [App\Http\Controllers\Admin\WebhookController::class, 'store'])->name('admin.webhooks.store');
+Route::get('/admin/webhooks/{id}', [App\Http\Controllers\Admin\WebhookController::class, 'show'])->name('admin.webhooks.show');
+Route::put('/admin/webhooks/{id}', [App\Http\Controllers\Admin\WebhookController::class, 'update'])->name('admin.webhooks.update');
+Route::delete('/admin/webhooks/{id}', [App\Http\Controllers\Admin\WebhookController::class, 'destroy'])->name('admin.webhooks.destroy');
+Route::post('/admin/webhooks/{id}/toggle', [App\Http\Controllers\Admin\WebhookController::class, 'toggleStatus'])->name('admin.webhooks.toggle');
+Route::post('/admin/webhooks/{id}/test', [App\Http\Controllers\Admin\WebhookController::class, 'test'])->name('admin.webhooks.test');
+
+// Integrations
+Route::get('/admin/integrations', function() { return view('admin.pages.integrations.index'); })->name('admin.integrations.index');
+
+// Localization
+Route::get('/admin/localization', function() { return view('admin.pages.localization.index'); })->name('admin.localization.index');
+
+// Customers Management
+Route::get('/admin/customers', [App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('admin.customers.index');
+Route::get('/admin/customers/list', [App\Http\Controllers\Admin\CustomerController::class, 'list'])->name('admin.customers.list');
+Route::post('/admin/customers', [App\Http\Controllers\Admin\CustomerController::class, 'store'])->name('admin.customers.store');
+Route::get('/admin/customers/{id}', [App\Http\Controllers\Admin\CustomerController::class, 'show'])->name('admin.customers.show');
+Route::put('/admin/customers/{id}', [App\Http\Controllers\Admin\CustomerController::class, 'update'])->name('admin.customers.update');
+Route::delete('/admin/customers/{id}', [App\Http\Controllers\Admin\CustomerController::class, 'destroy'])->name('admin.customers.destroy');
+Route::post('/admin/customers/{id}/toggle-status', [App\Http\Controllers\Admin\CustomerController::class, 'toggleStatus'])->name('admin.customers.toggle');
+Route::post('/admin/customers/bulk-action', [App\Http\Controllers\Admin\CustomerController::class, 'bulkAction'])->name('admin.customers.bulk');
+
+// Warehouses Management
+Route::get('/admin/warehouses', [App\Http\Controllers\Admin\WarehouseController::class, 'index'])->name('admin.warehouses.index');
+Route::get('/admin/warehouses/list', [App\Http\Controllers\Admin\WarehouseController::class, 'list'])->name('admin.warehouses.list');
+Route::post('/admin/warehouses', [App\Http\Controllers\Admin\WarehouseController::class, 'store'])->name('admin.warehouses.store');
+Route::get('/admin/warehouses/{id}', [App\Http\Controllers\Admin\WarehouseController::class, 'show'])->name('admin.warehouses.show');
+Route::put('/admin/warehouses/{id}', [App\Http\Controllers\Admin\WarehouseController::class, 'update'])->name('admin.warehouses.update');
+Route::delete('/admin/warehouses/{id}', [App\Http\Controllers\Admin\WarehouseController::class, 'destroy'])->name('admin.warehouses.destroy');
+Route::post('/admin/warehouses/{id}/toggle-status', [App\Http\Controllers\Admin\WarehouseController::class, 'toggleStatus'])->name('admin.warehouses.toggle');
+Route::post('/admin/warehouses/{id}/set-default', [App\Http\Controllers\Admin\WarehouseController::class, 'setDefault'])->name('admin.warehouses.default');
+Route::post('/admin/warehouses/bulk-action', [App\Http\Controllers\Admin\WarehouseController::class, 'bulkAction'])->name('admin.warehouses.bulk');
+
+// Orders Management
+Route::get('/admin/orders', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders.index');
+Route::get('/admin/orders/list', [App\Http\Controllers\Admin\OrderController::class, 'list'])->name('admin.orders.list');
+Route::get('/admin/orders/stats', [App\Http\Controllers\Admin\OrderController::class, 'stats'])->name('admin.orders.stats');
+Route::get('/admin/orders/search-products', [App\Http\Controllers\Admin\OrderController::class, 'searchProducts'])->name('admin.orders.search-products');
+Route::post('/admin/orders', [App\Http\Controllers\Admin\OrderController::class, 'store'])->name('admin.orders.store');
+Route::get('/admin/orders/{id}', [App\Http\Controllers\Admin\OrderController::class, 'show'])->name('admin.orders.show');
+Route::put('/admin/orders/{id}', [App\Http\Controllers\Admin\OrderController::class, 'update'])->name('admin.orders.update');
+Route::delete('/admin/orders/{id}', [App\Http\Controllers\Admin\OrderController::class, 'destroy'])->name('admin.orders.destroy');
+Route::post('/admin/orders/{id}/status', [App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('admin.orders.status');
+
+// Returns & Refunds Management
+Route::get('/admin/returns', [App\Http\Controllers\Admin\ReturnController::class, 'index'])->name('admin.returns.index');
+Route::get('/admin/returns/list', [App\Http\Controllers\Admin\ReturnController::class, 'list'])->name('admin.returns.list');
+Route::get('/admin/returns/stats', [App\Http\Controllers\Admin\ReturnController::class, 'stats'])->name('admin.returns.stats');
+Route::post('/admin/returns', [App\Http\Controllers\Admin\ReturnController::class, 'store'])->name('admin.returns.store');
+Route::get('/admin/returns/{id}', [App\Http\Controllers\Admin\ReturnController::class, 'show'])->name('admin.returns.show');
+Route::put('/admin/returns/{id}', [App\Http\Controllers\Admin\ReturnController::class, 'update'])->name('admin.returns.update');
+Route::delete('/admin/returns/{id}', [App\Http\Controllers\Admin\ReturnController::class, 'destroy'])->name('admin.returns.destroy');
+
+// Invoices Management
+Route::get('/admin/invoices', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('admin.invoices.index');
+Route::get('/admin/invoices/list', [App\Http\Controllers\Admin\InvoiceController::class, 'list'])->name('admin.invoices.list');
+Route::get('/admin/invoices/stats', [App\Http\Controllers\Admin\InvoiceController::class, 'stats'])->name('admin.invoices.stats');
+Route::post('/admin/invoices', [App\Http\Controllers\Admin\InvoiceController::class, 'store'])->name('admin.invoices.store');
+Route::get('/admin/invoices/{id}/print', [App\Http\Controllers\Admin\InvoiceController::class, 'print'])->name('admin.invoices.print');
+Route::post('/admin/invoices/from-order/{orderId}', [App\Http\Controllers\Admin\InvoiceController::class, 'generateFromOrder'])->name('admin.invoices.from-order');
+Route::get('/admin/invoices/{id}', [App\Http\Controllers\Admin\InvoiceController::class, 'show'])->name('admin.invoices.show');
+Route::put('/admin/invoices/{id}', [App\Http\Controllers\Admin\InvoiceController::class, 'update'])->name('admin.invoices.update');
+Route::delete('/admin/invoices/{id}', [App\Http\Controllers\Admin\InvoiceController::class, 'destroy'])->name('admin.invoices.destroy');
+
 // ImageKit Integration
 Route::get('/api/imagekit-auth', [App\Http\Controllers\ImageKitController::class, 'auth'])->name('imagekit.auth');
 Route::post('/api/imagekit-upload', [App\Http\Controllers\ImageKitController::class, 'upload'])->name('imagekit.upload');
 Route::delete('/api/imagekit-delete', [App\Http\Controllers\ImageKitController::class, 'delete'])->name('imagekit.delete');
+
+}); // end admin.auth middleware group

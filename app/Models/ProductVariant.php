@@ -13,6 +13,10 @@ class ProductVariant extends Model
         'price',
         'compare_price',
         'cost_price',
+        'stock_quantity',
+        'low_stock_threshold',
+        'manage_stock',
+        'allow_backorder',
         'weight',
         'length',
         'width',
@@ -31,6 +35,10 @@ class ProductVariant extends Model
         'width' => 'decimal:2',
         'height' => 'decimal:2',
         'status' => 'boolean',
+        'manage_stock' => 'boolean',
+        'stock_quantity' => 'integer',
+        'low_stock_threshold' => 'integer',
+        'allow_backorder' => 'boolean',
         'available_date' => 'date',
     ];
 

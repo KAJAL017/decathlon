@@ -29,7 +29,7 @@ class BrandController extends Controller
 
         // Filter by status
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            $query->where('status', (bool)(int)$request->status);
         }
 
         // Pagination

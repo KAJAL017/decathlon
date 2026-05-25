@@ -56,16 +56,7 @@ class Category extends Model
 
     public function products()
     {
-        // When Product model is created, uncomment this
-        // return $this->hasMany(Product::class);
-        return $this->hasMany(\stdClass::class); // Placeholder
-    }
-    
-    // Dynamic products count (no need to store in DB)
-    public function getProductsCountAttribute()
-    {
-        // When Product model exists, use: return $this->products()->count();
-        return 0; // Placeholder
+        return $this->hasMany(\App\Models\Product::class);
     }
 
     // Accessors

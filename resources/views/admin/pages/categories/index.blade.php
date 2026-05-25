@@ -601,11 +601,17 @@ table {
 <script src="https://unpkg.com/imagekit-javascript/dist/imagekit.min.js"></script>
 
 <script>
-const imagekit = new ImageKit({
-    publicKey: "{{ config('imagekit.public_key') }}",
-    urlEndpoint: "{{ config('imagekit.url_endpoint') }}",
+@php
+    $ikPublicKey  = \App\Models\Setting::get('imagekit_public_key')   ?: config('imagekit.public_key', '');
+    $ikUrlEndpoint= \App\Models\Setting::get('imagekit_url_endpoint') ?: config('imagekit.url_endpoint', '');
+    $ikReady      = !empty($ikPublicKey) && !empty($ikUrlEndpoint);
+@endphp
+const IMAGEKIT_READY = {{ $ikReady ? 'true' : 'false' }};
+const imagekit = IMAGEKIT_READY ? new ImageKit({
+    publicKey: "{{ $ikPublicKey }}",
+    urlEndpoint: "{{ $ikUrlEndpoint }}",
     authenticationEndpoint: "{{ route('imagekit.auth') }}"
-});
+}) : null;
 
 let currentPage = 1;
 let searchTimeout;
@@ -1993,6 +1999,10 @@ function applyBulkAction() {
 }
 
 function openImageKit(type) {
+    if (!IMAGEKIT_READY) {
+        alert('ImageKit is not configured. Please go to Integrations → ImageKit and add your credentials.');
+        return;
+    }
     currentImageType = type;
     
     const input = document.createElement('input');

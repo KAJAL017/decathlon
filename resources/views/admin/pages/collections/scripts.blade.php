@@ -4,42 +4,69 @@ let selectedProducts = [];
 let collectionRules = [];
 let isEditMode = false;
 
-// Load collections on page load
+// ── Ensure all fetch calls send session cookie ──
+const _origFetch = window.fetch.bind(window);
+window.fetch = function(url, opts = {}) {
+    opts.credentials = opts.credentials || 'same-origin';
+    if (!opts.headers) opts.headers = {};
+    opts.headers['X-Requested-With'] = 'XMLHttpRequest';
+    if (!opts.headers['Accept']) opts.headers['Accept'] = 'application/json';
+    return _origFetch(url, opts);
+};
+
+// Load collections on page load — table is now rendered server-side via Blade
 document.addEventListener('DOMContentLoaded', function() {
-    loadCollections();
-    loadStats();
-    // Initialize filter searchable selects
+    // Submit search on Enter key
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('filterForm').submit();
+        });
+    }
     initializeSearchableSelects();
 });
 
 // Load collections with filters
 function loadCollections(page = 1) {
     currentPage = page;
-    const search = document.getElementById('searchInput').value;
-    const type = document.getElementById('typeFilter').value;
-    const status = document.getElementById('statusFilter').value;
-    const visibility = document.getElementById('visibilityFilter').value;
-    const perPage = document.getElementById('perPageSelect').value;
+
+    // Read values from native <select> elements directly (not searchable wrapper)
+    const searchEl     = document.getElementById('searchInput');
+    const typeEl       = document.getElementById('typeFilter');
+    const statusEl     = document.getElementById('statusFilter');
+    const visibilityEl = document.getElementById('visibilityFilter');
+    const perPageEl    = document.getElementById('perPageSelect');
+
+    const search     = searchEl     ? searchEl.value     : '';
+    const type       = typeEl       ? typeEl.value       : '';
+    const status     = statusEl     ? statusEl.value     : '';
+    const visibility = visibilityEl ? visibilityEl.value : '';
+    const perPage    = perPageEl    ? perPageEl.value    : 10;
 
     const params = new URLSearchParams({
-        page: page,
+        page,
         per_page: perPage,
-        ...(search && { search }),
-        ...(type && { type }),
-        ...(status && { status }),
+        ...(search     && { search }),
+        ...(type       && { type }),
+        ...(status     && { status }),
         ...(visibility && { visibility })
     });
 
     fetch(`/admin/collections/list?${params}`)
-        .then(response => response.json())
+        .then(r => {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+        })
         .then(data => {
             if (data.success) {
                 renderCollections(data.data);
                 renderPagination(data.pagination);
+            } else {
+                console.error('Collections load failed:', data);
             }
         })
-        .catch(error => {
-            console.error('Error loading collections:', error);
+        .catch(err => {
+            console.error('loadCollections error:', err);
             showToast('Failed to load collections', 'error');
         });
 }
@@ -140,7 +167,10 @@ function renderCollections(collections) {
 
 // Load stats
 function loadStats() {
-    fetch('/admin/collections/list?per_page=1000')
+    fetch('/admin/collections/list?per_page=1000', {
+        credentials: 'same-origin',
+        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+    })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -208,6 +238,8 @@ function debounceSearch() {
 // Modal functions
 function openAddModal() {
     isEditMode = false;
+    const modal = document.getElementById('collectionModal');
+    if (!modal) { alert('Modal not found!'); return; }
     document.getElementById('modalTitle').textContent = 'Add Collection';
     document.getElementById('collectionForm').reset();
     document.getElementById('collectionId').value = '';
@@ -222,12 +254,18 @@ function openModal() {
     const modal = document.getElementById('collectionModal');
     const modalContent = document.getElementById('collectionModalContent');
     modal.classList.remove('hidden');
+    // Init tab displays
+    ['basic', 'products', 'rules', 'seo'].forEach(t => {
+        const el = document.getElementById(`content-${t}`);
+        if (el) el.style.display = 'none';
+    });
+    const basicEl = document.getElementById('content-basic');
+    if (basicEl) basicEl.style.display = 'block';
+
     setTimeout(() => {
         modalContent.style.transform = 'translateX(0)';
-        // Initialize searchable selects after modal opens
         setTimeout(() => {
             initializeSearchableSelects();
-            // Initialize Summernote editor
             initSummernote('collectionDescription', 'full');
         }, 100);
     }, 10);
@@ -247,13 +285,20 @@ function closeModalOnBackdrop(event) {
     }
 }
 
-// Tab switching
+// Tab switching — use inline style to avoid CSS conflicts
 function switchTab(tabName) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-    
-    document.getElementById(`tab-${tabName}`).classList.add('active');
-    document.getElementById(`content-${tabName}`).classList.remove('hidden');
+    // Hide all tab contents
+    ['basic', 'products', 'rules', 'seo'].forEach(t => {
+        const el = document.getElementById(`content-${t}`);
+        if (el) el.style.display = 'none';
+    });
+    // Show active tab
+    const activeEl = document.getElementById(`content-${tabName}`);
+    if (activeEl) activeEl.style.display = 'block';
+    // Activate button
+    const btn = document.getElementById(`tab-${tabName}`);
+    if (btn) btn.classList.add('active');
 }
 
 // Handle type change
@@ -374,8 +419,7 @@ function saveCollection() {
         if (data.success) {
             showToast(data.message, 'success');
             closeModal();
-            loadCollections(currentPage);
-            loadStats();
+            setTimeout(() => window.location.reload(), 800);
         } else {
             if (data.errors) {
                 Object.keys(data.errors).forEach(key => {
@@ -459,8 +503,7 @@ function deleteCollection(id, name) {
     .then(data => {
         if (data.success) {
             showToast(data.message, 'success');
-            loadCollections(currentPage);
-            loadStats();
+            setTimeout(() => window.location.reload(), 800);
         } else {
             showToast(data.message || 'Failed to delete collection', 'error');
         }
@@ -483,8 +526,7 @@ function toggleStatus(id) {
     .then(data => {
         if (data.success) {
             showToast(data.message, 'success');
-            loadCollections(currentPage);
-            loadStats();
+            setTimeout(() => window.location.reload(), 600);
         } else {
             showToast(data.message || 'Failed to toggle status', 'error');
         }

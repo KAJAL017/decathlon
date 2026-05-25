@@ -18,6 +18,13 @@ class DatabaseSeeder extends Seeder
         // Seed Roles and Permissions first
         $this->call(RolePermissionSeeder::class);
 
+        // Seed product module supporting data (floor-wise)
+        $this->call(CategorySeeder::class);
+        $this->call(BrandSeeder::class);
+        $this->call(TagSeeder::class);
+        $this->call(AttributeModuleSeeder::class);
+        $this->call(CollectionSeeder::class);
+
         // Get Super Admin role
         $superAdminRole = \App\Models\Role::where('name', 'super_admin')->first();
 

@@ -17,22 +17,44 @@
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <script src="/js/summernote-helper.js"></script>
+
+    {{-- Google Analytics 4 — auto-inject if GA ID is set --}}
+    @php $gaId = \App\Models\Setting::get('ga_measurement_id', ''); @endphp
+    @if($gaId)
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ $gaId }}');
+    </script>
+    @endif
+
+    {{-- Google Tag Manager --}}
+    @php $gtmId = \App\Models\Setting::get('gtm_container_id', ''); @endphp
+    @if($gtmId)
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ $gtmId }}');</script>
+    @endif
+
+    {{-- Facebook Pixel --}}
+    @php $fbPixel = \App\Models\Setting::get('fb_pixel_id', ''); @endphp
+    @if($fbPixel)
+    <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','{{ $fbPixel }}');fbq('track','PageView');</script>
+    @endif
 </head>
 <body class="bg-gray-50">
-    <div class="flex h-screen overflow-hidden">
-        <!-- Sidebar -->
-        @include('admin.partials.sidebar')
+    <!-- Fixed Sidebar -->
+    @include('admin.partials.sidebar')
 
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Topbar -->
-            @include('admin.partials.topbar')
+    <!-- Main wrapper — pushed right by sidebar width on lg screens -->
+    <div class="lg:ml-64 flex flex-col min-h-screen">
+        <!-- Topbar -->
+        @include('admin.partials.topbar')
 
-            <!-- Content Area -->
-            <main id="main-content" class="flex-1 overflow-y-auto p-6">
-                @yield('content')
-            </main>
-        </div>
+        <!-- Content Area -->
+        <main id="main-content" class="flex-1 p-6">
+            @yield('content')
+        </main>
     </div>
 
     <!-- Scripts -->

@@ -275,11 +275,17 @@
 <script src="https://unpkg.com/imagekit-javascript/dist/imagekit.min.js"></script>
 
 <script>
-const imagekit = new ImageKit({
-    publicKey: "{{ config('imagekit.public_key') }}",
-    urlEndpoint: "{{ config('imagekit.url_endpoint') }}",
+@php
+    $ikPublicKey   = \App\Models\Setting::get('imagekit_public_key')   ?: config('imagekit.public_key', '');
+    $ikUrlEndpoint = \App\Models\Setting::get('imagekit_url_endpoint') ?: config('imagekit.url_endpoint', '');
+    $ikReady       = !empty($ikPublicKey) && !empty($ikUrlEndpoint);
+@endphp
+const IMAGEKIT_READY = {{ $ikReady ? 'true' : 'false' }};
+const imagekit = IMAGEKIT_READY ? new ImageKit({
+    publicKey: "{{ $ikPublicKey }}",
+    urlEndpoint: "{{ $ikUrlEndpoint }}",
     authenticationEndpoint: "{{ route('imagekit.auth') }}"
-});
+}) : null;
 
 let currentPage = 1;
 let searchTimeout;
@@ -696,24 +702,35 @@ function applyBulkAction() {
 }
 
 function openImageKit() {
-    imagekit.upload({
-        file: null,
-        fileName: 'brand-logo-' + Date.now(),
-        folder: '/brands',
-        useUniqueFileName: true,
-        tags: ['brand', 'logo']
-    }, function(err, result) {
-        if (err) {
-            console.error('ImageKit upload error:', err);
-            alert('Error uploading image');
-            return;
-        }
-        
-        document.getElementById('brandLogoUrl').value = result.url;
-        document.getElementById('brandLogoId').value = result.fileId;
-        document.getElementById('brandLogoPreviewImg').src = result.url;
-        document.getElementById('brandLogoPreview').classList.remove('hidden');
-    });
+    if (!IMAGEKIT_READY) {
+        alert('ImageKit is not configured. Please go to Integrations → ImageKit and add your credentials.');
+        return;
+    }
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        imagekit.upload({
+            file: file,
+            fileName: 'brand-logo-' + Date.now(),
+            folder: '/brands',
+            useUniqueFileName: true,
+            tags: ['brand', 'logo']
+        }, function(err, result) {
+            if (err) {
+                console.error('ImageKit upload error:', err);
+                alert('Error uploading image: ' + (err.message || JSON.stringify(err)));
+                return;
+            }
+            document.getElementById('brandLogoUrl').value = result.url;
+            document.getElementById('brandLogoId').value = result.fileId;
+            document.getElementById('brandLogoPreviewImg').src = result.url;
+            document.getElementById('brandLogoPreview').classList.remove('hidden');
+        });
+    };
+    input.click();
 }
 </script>
 
