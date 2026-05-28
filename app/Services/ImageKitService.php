@@ -26,8 +26,8 @@ class ImageKitService
     public function getAuthenticationParameters()
     {
         $token = Str::random(40);
-        // Use 10 minutes instead of 1 hour to avoid timezone issues
-        $expire = time() + 600; // 10 minutes from now
+        // Use 50 minutes (3000 seconds) to avoid errors due to local clock drift, keeping it under the 1-hour maximum limit
+        $expire = time() + 3000;
         
         // Debug: Log the current time and expire time
         \Log::info('ImageKit Auth Debug', [

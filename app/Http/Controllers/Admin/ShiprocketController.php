@@ -119,19 +119,18 @@ class ShiprocketController extends Controller
         }
     }
 
-    // ── Create order in Shiprocket (with optional courier_id) ─────
-    public function createOrder(Request $request, $orderId)
+    // ── Create order in Shiprocket ─────
+    public function createOrder($orderId)
     {
         try {
-            $order     = Order::with('items')->findOrFail($orderId);
-            $sr        = new ShiprocketService();
-            $courierId = $request->input('courier_id') ? (int) $request->input('courier_id') : null;
+            $order = Order::with('items')->findOrFail($orderId);
+            $sr    = new ShiprocketService();
 
             if (!$sr->isConfigured()) {
                 return response()->json(['success' => false, 'message' => 'Shiprocket not configured. Go to Integrations → Shipping.'], 422);
             }
 
-            $result = $sr->createOrder($order, $courierId);
+            $result = $sr->createOrder($order);
 
             // Save Shiprocket order ID and shipment ID to order
             $srOrderId    = $result['order_id']    ?? null;

@@ -85,14 +85,14 @@ class ShiprocketService
         ], $couriers);
     }
 
-    // ── Create order with specific courier ────────────────────────
+    // ── Backward-compatible wrapper for old courier-based calls ───
     public function createOrderWithCourier(\App\Models\Order $order, ?int $courierId = null): array
     {
-        return $this->createOrder($order, $courierId);
+        return $this->createOrder($order);
     }
 
     // ── Create order in Shiprocket ────────────────────────────────
-    public function createOrder(\App\Models\Order $order, ?int $courierId = null): array
+    public function createOrder(\App\Models\Order $order): array
     {
         $items = $order->items->map(fn($i) => [
             'name'          => $i->product_name,

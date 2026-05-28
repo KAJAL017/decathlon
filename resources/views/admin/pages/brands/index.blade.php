@@ -284,7 +284,7 @@ const IMAGEKIT_READY = {{ $ikReady ? 'true' : 'false' }};
 const imagekit = IMAGEKIT_READY ? new ImageKit({
     publicKey: "{{ $ikPublicKey }}",
     urlEndpoint: "{{ $ikUrlEndpoint }}",
-    authenticationEndpoint: "{{ route('imagekit.auth') }}"
+    authenticationEndpoint: "{{ parse_url(route('imagekit.auth'), PHP_URL_PATH) }}"
 }) : null;
 
 let currentPage = 1;
@@ -709,23 +709,39 @@ function openImageKit() {
     input.onchange = function(e) {
         const file = e.target.files[0];
         if (!file) return;
-        imagekit.upload({
-            file: file,
-            fileName: 'brand-logo-' + Date.now(),
-            folder: '/brands',
-            useUniqueFileName: true,
-            tags: ['brand', 'logo']
-        }, function(err, result) {
-            if (err) {
-                console.error('ImageKit upload error:', err);
-                showBrandToast('Error uploading image: ' + (err.message || JSON.stringify(err)), 'error');
-                return;
-            }
-            document.getElementById('brandLogoUrl').value = result.url;
-            document.getElementById('brandLogoId').value = result.fileId;
-            document.getElementById('brandLogoPreviewImg').src = result.url;
-            document.getElementById('brandLogoPreview').classList.remove('hidden');
-        });
+
+        showBrandToast('Uploading image to ImageKit...', 'info');
+
+        // Manual fetch to ensure session cookies are sent correctly
+        fetch("{{ parse_url(route('imagekit.auth'), PHP_URL_PATH) }}")
+            .then(response => response.json())
+            .then(authParams => {
+                imagekit.upload({
+                    file: file,
+                    fileName: 'brand-logo-' + Date.now(),
+                    folder: '/brands',
+                    useUniqueFileName: true,
+                    tags: ['brand', 'logo'],
+                    token: authParams.token,
+                    signature: authParams.signature,
+                    expire: authParams.expire
+                }, function(err, result) {
+                    if (err) {
+                        console.error('ImageKit upload error:', err);
+                        showBrandToast('Error uploading image: ' + (err.message || JSON.stringify(err)), 'error');
+                        return;
+                    }
+                    document.getElementById('brandLogoUrl').value = result.url;
+                    document.getElementById('brandLogoId').value = result.fileId;
+                    document.getElementById('brandLogoPreviewImg').src = result.url;
+                    document.getElementById('brandLogoPreview').classList.remove('hidden');
+                    showBrandToast('Logo uploaded successfully!', 'success');
+                });
+            })
+            .catch(error => {
+                console.error('Auth fetch error:', error);
+                showBrandToast('Failed to fetch authentication parameters', 'error');
+            });
     };
     input.click();
 }

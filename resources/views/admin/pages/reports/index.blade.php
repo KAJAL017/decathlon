@@ -539,7 +539,7 @@ function loadSection(key) {
             showSkeleton(key, false);
             if (res.data.period) {
                 document.getElementById('periodBadge')?.classList.remove('hidden');
-                document.getElementById('periodText').textContent = res.data.period.from + ' – ' + res.data.period.to;
+                document.getElementById('periodText').textContent = res.data.period.from + ' to ' + res.data.period.to;
             }
         })
         .catch(err => { showSkeleton(key, false); showToast('error', 'Failed: ' + err.message); });
@@ -554,7 +554,7 @@ function showSkeleton(key, show) {
 
 // ── Utilities ─────────────────────────────────────────────────────
 function esc(s) { return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function setText(id, val) { const el=document.getElementById(id); if(el) el.textContent=val??'—'; }
+function setText(id, val) { const el=document.getElementById(id); if(el) el.textContent=val??'0'; }
 function stars(n) { const r=Math.round(n||0); return '★'.repeat(r)+'☆'.repeat(5-r); }
 function statusPill(s) {
     const m={approved:'bg-green-100 text-green-700',pending:'bg-yellow-100 text-yellow-700',rejected:'bg-red-100 text-red-700',spam:'bg-gray-100 text-gray-600'};

@@ -610,7 +610,7 @@ const IMAGEKIT_READY = {{ $ikReady ? 'true' : 'false' }};
 const imagekit = IMAGEKIT_READY ? new ImageKit({
     publicKey: "{{ $ikPublicKey }}",
     urlEndpoint: "{{ $ikUrlEndpoint }}",
-    authenticationEndpoint: "{{ route('imagekit.auth') }}"
+    authenticationEndpoint: "{{ parse_url(route('imagekit.auth'), PHP_URL_PATH) }}"
 }) : null;
 
 let currentPage = 1;

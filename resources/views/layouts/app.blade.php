@@ -31,8 +31,118 @@
     @include('partials.header')
 
     <!-- Main Content -->
-    <main>
-        @yield('content')
+    <main class="relative min-h-screen">
+        <!-- Global Storefront Skeleton Loader Overlay -->
+        <div id="global-skeleton-loader" class="absolute inset-0 bg-gray-50 z-40 p-4 lg:p-8 transition-opacity duration-300 pointer-events-auto">
+            <div id="skeleton-content" class="max-w-7xl mx-auto space-y-8"></div>
+        </div>
+
+        <!-- Actual Page Content -->
+        <div id="actual-page-content" class="opacity-0 transition-opacity duration-300 pointer-events-none">
+            @yield('content')
+        </div>
+
+        <script>
+            (function() {
+                const path = window.location.pathname;
+                const skeletonContent = document.getElementById('skeleton-content');
+                
+                let html = '';
+                
+                // Determine layout: Storefront Home / Shop or generic storefront details (cart, checkout)
+                if (path === '/' || path === '/home' || path.includes('/shop') || path.includes('/products')) {
+                    // E-commerce Home / Shop Grid Layout
+                    html = `
+                        <!-- Large Hero Banner Shimmer -->
+                        <div class="w-full h-48 md:h-80 bg-gray-200 rounded-2xl animate-pulse"></div>
+                        
+                        <!-- Categories Circle List -->
+                        <div class="space-y-3">
+                            <div class="h-6 w-36 bg-gray-200 rounded animate-pulse"></div>
+                            <div class="flex gap-4 overflow-hidden py-2">
+                                ${[1, 2, 3, 4, 5, 6, 7, 8].map(() => `
+                                    <div class="flex flex-col items-center gap-2 flex-shrink-0 animate-pulse">
+                                        <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gray-200"></div>
+                                        <div class="h-3 w-12 bg-gray-200 rounded"></div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <!-- Products Grid -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div class="h-6 w-48 bg-gray-200 rounded animate-pulse"></div>
+                                <div class="h-4 w-16 bg-gray-200 rounded animate-pulse"></div>
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                                ${[1, 2, 3, 4, 5, 6, 7, 8].map(() => `
+                                    <div class="bg-white rounded-xl border border-gray-100 p-3 space-y-3 animate-pulse">
+                                        <div class="w-full aspect-square bg-gray-100 rounded-lg"></div>
+                                        <div class="space-y-2">
+                                            <div class="h-4 w-full bg-gray-200 rounded"></div>
+                                            <div class="h-3 w-2/3 bg-gray-100 rounded"></div>
+                                            <div class="h-4 w-12 bg-gray-200 rounded"></div>
+                                            <div class="h-8 w-full bg-[#0082C3]/10 rounded-lg"></div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Storefront Details / Cart / Checkout / Account details
+                    html = `
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <!-- Left: Cart / Checkout items -->
+                            <div class="lg:col-span-2 space-y-6">
+                                <div class="h-8 w-48 bg-gray-200 rounded animate-pulse"></div>
+                                <div class="bg-white border border-gray-100 rounded-2xl p-6 space-y-4 animate-pulse">
+                                    ${[1, 2, 3].map(() => `
+                                        <div class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0">
+                                            <div class="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0"></div>
+                                            <div class="space-y-2 flex-1">
+                                                <div class="h-4 w-40 bg-gray-200 rounded"></div>
+                                                <div class="h-3 w-24 bg-gray-100 rounded"></div>
+                                            </div>
+                                            <div class="h-5 w-16 bg-gray-200 rounded"></div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <!-- Right: Order Summary Sidebar -->
+                            <div class="bg-white border border-gray-100 rounded-2xl p-6 space-y-6 animate-pulse">
+                                <div class="h-6 w-32 bg-gray-200 rounded mb-4"></div>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between"><div class="h-3 w-16 bg-gray-200 rounded"></div><div class="h-3 w-12 bg-gray-200 rounded"></div></div>
+                                    <div class="flex justify-between"><div class="h-3 w-20 bg-gray-200 rounded"></div><div class="h-3 w-8 bg-gray-200 rounded"></div></div>
+                                    <div class="border-t border-gray-100 pt-3 flex justify-between"><div class="h-5 w-16 bg-gray-200 rounded"></div><div class="h-5 w-16 bg-gray-200 rounded"></div></div>
+                                </div>
+                                <div class="h-12 w-full bg-gray-200 rounded-lg"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                skeletonContent.innerHTML = html;
+            })();
+
+            // Hide loader and display actual storefront content once page finishes loading
+            document.addEventListener('DOMContentLoaded', function() {
+                const loader = document.getElementById('global-skeleton-loader');
+                const content = document.getElementById('actual-page-content');
+                if (loader && content) {
+                    loader.classList.add('opacity-0');
+                    loader.style.pointerEvents = 'none';
+                    content.classList.remove('opacity-0');
+                    content.classList.remove('pointer-events-none');
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 300);
+                }
+            });
+        </script>
     </main>
 
     <!-- Footer -->

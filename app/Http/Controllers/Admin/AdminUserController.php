@@ -84,9 +84,16 @@ class AdminUserController extends Controller
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
             $image = $request->file('profile_image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads/profiles'), $imageName);
-            $data['profile_image'] = 'uploads/profiles/' . $imageName;
+            try {
+                $imageKitService = app(\App\Services\ImageKitService::class);
+                $result = $imageKitService->upload($image, null, 'profiles');
+                $data['profile_image'] = $result['url'];
+            } catch (\Exception $e) {
+                // Fail-safe local fallback
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('uploads/profiles'), $imageName);
+                $data['profile_image'] = 'uploads/profiles/' . $imageName;
+            }
         }
 
         $user = User::create($data);
@@ -160,15 +167,22 @@ class AdminUserController extends Controller
 
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
-            // Delete old image
-            if ($user->profile_image && file_exists(public_path($user->profile_image))) {
+            // Delete old local image if it was local and exists
+            if ($user->profile_image && !str_starts_with($user->profile_image, 'http') && file_exists(public_path($user->profile_image))) {
                 unlink(public_path($user->profile_image));
             }
             
             $image = $request->file('profile_image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads/profiles'), $imageName);
-            $user->profile_image = 'uploads/profiles/' . $imageName;
+            try {
+                $imageKitService = app(\App\Services\ImageKitService::class);
+                $result = $imageKitService->upload($image, null, 'profiles');
+                $user->profile_image = $result['url'];
+            } catch (\Exception $e) {
+                // Fail-safe local fallback
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('uploads/profiles'), $imageName);
+                $user->profile_image = 'uploads/profiles/' . $imageName;
+            }
         }
         
         $user->save();

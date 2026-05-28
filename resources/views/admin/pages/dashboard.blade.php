@@ -2,6 +2,87 @@
 @section('title', 'Dashboard')
 
 @section('content')
+<style>
+/* CSS Shimmer Keyframe & Classes */
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+.skeleton-shimmer-light {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.08) 25%,
+        rgba(255, 255, 255, 0.22) 37%,
+        rgba(255, 255, 255, 0.08) 63%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite linear;
+}
+.skeleton-shimmer-dark {
+    background: linear-gradient(
+        90deg,
+        #f3f4f6 25%,
+        #e5e7eb 37%,
+        #f3f4f6 63%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite linear;
+}
+.skeleton-shimmer-blue {
+    background: linear-gradient(
+        90deg,
+        #eff6ff 25%,
+        #d0e1fd 37%,
+        #eff6ff 63%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite linear;
+}
+.skeleton-shimmer-purple {
+    background: linear-gradient(
+        90deg,
+        #f5f3ff 25%,
+        #e9d5ff 37%,
+        #f5f3ff 63%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite linear;
+}
+.skeleton-shimmer-green {
+    background: linear-gradient(
+        90deg,
+        #ecfdf5 25%,
+        #d1fae5 37%,
+        #ecfdf5 63%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite linear;
+}
+.skeleton-shimmer-orange {
+    background: linear-gradient(
+        90deg,
+        #fff7ed 25%,
+        #ffedd5 37%,
+        #fff7ed 63%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite linear;
+}
+.skeleton-shimmer-red {
+    background: linear-gradient(
+        90deg,
+        #fef2f2 25%,
+        #fee2e2 37%,
+        #fef2f2 63%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite linear;
+}
+</style>
 <div class="space-y-6">
 
 {{-- ── HEADER ─────────────────────────────────────────────────── --}}
@@ -47,9 +128,9 @@
                 </div>
                 <svg class="w-4 h-4 text-white/50 group-hover:text-white/90 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </div>
-            <p id="kpiProducts" class="text-3xl font-black text-white">—</p>
+            <p id="kpiProducts" class="text-3xl font-black text-white"><span class="inline-block w-20 h-8 rounded bg-white/20 skeleton-shimmer-light"></span></p>
             <p class="text-xs font-semibold text-blue-200 uppercase tracking-wider mt-1">Total Products</p>
-            <p id="kpiProductsSub" class="text-xs text-blue-300 mt-0.5"></p>
+            <p id="kpiProductsSub" class="text-xs text-blue-300 mt-0.5"><span class="inline-block w-36 h-3.5 rounded bg-white/10 mt-1.5 skeleton-shimmer-light"></span></p>
         </div>
     </a>
 
@@ -65,9 +146,9 @@
                 </div>
                 <svg class="w-4 h-4 text-white/50 group-hover:text-white/90 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </div>
-            <p id="kpiReviews" class="text-3xl font-black text-white">—</p>
+            <p id="kpiReviews" class="text-3xl font-black text-white"><span class="inline-block w-20 h-8 rounded bg-white/20 skeleton-shimmer-light"></span></p>
             <p class="text-xs font-semibold text-yellow-200 uppercase tracking-wider mt-1">Total Reviews</p>
-            <p id="kpiReviewsSub" class="text-xs text-yellow-300 mt-0.5"></p>
+            <p id="kpiReviewsSub" class="text-xs text-yellow-300 mt-0.5"><span class="inline-block w-36 h-3.5 rounded bg-white/10 mt-1.5 skeleton-shimmer-light"></span></p>
         </div>
     </a>
 
@@ -83,9 +164,9 @@
                 </div>
                 <svg class="w-4 h-4 text-white/50 group-hover:text-white/90 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </div>
-            <p id="kpiPromotions" class="text-3xl font-black text-white">—</p>
+            <p id="kpiPromotions" class="text-3xl font-black text-white"><span class="inline-block w-20 h-8 rounded bg-white/20 skeleton-shimmer-light"></span></p>
             <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mt-1">Active Promotions</p>
-            <p id="kpiPromotionsSub" class="text-xs text-green-300 mt-0.5"></p>
+            <p id="kpiPromotionsSub" class="text-xs text-green-300 mt-0.5"><span class="inline-block w-36 h-3.5 rounded bg-white/10 mt-1.5 skeleton-shimmer-light"></span></p>
         </div>
     </a>
 
@@ -101,9 +182,9 @@
                 </div>
                 <svg class="w-4 h-4 text-white/50 group-hover:text-white/90 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </div>
-            <p id="kpiCoupons" class="text-3xl font-black text-white">—</p>
+            <p id="kpiCoupons" class="text-3xl font-black text-white"><span class="inline-block w-20 h-8 rounded bg-white/20 skeleton-shimmer-light"></span></p>
             <p class="text-xs font-semibold text-purple-200 uppercase tracking-wider mt-1">Active Coupons</p>
-            <p id="kpiCouponsSub" class="text-xs text-purple-300 mt-0.5"></p>
+            <p id="kpiCouponsSub" class="text-xs text-purple-300 mt-0.5"><span class="inline-block w-36 h-3.5 rounded bg-white/10 mt-1.5 skeleton-shimmer-light"></span></p>
         </div>
     </a>
 
@@ -122,11 +203,19 @@
     ];
     @endphp
     @foreach($pills as $p)
+    @php
+        $shimmerClass = 'skeleton-shimmer-dark';
+        if (str_contains($p['id'], 'Categories') || str_contains($p['id'], 'Customers')) $shimmerClass = 'skeleton-shimmer-blue';
+        elseif (str_contains($p['id'], 'Brands')) $shimmerClass = 'skeleton-shimmer-purple';
+        elseif (str_contains($p['id'], 'Collections')) $shimmerClass = 'skeleton-shimmer-green';
+        elseif (str_contains($p['id'], 'LowStock')) $shimmerClass = 'skeleton-shimmer-orange';
+        elseif (str_contains($p['id'], 'OutStock')) $shimmerClass = 'skeleton-shimmer-red';
+    @endphp
     <a href="{{ $p['href'] }}"
        class="rounded-xl p-3.5 text-center hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
        style="background:{{ $p['bg'] }};border:1.5px solid {{ $p['border'] }}">
-        <p id="{{ $p['id'] }}" class="text-2xl font-black" style="color:{{ $p['num'] }}">
-            <span class="inline-block w-8 h-6 rounded animate-pulse" style="background:{{ $p['border'] }}40"></span>
+        <p id="{{ $p['id'] }}" class="text-2xl font-black flex justify-center items-center h-8" style="color:{{ $p['num'] }}">
+            <span class="inline-block w-12 h-6 rounded {{ $shimmerClass }}"></span>
         </p>
         <p class="text-xs font-semibold mt-1" style="color:{{ $p['txt'] }}">{{ $p['label'] }}</p>
     </a>
@@ -172,7 +261,7 @@
                     </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p id="{{ $item['id'] }}" class="text-lg font-black text-white leading-none">—</p>
+                    <p id="{{ $item['id'] }}" class="text-lg font-black text-white leading-none"><span class="inline-block w-10 h-5 rounded bg-white/25 skeleton-shimmer-light"></span></p>
                     <p class="text-xs font-semibold text-white/80">{{ $item['label'] }}</p>
                 </div>
                 <svg class="w-3.5 h-3.5 text-white/30 group-hover:text-white/70 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -210,7 +299,7 @@
                     </div>
                     <span class="text-xs font-medium text-gray-600">{{ $h['label'] }}</span>
                 </div>
-                <span id="{{ $h['id'] }}" class="text-sm font-bold text-gray-900">—</span>
+                <span id="{{ $h['id'] }}" class="text-sm font-bold text-gray-900"><span class="inline-block w-16 h-4 rounded bg-gray-200 skeleton-shimmer-dark"></span></span>
             </div>
             @endforeach
         </div>
@@ -235,10 +324,13 @@
         </div>
         <div id="recentReviews">
             @for($i=0;$i<4;$i++)
-            <div class="flex items-center gap-3 px-6 py-3.5 border-b border-gray-50 animate-pulse">
-                <div class="w-9 h-9 rounded-full bg-gray-200 flex-shrink-0"></div>
-                <div class="flex-1"><div class="h-3 bg-gray-200 rounded w-3/4 mb-2"></div><div class="h-2.5 bg-gray-100 rounded w-1/2"></div></div>
-                <div class="w-16 h-5 bg-gray-100 rounded-full"></div>
+            <div class="flex items-center gap-3 px-6 py-3.5 border-b border-gray-50">
+                <div class="w-9 h-9 rounded-full flex-shrink-0 skeleton-shimmer-dark"></div>
+                <div class="flex-1">
+                    <div class="h-3 rounded w-2/3 mb-2 skeleton-shimmer-dark"></div>
+                    <div class="h-2.5 rounded w-1/2 skeleton-shimmer-dark"></div>
+                </div>
+                <div class="w-16 h-5 rounded-full skeleton-shimmer-dark"></div>
             </div>
             @endfor
         </div>
@@ -259,10 +351,13 @@
         </div>
         <div id="recentActivity">
             @for($i=0;$i<5;$i++)
-            <div class="flex items-center gap-3 px-6 py-3 border-b border-gray-50 animate-pulse">
-                <div class="w-8 h-8 rounded-lg bg-gray-200 flex-shrink-0"></div>
-                <div class="flex-1"><div class="h-3 bg-gray-200 rounded w-3/4 mb-2"></div><div class="h-2.5 bg-gray-100 rounded w-1/3"></div></div>
-                <div class="w-12 h-3 bg-gray-100 rounded"></div>
+            <div class="flex items-center gap-3 px-6 py-3 border-b border-gray-50">
+                <div class="w-8 h-8 rounded-lg flex-shrink-0 skeleton-shimmer-dark"></div>
+                <div class="flex-1">
+                    <div class="h-3 rounded w-3/4 mb-2 skeleton-shimmer-dark"></div>
+                    <div class="h-2.5 rounded w-1/3 skeleton-shimmer-dark"></div>
+                </div>
+                <div class="w-12 h-3 rounded skeleton-shimmer-dark"></div>
             </div>
             @endfor
         </div>
@@ -314,14 +409,91 @@
 const COLORS = ['#0082C3','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6','#f97316','#6366f1','#84cc16'];
 
 function esc(s) { return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function setText(id, val) { const el=document.getElementById(id); if(el) el.textContent=val??'—'; }
+function setText(id, val) { const el=document.getElementById(id); if(el) el.textContent=val??'0'; }
 function stars(n) { const r=Math.round(n||0); return '★'.repeat(r)+'☆'.repeat(5-r); }
+
+function setSkeletons() {
+    // KPI Cards
+    const kpis = [
+        { id: 'kpiProducts', subId: 'kpiProductsSub' },
+        { id: 'kpiReviews', subId: 'kpiReviewsSub' },
+        { id: 'kpiPromotions', subId: 'kpiPromotionsSub' },
+        { id: 'kpiCoupons', subId: 'kpiCouponsSub' }
+    ];
+    kpis.forEach(k => {
+        const el = document.getElementById(k.id);
+        if (el) el.innerHTML = `<span class="inline-block w-20 h-8 rounded bg-white/20 skeleton-shimmer-light"></span>`;
+        const subEl = document.getElementById(k.subId);
+        if (subEl) subEl.innerHTML = `<span class="inline-block w-36 h-3.5 rounded bg-white/10 mt-1.5 skeleton-shimmer-light"></span>`;
+    });
+
+    // Secondary Pills
+    const pills = [
+        { id: 'statCategories', cls: 'skeleton-shimmer-blue' },
+        { id: 'statBrands',     cls: 'skeleton-shimmer-purple' },
+        { id: 'statCollections',cls: 'skeleton-shimmer-green' },
+        { id: 'statLowStock',   cls: 'skeleton-shimmer-orange' },
+        { id: 'statOutStock',   cls: 'skeleton-shimmer-red' },
+        { id: 'statCustomers',  cls: 'skeleton-shimmer-blue' }
+    ];
+    pills.forEach(p => {
+        const el = document.getElementById(p.id);
+        if (el) el.innerHTML = `<span class="inline-block w-12 h-6 rounded ${p.cls}"></span>`;
+    });
+
+    // Catalog Grid
+    const catalogs = ['catProducts', 'catCategories', 'catBrands', 'catCollections', 'catTags', 'catAttributes', 'catCustomers', 'catStock'];
+    catalogs.forEach(c => {
+        const el = document.getElementById(c);
+        if (el) el.innerHTML = `<span class="inline-block w-10 h-5 rounded bg-white/25 skeleton-shimmer-light"></span>`;
+    });
+
+    // Store Health
+    const healths = ['ovStockValue', 'ovAvgRating', 'ovCampaigns', 'ovWarehouses', 'ovAdmins', 'ovTodayLogs'];
+    healths.forEach(h => {
+        const el = document.getElementById(h);
+        if (el) el.innerHTML = `<span class="inline-block w-16 h-4 rounded bg-gray-200 skeleton-shimmer-dark"></span>`;
+    });
+
+    // Recent Reviews
+    const rrEl = document.getElementById('recentReviews');
+    if (rrEl) {
+        rrEl.innerHTML = Array(4).fill(0).map(() => `
+            <div class="flex items-center gap-3 px-6 py-3.5 border-b border-gray-50">
+                <div class="w-9 h-9 rounded-full flex-shrink-0 skeleton-shimmer-dark"></div>
+                <div class="flex-1">
+                    <div class="h-3 rounded w-2/3 mb-2 skeleton-shimmer-dark"></div>
+                    <div class="h-2.5 rounded w-1/2 skeleton-shimmer-dark"></div>
+                </div>
+                <div class="w-16 h-5 rounded-full skeleton-shimmer-dark"></div>
+            </div>
+        `).join('');
+    }
+
+    // Recent Activity
+    const raEl = document.getElementById('recentActivity');
+    if (raEl) {
+        raEl.innerHTML = Array(5).fill(0).map(() => `
+            <div class="flex items-center gap-3 px-6 py-3 border-b border-gray-50">
+                <div class="w-8 h-8 rounded-lg flex-shrink-0 skeleton-shimmer-dark"></div>
+                <div class="flex-1">
+                    <div class="h-3 rounded w-3/4 mb-2 skeleton-shimmer-dark"></div>
+                    <div class="h-2.5 rounded w-1/3 skeleton-shimmer-dark"></div>
+                </div>
+                <div class="w-12 h-3 rounded skeleton-shimmer-dark"></div>
+            </div>
+        `).join('');
+    }
+}
 
 async function loadDashboard() {
     const btn = document.getElementById('refreshBtn');
     const icon = document.getElementById('refreshIcon');
     if(btn) btn.disabled = true;
     if(icon) icon.classList.add('animate-spin');
+
+    // Trigger skeleton shimmers
+    setSkeletons();
 
     try {
         const r = await fetch('/admin/dashboard/stats', {
@@ -359,7 +531,7 @@ function renderDashboard(d) {
     setText('statCollections', d.total_collections);
     setText('statLowStock',    d.low_stock_count);
     setText('statOutStock',    d.out_of_stock_count);
-    setText('statCustomers',   d.total_customers || '—');
+    setText('statCustomers',   d.total_customers || 0);
 
     // Store health
     setText('ovStockValue',  '₹' + Number(d.stock_value||0).toLocaleString('en-IN',{maximumFractionDigits:0}));
@@ -374,9 +546,9 @@ function renderDashboard(d) {
     setText('catCategories',  d.total_categories);
     setText('catBrands',      d.total_brands);
     setText('catCollections', d.total_collections);
-    setText('catTags',        d.total_tags || '—');
-    setText('catAttributes',  d.total_attributes || '—');
-    setText('catCustomers',   d.total_customers || '—');
+    setText('catTags',        d.total_tags || 0);
+    setText('catAttributes',  d.total_attributes || 0);
+    setText('catCustomers',   d.total_customers || 0);
     setText('catStock',       d.low_stock_count + d.out_of_stock_count);
 
     // Recent Reviews

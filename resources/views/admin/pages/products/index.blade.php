@@ -3133,13 +3133,13 @@ function uploadMultipleToImageKit(files) {
     // Upload each file with fresh authentication
     files.forEach((file, index) => {
         // Get fresh authentication parameters for each file
-        fetch("{{ route('imagekit.auth') }}")
+        fetch("{{ parse_url(route('imagekit.auth'), PHP_URL_PATH) }}")
             .then(response => response.json())
             .then(authParams => {
                 const imageKitConfig = {
                     publicKey: "{{ \App\Models\Setting::get('imagekit_public_key') ?: config('imagekit.public_key', '') }}",
                     urlEndpoint: "{{ \App\Models\Setting::get('imagekit_url_endpoint') ?: config('imagekit.url_endpoint', '') }}",
-                    authenticationEndpoint: "{{ route('imagekit.auth') }}"
+                    authenticationEndpoint: "{{ parse_url(route('imagekit.auth'), PHP_URL_PATH) }}"
                 };
 
                 if (!imageKitConfig.publicKey || !imageKitConfig.urlEndpoint) {

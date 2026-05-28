@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Decathlon</title>
+    <title>Reset Password - Decathlon Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes slideUp {
@@ -33,38 +33,22 @@
                 <!-- Logo -->
                 <div class="mb-12 animate-fade-in">
                     <svg class="w-20 h-20 text-white mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                     </svg>
                     <h1 class="text-5xl font-black tracking-tight">DECATHLON</h1>
                 </div>
                 
-                <!-- Welcome Text -->
+                <!-- Info Text -->
                 <div class="text-center max-w-md animate-slide-up">
-                    <h2 class="text-3xl font-bold mb-4">Welcome Back!</h2>
+                    <h2 class="text-3xl font-bold mb-4">Set New Password</h2>
                     <p class="text-white/90 text-lg leading-relaxed">
-                        Manage your e-commerce platform with powerful admin tools. Track orders, manage inventory, and grow your business.
+                        Ensure your account is protected with a highly secure password. Choose a combination of letters, numbers, and symbols that is easy to remember but hard to guess.
                     </p>
-                </div>
-
-                <!-- Features -->
-                <div class="mt-16 grid grid-cols-3 gap-8 w-full max-w-2xl animate-slide-up" style="animation-delay: 0.2s;">
-                    <div class="text-center">
-                        <div class="text-4xl font-bold mb-2">10K+</div>
-                        <div class="text-white/80 text-sm">Products</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold mb-2">50K+</div>
-                        <div class="text-white/80 text-sm">Orders</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold mb-2">99%</div>
-                        <div class="text-white/80 text-sm">Uptime</div>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Right Side - Login Form -->
+        <!-- Right Side - Reset Form -->
         <div class="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-16">
             <div class="w-full max-w-md">
                 <!-- Mobile Logo -->
@@ -72,23 +56,25 @@
                     <div class="inline-flex items-center gap-3 mb-4">
                         <div class="bg-[#0082C3] p-2.5 rounded-lg">
                             <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                             </svg>
                         </div>
                         <span class="text-2xl font-black text-[#0082C3]">DECATHLON</span>
                     </div>
                 </div>
 
-                <!-- Login Header -->
+                <!-- Reset Password Header -->
                 <div class="mb-8 animate-slide-up">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Admin Login</h2>
-                    <p class="text-gray-600">Enter your credentials to access the dashboard</p>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Reset Password</h2>
+                    <p class="text-gray-600">Enter your credentials and choose a strong new password</p>
                 </div>
 
-                <!-- Login Form -->
+                <!-- Form -->
                 <div class="animate-slide-up" style="animation-delay: 0.1s;">
-                    <form id="loginForm" class="space-y-5">
+                    <form id="resetForm" class="space-y-5">
                         @csrf
+                        <input type="hidden" name="token" id="token" value="{{ $token }}">
+
                         <!-- Email Field -->
                         <div>
                             <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
@@ -117,7 +103,7 @@
 
                         <!-- Password Field -->
                         <div>
-                            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">New Password</label>
                             <div class="relative" id="passwordContainer">
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                     <svg class="w-5 h-5 text-gray-400 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,19 +116,19 @@
                                     name="password" 
                                     required
                                     class="w-full pl-12 pr-12 py-3.5 border-2 border-gray-200 rounded-lg focus:border-[#0082C3] focus:ring-2 focus:ring-[#0082C3]/10 outline-none transition-all text-gray-900 text-[15px]"
-                                    placeholder="Enter your password"
+                                    placeholder="Minimum 6 characters"
                                 >
                                 <button 
                                     id="togglePasswordBtn"
                                     type="button" 
-                                    onclick="togglePassword()"
+                                    onclick="togglePassword('password', 'eye-open-pass', 'eye-closed-pass')"
                                     class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#0082C3] transition-colors"
                                 >
-                                    <svg id="eye-open" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg id="eye-open-pass" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                     </svg>
-                                    <svg id="eye-closed" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg id="eye-closed-pass" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
                                     </svg>
                                 </button>
@@ -155,32 +141,63 @@
                             </div>
                         </div>
 
-                        <!-- Remember Me & Forgot Password -->
-                        <div class="flex items-center justify-between pt-1">
-                            <label class="flex items-center cursor-pointer group">
-                                <input type="checkbox" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
-                                <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                            </label>
-                            <a href="{{ route('admin.forgot-password') }}" class="text-sm font-semibold text-[#0082C3] hover:text-[#006699] transition-colors">
-                                Forgot password?
-                            </a>
+                        <!-- Confirm Password Field -->
+                        <div>
+                            <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2">Confirm New Password</label>
+                            <div class="relative" id="password_confirmationContainer">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                    </svg>
+                                </div>
+                                <input 
+                                    type="password" 
+                                    id="password_confirmation" 
+                                    name="password_confirmation" 
+                                    required
+                                    class="w-full pl-12 pr-12 py-3.5 border-2 border-gray-200 rounded-lg focus:border-[#0082C3] focus:ring-2 focus:ring-[#0082C3]/10 outline-none transition-all text-gray-900 text-[15px]"
+                                    placeholder="Repeat your new password"
+                                >
+                                <button 
+                                    id="togglePasswordConfirmationBtn"
+                                    type="button" 
+                                    onclick="togglePassword('password_confirmation', 'eye-open-conf', 'eye-closed-conf')"
+                                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#0082C3] transition-colors"
+                                >
+                                    <svg id="eye-open-conf" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                    <svg id="eye-closed-conf" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div id="password_confirmationErrorContainer" class="hidden flex items-center gap-1.5 mt-1.5 text-red-600 text-xs font-medium">
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span id="password_confirmationError"></span>
+                            </div>
                         </div>
 
-                        <!-- Login Button -->
-                        <button 
-                            type="submit"
-                            id="loginBtn"
-                            class="w-full bg-[#0082C3] hover:bg-[#006699] text-white font-semibold py-3.5 rounded-lg transition-all duration-200 mt-6 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            <span id="btnText">Sign In to Dashboard</span>
-                            <span id="btnLoader" class="hidden">
-                                <svg class="animate-spin inline-block w-5 h-5" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Signing In...
-                            </span>
-                        </button>
+                        <!-- Buttons -->
+                        <div class="space-y-4 pt-2">
+                            <button 
+                                type="submit"
+                                id="submitBtn"
+                                class="w-full bg-[#0082C3] hover:bg-[#006699] text-white font-semibold py-3.5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                <span id="btnText">Save & Reset Password</span>
+                                <span id="btnLoader" class="hidden">
+                                    <svg class="animate-spin inline-block w-5 h-5" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Saving Password...
+                                </span>
+                            </button>
+                        </div>
 
                         <!-- Error Message -->
                         <div id="errorMessage" class="hidden mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -213,27 +230,25 @@
     </div>
 
     <script>
-        // Password Toggle
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const eyeOpen = document.getElementById('eye-open');
-            const eyeClosed = document.getElementById('eye-closed');
+        function togglePassword(inputId, openId, closedId) {
+            const input = document.getElementById(inputId);
+            const openSvg = document.getElementById(openId);
+            const closedSvg = document.getElementById(closedId);
             
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeOpen.classList.add('hidden');
-                eyeClosed.classList.remove('hidden');
+            if (input.type === 'password') {
+                input.type = 'text';
+                openSvg.classList.add('hidden');
+                closedSvg.classList.remove('hidden');
             } else {
-                passwordInput.type = 'password';
-                eyeOpen.classList.remove('hidden');
-                eyeClosed.classList.add('hidden');
+                input.type = 'password';
+                openSvg.classList.remove('hidden');
+                closedSvg.classList.add('hidden');
             }
         }
 
-        // AJAX Login Handler
         document.addEventListener('DOMContentLoaded', function() {
-            const loginForm = document.getElementById('loginForm');
-            const loginBtn = document.getElementById('loginBtn');
+            const resetForm = document.getElementById('resetForm');
+            const submitBtn = document.getElementById('submitBtn');
             const btnText = document.getElementById('btnText');
             const btnLoader = document.getElementById('btnLoader');
             const errorMessage = document.getElementById('errorMessage');
@@ -241,17 +256,11 @@
             const successMessage = document.getElementById('successMessage');
             const successText = document.getElementById('successText');
 
-            // Form Fields
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
+            const confirmInput = document.getElementById('password_confirmation');
+            const tokenInput = document.getElementById('token');
 
-            // Regex for Email Validation
-            function validateEmail(email) {
-                const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                return re.test(String(email).toLowerCase());
-            }
-
-            // Function to display field-specific error
             function showFieldError(field, message) {
                 const input = document.getElementById(field);
                 const errorContainer = document.getElementById(field + 'ErrorContainer');
@@ -259,7 +268,6 @@
                 const wrapper = input.closest('.relative');
                 const icon = wrapper ? wrapper.querySelector('svg') : null;
 
-                // Border and Focus styles
                 input.classList.remove('border-gray-200', 'focus:border-[#0082C3]', 'focus:ring-[#0082C3]/10');
                 input.classList.add('border-red-500', 'focus:border-red-500', 'focus:ring-red-500/10');
                 
@@ -272,7 +280,6 @@
                 errorContainer.classList.remove('hidden');
             }
 
-            // Function to clear field-specific error
             function clearFieldError(field) {
                 const input = document.getElementById(field);
                 const errorContainer = document.getElementById(field + 'ErrorContainer');
@@ -290,72 +297,77 @@
                 errorContainer.classList.add('hidden');
             }
 
-            // Clear errors as the user edits fields
             emailInput.addEventListener('input', () => {
                 clearFieldError('email');
                 errorMessage.classList.add('hidden');
             });
-
             passwordInput.addEventListener('input', () => {
                 clearFieldError('password');
                 errorMessage.classList.add('hidden');
             });
+            confirmInput.addEventListener('input', () => {
+                clearFieldError('password_confirmation');
+                errorMessage.classList.add('hidden');
+            });
 
-            // Handle submission
-            loginForm.addEventListener('submit', function(e) {
+            resetForm.addEventListener('submit', function(e) {
                 e.preventDefault();
 
-                // Get form data
                 const email = emailInput.value.trim();
                 const password = passwordInput.value;
+                const confirmation = confirmInput.value;
+                const token = tokenInput.value;
 
-                // Reset previous errors
                 errorMessage.classList.add('hidden');
                 successMessage.classList.add('hidden');
                 clearFieldError('email');
                 clearFieldError('password');
+                clearFieldError('password_confirmation');
 
-                // Pre-flight Client Validation
                 let hasClientError = false;
+
                 if (!email) {
                     showFieldError('email', 'Email address is required.');
                     hasClientError = true;
-                } else if (!validateEmail(email)) {
-                    showFieldError('email', 'Please enter a valid email address.');
+                }
+                if (!password) {
+                    showFieldError('password', 'New password is required.');
+                    hasClientError = true;
+                } else if (password.length < 6) {
+                    showFieldError('password', 'Password must be at least 6 characters.');
                     hasClientError = true;
                 }
-
-                if (!password) {
-                    showFieldError('password', 'Password is required.');
+                if (!confirmation) {
+                    showFieldError('password_confirmation', 'Confirm password is required.');
+                    hasClientError = true;
+                } else if (password !== confirmation) {
+                    showFieldError('password_confirmation', 'Passwords do not match.');
                     hasClientError = true;
                 }
 
                 if (hasClientError) {
-                    errorText.textContent = 'Please correct the errors in the form before submitting.';
-                    errorMessage.classList.remove('hidden');
                     return;
                 }
 
-                // Show loader and disable form elements during request
-                loginBtn.disabled = true;
+                submitBtn.disabled = true;
                 btnText.classList.add('hidden');
                 btnLoader.classList.remove('hidden');
 
-                const formElements = loginForm.querySelectorAll('input, button');
+                const formElements = resetForm.querySelectorAll('input, button');
                 formElements.forEach(el => {
-                    if (el.id !== 'togglePasswordBtn') {
+                    if (el.id !== 'togglePasswordBtn' && el.id !== 'togglePasswordConfirmationBtn') {
                         el.disabled = true;
                     }
                 });
 
-                // Create FormData
                 const formData = new FormData();
                 formData.append('email', email);
                 formData.append('password', password);
+                formData.append('password_confirmation', confirmation);
+                formData.append('token', token);
                 formData.append('_token', document.querySelector('input[name="_token"]').value);
 
-                // Fetch AJAX Request
-                fetch('{{ route("admin.login.post") }}', {
+                fetch('{{ route("admin.reset-password.post") }}', {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -373,37 +385,29 @@
                     return data;
                 })
                 .then(data => {
-                    // Show success state
-                    successText.textContent = data.message || 'Login successful! Redirecting...';
+                    successText.textContent = data.message;
                     successMessage.classList.remove('hidden');
 
-                    // Redirect
                     setTimeout(() => {
-                        window.location.href = data.redirect;
-                    }, 800);
+                        window.location.href = '{{ route("admin.login") }}';
+                    }, 1500);
                 })
                 .catch(error => {
-                    // Re-enable form elements
-                    loginBtn.disabled = false;
+                    submitBtn.disabled = false;
                     btnText.classList.remove('hidden');
                     btnLoader.classList.add('hidden');
                     formElements.forEach(el => el.disabled = false);
 
-                    // Parse server response errors
                     if (error && error.status === 422 && error.data && error.data.errors) {
                         const errors = error.data.errors;
-                        if (errors.email) {
-                            showFieldError('email', errors.email[0]);
-                        }
-                        if (errors.password) {
-                            showFieldError('password', errors.password[0]);
-                        }
-                        errorText.textContent = 'Validation failed. Please correct the fields listed below.';
-                    } else if (error && (error.status === 401 || error.status === 403) && error.data) {
-                        errorText.textContent = error.data.message || 'Invalid email or password.';
+                        if (errors.email) showFieldError('email', errors.email[0]);
+                        if (errors.password) showFieldError('password', errors.password[0]);
+                        if (errors.token) errorText.textContent = errors.token[0];
+                        else errorText.textContent = 'Validation failed. Please correct the fields listed below.';
+                    } else if (error && error.data && error.data.message) {
+                        errorText.textContent = error.data.message;
                     } else {
                         errorText.textContent = 'An unexpected error occurred. Please try again.';
-                        console.error('AJAX error:', error);
                     }
                     errorMessage.classList.remove('hidden');
                 });

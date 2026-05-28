@@ -121,7 +121,7 @@ class DashboardController extends Controller
                 ->get()
                 ->map(fn($r) => [
                     'reviewer_name' => $r->reviewer_name,
-                    'product'       => $r->product?->name ?? '—',
+                    'product'       => $r->product?->name ?? 'N/A',
                     'rating'        => $r->rating,
                     'status'        => $r->status,
                     'time'          => $r->created_at?->diffForHumans(),

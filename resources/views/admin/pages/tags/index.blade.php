@@ -1011,3 +1011,8 @@ function showToast(message, type = 'success') {
 }
 </style>
 @endpush
+        background-position: -200% 0;
+    }
+}
+</style>
+@endpush

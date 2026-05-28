@@ -511,7 +511,7 @@ function renderUsers(users) {
 
     tbody.innerHTML = users.map(user => {
         const profileImg = user.profile_image 
-            ? `/uploads/profiles/${user.profile_image}` 
+            ? (user.profile_image.startsWith('http') ? user.profile_image : (user.profile_image.startsWith('uploads/') ? `/${user.profile_image}` : `/uploads/profiles/${user.profile_image}`))
             : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&size=40&background=0082C3&color=fff`;
         
         const lastLogin = user.last_login 
@@ -706,7 +706,7 @@ function editUser(id) {
             document.getElementById('userStatus').value = user.is_active ? '1' : '0';
             
             const profileImg = user.profile_image 
-                ? `/uploads/profiles/${user.profile_image}` 
+                ? (user.profile_image.startsWith('http') ? user.profile_image : (user.profile_image.startsWith('uploads/') ? `/${user.profile_image}` : `/uploads/profiles/${user.profile_image}`))
                 : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&size=80&background=0082C3&color=fff`;
             document.getElementById('profilePreview').src = profileImg;
             
@@ -1045,7 +1045,7 @@ function showUserViewModal(user) {
                             <div class="flex items-center gap-4">
                                 <div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
                                     ${user.profile_image 
-                                        ? `<img src="${user.profile_image}" class="w-full h-full object-cover" alt="${user.name}">`
+                                        ? `<img src="${user.profile_image.startsWith('http') ? user.profile_image : '/' + user.profile_image}" class="w-full h-full object-cover" alt="${user.name}">`
                                         : `<div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-2xl font-bold">${user.name.charAt(0).toUpperCase()}</div>`
                                     }
                                 </div>
