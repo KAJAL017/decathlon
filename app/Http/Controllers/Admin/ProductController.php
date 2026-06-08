@@ -19,10 +19,26 @@ class ProductController extends Controller
         return view('admin.pages.products.index');
     }
 
+    public function create()
+    {
+        return view('admin.pages.products.form', ['productId' => null]);
+    }
+
+    public function edit($id)
+    {
+        return view('admin.pages.products.form', ['productId' => $id]);
+    }
+
     public function list(Request $request)
     {
-        $query = Product::with(['brand', 'category', 'featuredImage'])
-            ->withCount('variants');
+        $query = Product::select([
+            'id', 'name', 'slug', 'sku_prefix', 'brand_id', 'category_id', 
+            'product_type', 'status', 'is_featured', 'is_new', 'is_best_seller', 'is_trending'
+        ])
+        ->with(['brand:id,name', 'category:id,name', 'featuredImage:id,product_id,image_url'])
+        ->withCount('variants')
+        ->withMin('variants as min_price', 'price')
+        ->withMax('variants as max_price', 'price');
 
         // Search
         if ($request->has('search') && $request->search) {
@@ -59,9 +75,28 @@ class ProductController extends Controller
             $query->where('is_featured', $request->is_featured);
         }
 
+        // Filter by trending
+        if ($request->filled('is_trending')) {
+            $query->where('is_trending', $request->is_trending);
+        }
+
         // Pagination
         $perPage = $request->get('per_page', 10);
         $products = $query->latest()->paginate($perPage);
+
+        // Fetch Stats only on first page or when specifically requested
+        $stats = null;
+        if ($request->get('page', 1) == 1 || $request->has('get_stats')) {
+            $stats = [
+                'total' => Product::count(),
+                'active' => Product::where('status', 'active')->count(),
+                'draft' => Product::where('status', 'draft')->count(),
+                'featured' => Product::where('is_featured', true)->count(),
+                'new' => Product::where('is_new', true)->count(),
+                'best_seller' => Product::where('is_best_seller', true)->count(),
+                'trending' => Product::where('is_trending', true)->count(),
+            ];
+        }
 
         return response()->json([
             'success' => true,
@@ -71,7 +106,8 @@ class ProductController extends Controller
                 'per_page' => $products->perPage(),
                 'current_page' => $products->currentPage(),
                 'last_page' => $products->lastPage(),
-            ]
+            ],
+            'stats' => $stats
         ]);
     }
 
@@ -99,6 +135,7 @@ class ProductController extends Controller
             'is_featured'           => 'boolean',
             'is_new'                => 'boolean',
             'is_best_seller'        => 'boolean',
+            'is_trending'           => 'boolean',
             'manage_stock'          => 'boolean',
             'allow_backorder'       => 'boolean',
             // ── Digital ────────────────────────────────
@@ -229,7 +266,17 @@ class ProductController extends Controller
                     $variantData['manage_stock']    = $v['manage_stock']    ?? true;
                     $variantData['allow_backorder'] = $v['allow_backorder'] ?? false;
                 }
-                $product->variants()->create($variantData);
+                $variant = $product->variants()->create($variantData);
+                
+                // Save attributes
+                if (!empty($v['attributes'])) {
+                    foreach ($v['attributes'] as $attr) {
+                        $variant->variantAttributes()->create([
+                            'attribute_id' => $attr['attribute_id'],
+                            'attribute_value_id' => $attr['value_id'] ?? $attr['attribute_value_id'],
+                        ]);
+                    }
+                }
             }
 
             \App\Models\ActivityLog::log('created', 'products', "Created product: {$product->name}", ['product_id' => $product->id]);
@@ -309,6 +356,7 @@ class ProductController extends Controller
             'is_featured'           => 'boolean',
             'is_new'                => 'boolean',
             'is_best_seller'        => 'boolean',
+            'is_trending'           => 'boolean',
             'manage_stock'          => 'boolean',
             'allow_backorder'       => 'boolean',
             'download_url'          => 'nullable|string|max:500',
@@ -431,7 +479,17 @@ class ProductController extends Controller
                     $variantData['manage_stock']    = $v['manage_stock']    ?? true;
                     $variantData['allow_backorder'] = $v['allow_backorder'] ?? false;
                 }
-                $product->variants()->create($variantData);
+                $variant = $product->variants()->create($variantData);
+                
+                // Save attributes
+                if (!empty($v['attributes'])) {
+                    foreach ($v['attributes'] as $attr) {
+                        $variant->variantAttributes()->create([
+                            'attribute_id' => $attr['attribute_id'],
+                            'attribute_value_id' => $attr['value_id'] ?? $attr['attribute_value_id'],
+                        ]);
+                    }
+                }
             }
 
             \App\Models\ActivityLog::log('updated', 'products', "Updated product: {$product->name}", ['product_id' => $product->id]);
@@ -506,7 +564,7 @@ class ProductController extends Controller
     public function bulkAction(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'action' => 'required|in:activate,deactivate,delete,feature,unfeature',
+            'action' => 'required|in:activate,deactivate,delete,feature,unfeature,trend,untrend',
             'ids' => 'required|array|min:1',
             'ids.*' => 'exists:products,id'
         ]);
@@ -544,6 +602,16 @@ class ProductController extends Controller
                     break;
                 case 'unfeature':
                     $product->is_featured = false;
+                    $product->save();
+                    $count++;
+                    break;
+                case 'trend':
+                    $product->is_trending = true;
+                    $product->save();
+                    $count++;
+                    break;
+                case 'untrend':
+                    $product->is_trending = false;
                     $product->save();
                     $count++;
                     break;
@@ -921,6 +989,124 @@ class ProductController extends Controller
             ], 404);
         }
 
-        return Storage::download($job->file_path, $job->file_name);
+        return \Illuminate\Support\Facades\Storage::download($job->file_path, $job->file_name);
+    }
+
+    // ---------------------------------------------------------
+    // PAGE BUILDER (SECTIONS & DOWNLOADS)
+    // ---------------------------------------------------------
+
+    public function builder($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('admin.pages.products.builder', compact('product'));
+    }
+
+    public function getSections($id)
+    {
+        $product = Product::with(['sections', 'downloads'])->findOrFail($id);
+        
+        return response()->json([
+            'success' => true,
+            'sections' => $product->sections,
+            'downloads' => $product->downloads,
+        ]);
+    }
+
+    public function saveSections(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        
+        $validator = Validator::make($request->all(), [
+            'sections' => 'array',
+            'sections.*.type' => 'required|string',
+            'sections.*.title' => 'nullable|string|max:255',
+            'sections.*.subtitle' => 'nullable|string|max:255',
+            'sections.*.content' => 'nullable|array',
+            'sections.*.settings' => 'nullable|array',
+            'sections.*.is_active' => 'boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        }
+
+        DB::beginTransaction();
+        try {
+            // Delete existing sections
+            $product->sections()->delete();
+
+            // Create new sections
+            foreach ($request->input('sections', []) as $index => $secData) {
+                $product->sections()->create([
+                    'type' => $secData['type'],
+                    'title' => $secData['title'] ?? null,
+                    'subtitle' => $secData['subtitle'] ?? null,
+                    'content' => $secData['content'] ?? [],
+                    'settings' => $secData['settings'] ?? [],
+                    'is_active' => $secData['is_active'] ?? true,
+                    'sort_order' => $index,
+                ]);
+            }
+
+            \App\Models\ActivityLog::log('updated', 'products', "Updated page layout for product: {$product->name}", ['product_id' => $product->id]);
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Product page layout saved successfully',
+                'sections' => $product->sections()->get()
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Failed to save layout: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function saveDownloads(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        
+        $validator = Validator::make($request->all(), [
+            'downloads' => 'array',
+            'downloads.*.title' => 'required|string|max:255',
+            'downloads.*.file_path' => 'required|string',
+            'downloads.*.file_type' => 'nullable|string',
+            'downloads.*.file_size' => 'nullable|string',
+            'downloads.*.icon' => 'nullable|string',
+            'downloads.*.status' => 'boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        }
+
+        DB::beginTransaction();
+        try {
+            $product->downloads()->delete();
+
+            foreach ($request->input('downloads', []) as $index => $dlData) {
+                $product->downloads()->create([
+                    'title' => $dlData['title'],
+                    'file_path' => $dlData['file_path'],
+                    'file_type' => $dlData['file_type'] ?? null,
+                    'file_size' => $dlData['file_size'] ?? null,
+                    'icon' => $dlData['icon'] ?? null,
+                    'status' => $dlData['status'] ?? true,
+                    'sort_order' => $index,
+                ]);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Downloads saved successfully',
+                'downloads' => $product->downloads()->get()
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Failed to save downloads: ' . $e->getMessage()], 500);
+        }
     }
 }

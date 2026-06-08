@@ -156,6 +156,9 @@ style.textContent = `
         border: 1px solid #d1d5db !important;
         border-radius: 0.5rem !important;
         overflow: hidden !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
     
     .note-editor.note-frame {

@@ -607,8 +607,14 @@ function saveBrand() {
     });
 }
 
-function deleteBrand(id) {
-    if (!confirm('Are you sure you want to delete this brand?')) return;
+async function deleteBrand(id) {
+    const confirmed = await Dialog.confirm({
+        title: 'Delete Brand',
+        message: 'Are you sure you want to delete this brand?',
+        type: 'danger'
+    });
+
+    if (!confirmed) return;
 
     fetch(`/admin/brands/${id}`, {
         method: 'DELETE',
@@ -622,9 +628,17 @@ function deleteBrand(id) {
     .then(data => {
         if (data.success) {
             loadBrands(currentPage);
-            showBrandToast(data.message, 'success');
+            Dialog.alert({
+                title: 'Success!',
+                message: data.message,
+                type: 'success'
+            });
         } else {
-            showBrandToast(data.message || 'Error deleting brand', 'error');
+            Dialog.alert({
+                title: 'Error',
+                message: data.message || 'Error deleting brand',
+                type: 'danger'
+            });
         }
     });
 }
@@ -666,7 +680,7 @@ function updateBulkActions() {
     }
 }
 
-function applyBulkAction() {
+async function applyBulkAction() {
     const action = document.getElementById('bulkActionSelect').value;
     if (!action) return;
 
@@ -675,7 +689,13 @@ function applyBulkAction() {
 
     if (ids.length === 0) return;
 
-    if (!confirm(`Are you sure you want to ${action} ${ids.length} brands?`)) return;
+    const confirmed = await Dialog.confirm({
+        title: 'Bulk Action',
+        message: `Are you sure you want to ${action} ${ids.length} brands?`,
+        type: action === 'delete' ? 'danger' : 'info'
+    });
+
+    if (!confirmed) return;
 
     fetch('/admin/brands/bulk-action', {
         method: 'POST',
@@ -693,14 +713,22 @@ function applyBulkAction() {
             loadBrands(currentPage);
             document.getElementById('selectAll').checked = false;
             updateBulkActions();
-            showBrandToast(data.message, 'success');
+            Dialog.alert({
+                title: 'Success!',
+                message: data.message,
+                type: 'success'
+            });
         }
     });
 }
 
-function openImageKit() {
+async function openImageKit() {
     if (!IMAGEKIT_READY) {
-        alert('ImageKit is not configured. Please go to Integrations → ImageKit and add your credentials.');
+        await Dialog.alert({
+            title: 'Configuration Required',
+            message: 'ImageKit is not configured. Please go to Integrations → ImageKit and add your credentials.',
+            type: 'warning'
+        });
         return;
     }
     const input = document.createElement('input');

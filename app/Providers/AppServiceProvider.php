@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (\Illuminate\Support\Facades\Schema::hasTable('categories')) {
+            \Illuminate\Support\Facades\View::composer(['pages.*', 'layouts.app', 'partials.*'], \App\Http\ViewComposers\FrontendComposer::class);
+        }
     }
 }

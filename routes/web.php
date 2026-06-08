@@ -8,7 +8,46 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ActivityLogController;
 
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\NewsletterController;
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
+Route::get('/categories', [HomeController::class, 'categories'])->name('categories');
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::get('/product/{slug}', [HomeController::class, 'product'])->name('product');
+
+// Newsletter Route
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+
+// Customer Auth Routes
+Route::get('/login', [CustomerAuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [CustomerAuthController::class, 'login'])->name('login.post');
+Route::get('/register', [CustomerAuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [CustomerAuthController::class, 'register'])->name('register.post');
+Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('logout');
+
+// Checkout Routes
+Route::middleware(['auth:customer'])->group(function() {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/checkout/success/{orderNumber}', [CheckoutController::class, 'success'])->name('checkout.success');
+});
+
+// Cart AJAX Routes
+Route::prefix('cart')->name('cart.')->group(function() {
+    Route::post('/add', [CartController::class, 'add'])->name('add');
+    Route::post('/update/{itemId}', [CartController::class, 'update'])->name('update');
+    Route::delete('/remove/{itemId}', [CartController::class, 'remove'])->name('remove');
+    Route::delete('/clear', [CartController::class, 'clear'])->name('clear');
+    Route::get('/mini-cart', [CartController::class, 'miniCart'])->name('mini-cart');
+});
+
+// Search API
+Route::get('/api/search', [HomeController::class, 'searchSuggestions'])->name('search.suggestions');
+Route::get('/api/quick-view/{slug}', [HomeController::class, 'quickView'])->name('product.quickview');
 
 // Admin Routes
 Route::get('/admin', function() {
@@ -67,6 +106,25 @@ Route::delete('/admin/permissions/{id}', [App\Http\Controllers\Admin\PermissionC
 Route::get('/admin/activity-logs', [ActivityLogController::class, 'index'])->name('admin.activity-logs.index');
 Route::get('/admin/activity-logs/list', [ActivityLogController::class, 'list'])->name('admin.activity-logs.list');
 Route::get('/admin/activity-logs/{id}', [ActivityLogController::class, 'show'])->name('admin.activity-logs.show');
+
+// Home Sections Management
+Route::get('/admin/home-sections', [App\Http\Controllers\Admin\HomeSectionController::class, 'index'])->name('admin.home-sections.index');
+Route::get('/admin/home-sections/list', [App\Http\Controllers\Admin\HomeSectionController::class, 'list'])->name('admin.home-sections.list');
+Route::post('/admin/home-sections', [App\Http\Controllers\Admin\HomeSectionController::class, 'store'])->name('admin.home-sections.store');
+Route::get('/admin/home-sections/{id}', [App\Http\Controllers\Admin\HomeSectionController::class, 'show'])->name('admin.home-sections.show');
+Route::put('/admin/home-sections/{id}', [App\Http\Controllers\Admin\HomeSectionController::class, 'update'])->name('admin.home-sections.update');
+Route::delete('/admin/home-sections/{id}', [App\Http\Controllers\Admin\HomeSectionController::class, 'destroy'])->name('admin.home-sections.destroy');
+Route::post('/admin/home-sections/reorder', [App\Http\Controllers\Admin\HomeSectionController::class, 'reorder'])->name('admin.home-sections.reorder');
+
+// Banners Management
+Route::get('/admin/banners', [App\Http\Controllers\Admin\BannerController::class, 'index'])->name('admin.banners.index');
+Route::get('/admin/banners/list', [App\Http\Controllers\Admin\BannerController::class, 'list'])->name('admin.banners.list');
+Route::post('/admin/banners', [App\Http\Controllers\Admin\BannerController::class, 'store'])->name('admin.banners.store');
+Route::get('/admin/banners/{id}', [App\Http\Controllers\Admin\BannerController::class, 'show'])->name('admin.banners.show');
+Route::put('/admin/banners/{id}', [App\Http\Controllers\Admin\BannerController::class, 'update'])->name('admin.banners.update');
+Route::delete('/admin/banners/{id}', [App\Http\Controllers\Admin\BannerController::class, 'destroy'])->name('admin.banners.destroy');
+Route::post('/admin/banners/{id}/toggle-status', [App\Http\Controllers\Admin\BannerController::class, 'toggleStatus'])->name('admin.banners.toggle');
+Route::post('/admin/banners/bulk-action', [App\Http\Controllers\Admin\BannerController::class, 'bulkAction'])->name('admin.banners.bulk');
 
 // Categories Management
 Route::get('/admin/categories', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('admin.categories.index');
@@ -132,6 +190,7 @@ Route::post('/admin/brands/bulk-action', [App\Http\Controllers\Admin\BrandContro
 
 // Products Management
 Route::get('/admin/products', [App\Http\Controllers\Admin\ProductController::class, 'index'])->name('admin.products.index');
+Route::get('/admin/products/create', [App\Http\Controllers\Admin\ProductController::class, 'create'])->name('admin.products.create');
 Route::get('/admin/products/list', [App\Http\Controllers\Admin\ProductController::class, 'list'])->name('admin.products.list');
 Route::get('/admin/products/variant-attributes', [App\Http\Controllers\Admin\ProductController::class, 'getVariantAttributes'])->name('admin.products.variant-attributes');
 Route::get('/admin/products/import/template', [App\Http\Controllers\Admin\ProductController::class, 'getImportTemplate'])->name('admin.products.import.template');
@@ -141,6 +200,7 @@ Route::post('/admin/products', [App\Http\Controllers\Admin\ProductController::cl
 Route::post('/admin/products/bulk-action', [App\Http\Controllers\Admin\ProductController::class, 'bulkAction'])->name('admin.products.bulk');
 Route::post('/admin/products/export', [App\Http\Controllers\Admin\ProductController::class, 'exportProducts'])->name('admin.products.export');
 Route::post('/admin/products/import', [App\Http\Controllers\Admin\ProductController::class, 'importProducts'])->name('admin.products.import');
+Route::get('/admin/products/{id}/edit', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('admin.products.edit');
 Route::get('/admin/products/{id}', [App\Http\Controllers\Admin\ProductController::class, 'show'])->name('admin.products.show');
 Route::put('/admin/products/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('admin.products.update');
 Route::delete('/admin/products/{id}', [App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('admin.products.destroy');
@@ -148,6 +208,12 @@ Route::post('/admin/products/{id}/toggle-status', [App\Http\Controllers\Admin\Pr
 Route::post('/admin/products/{id}/duplicate', [App\Http\Controllers\Admin\ProductController::class, 'duplicate'])->name('admin.products.duplicate');
 Route::get('/admin/products/{id}/related/{type}', [App\Http\Controllers\Admin\ProductController::class, 'getRelatedProducts'])->name('admin.products.related.get');
 Route::post('/admin/products/{id}/related', [App\Http\Controllers\Admin\ProductController::class, 'syncRelatedProducts'])->name('admin.products.related.sync');
+
+// Product Page Builder (Sections & Downloads)
+Route::get('/admin/products/{id}/builder', [App\Http\Controllers\Admin\ProductController::class, 'builder'])->name('admin.products.builder');
+Route::get('/admin/products/{id}/sections', [App\Http\Controllers\Admin\ProductController::class, 'getSections'])->name('admin.products.sections.get');
+Route::post('/admin/products/{id}/sections', [App\Http\Controllers\Admin\ProductController::class, 'saveSections'])->name('admin.products.sections.save');
+Route::post('/admin/products/{id}/downloads', [App\Http\Controllers\Admin\ProductController::class, 'saveDownloads'])->name('admin.products.downloads.save');
 
 // Email Campaigns
 Route::get('/admin/email-campaigns', [App\Http\Controllers\Admin\EmailCampaignController::class, 'index'])->name('admin.email-campaigns.index');
@@ -207,7 +273,7 @@ Route::get('/admin/coupons/{id}', [App\Http\Controllers\Admin\CouponController::
 Route::put('/admin/coupons/{id}', [App\Http\Controllers\Admin\CouponController::class, 'update'])->name('admin.coupons.update');
 Route::delete('/admin/coupons/{id}', [App\Http\Controllers\Admin\CouponController::class, 'destroy'])->name('admin.coupons.destroy');
 Route::post('/admin/coupons/{id}/toggle-status', [App\Http\Controllers\Admin\CouponController::class, 'toggleStatus'])->name('admin.coupons.toggle');
-Route::post('/admin/coupons/bulk-action', [App\Http\Controllers\Admin\CouponController::class, 'bulkAction'])->name('admin.coupons.bulk');
+Route::post('/admin/coupons/bulk-action', [App\Http\Controllers\Admin\ReviewController::class, 'bulkAction'])->name('admin.coupons.bulk');
 
 // Promotions Management
 Route::get('/admin/promotions', [App\Http\Controllers\Admin\PromotionController::class, 'index'])->name('admin.promotions.index');

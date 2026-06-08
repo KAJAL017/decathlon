@@ -538,120 +538,22 @@ async function save() {
     }
 }
 
-// ── Success Dialog ───────────────────────────────────────────────
-function showSuccessDialog(message = 'Deleted successfully') {
-    const dialog = document.createElement('div');
-    dialog.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4';
-    dialog.innerHTML = `
-        <style>
-            @keyframes succ-backdrop { from{opacity:0} to{opacity:1} }
-            @keyframes succ-pop {
-                0%   { opacity:0; transform:scale(0.5); }
-                60%  { opacity:1; transform:scale(1.1); }
-                80%  { transform:scale(0.95); }
-                100% { opacity:1; transform:scale(1); }
-            }
-            @keyframes succ-ring {
-                0%   { stroke-dashoffset: 166; opacity:0; }
-                20%  { opacity:1; }
-                100% { stroke-dashoffset: 0; }
-            }
-            @keyframes succ-check {
-                0%   { stroke-dashoffset: 48; opacity:0; }
-                40%  { opacity:0; }
-                100% { stroke-dashoffset: 0; opacity:1; }
-            }
-            @keyframes succ-msg {
-                0%   { opacity:0; transform:translateY(8px); }
-                100% { opacity:1; transform:translateY(0); }
-            }
-            .succ-bg    { animation: succ-backdrop .2s ease forwards; }
-            .succ-box   { animation: succ-pop .4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-            .succ-ring  { stroke-dasharray:166; stroke-dashoffset:166; animation: succ-ring  .6s .1s cubic-bezier(0.65,0,0.45,1) forwards; }
-            .succ-check { stroke-dasharray:48;  stroke-dashoffset:48;  animation: succ-check .4s .5s cubic-bezier(0.65,0,0.45,1) forwards; }
-            .succ-msg   { animation: succ-msg .3s .7s ease forwards; opacity:0; }
-        </style>
-        <div class="succ-bg fixed inset-0 bg-black/30 backdrop-blur-[2px]"></div>
-        <div class="succ-box relative bg-white rounded-2xl shadow-2xl p-8 flex flex-col items-center gap-4 w-64">
-            <svg class="w-20 h-20" viewBox="0 0 52 52">
-                <circle class="succ-ring" cx="26" cy="26" r="25"
-                        fill="none" stroke="#22c55e" stroke-width="2"/>
-                <path class="succ-check" fill="none" stroke="#22c55e" stroke-width="3"
-                      stroke-linecap="round" stroke-linejoin="round"
-                      d="M14 27 l8 8 l16-16"/>
-            </svg>
-            <p class="succ-msg text-sm font-semibold text-gray-700 text-center">${message}</p>
-        </div>`;
-    document.body.appendChild(dialog);
-    // Auto-close after 1.6s
-    setTimeout(() => {
-        dialog.style.transition = 'opacity .25s ease';
-        dialog.style.opacity = '0';
-        setTimeout(() => dialog.remove(), 260);
-    }, 1600);
-}
-
-// ── Confirm Dialog ───────────────────────────────────────────────
-function showConfirmDialog(title, message, onConfirm) {
-    const dialog = document.createElement('div');
-    dialog.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4';
-    dialog.innerHTML = `
-        <style>
-            @keyframes dlg-backdrop {
-                from { opacity: 0; }
-                to   { opacity: 1; }
-            }
-            @keyframes dlg-pop {
-                0%   { opacity: 0; transform: scale(0.85) translateY(16px); }
-                60%  { opacity: 1; transform: scale(1.03) translateY(-3px); }
-                80%  { transform: scale(0.98) translateY(1px); }
-                100% { opacity: 1; transform: scale(1)    translateY(0); }
-            }
-            .dlg-bg  { animation: dlg-backdrop .2s ease forwards; }
-            .dlg-box { animation: dlg-pop .35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-        </style>
-        <div class="dlg-bg fixed inset-0 bg-black/40 backdrop-blur-[2px]" onclick="this.parentElement.remove()"></div>
-        <div class="dlg-box relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6">
-            <div class="flex flex-col items-center text-center gap-3 mb-5">
-                <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center">
-                    <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="text-base font-semibold text-gray-900">${title}</h3>
-                    <p class="text-sm text-gray-500 mt-1 leading-relaxed">${message}</p>
-                </div>
-            </div>
-            <div class="flex gap-2.5">
-                <button onclick="this.closest('.fixed').remove()"
-                        class="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-200 transition-colors">
-                    Cancel
-                </button>
-                <button id="_confirmOk"
-                        class="flex-1 px-4 py-2.5 bg-red-500 text-white text-sm font-semibold rounded-xl hover:bg-red-600 transition-colors">
-                    Delete
-                </button>
-            </div>
-        </div>`;
-    document.body.appendChild(dialog);
-    dialog.querySelector('#_confirmOk').addEventListener('click', () => {
-        dialog.remove();
-        onConfirm();
-    });
-}
-
 // ── Delete ───────────────────────────────────────────────────────
 async function del(id, name) {
-    showConfirmDialog(
-        'Delete Collection',
-        `Are you sure you want to delete "<strong>${name}</strong>"?<br><span class="text-red-500 text-xs">This action cannot be undone.</span>`,
-        async () => {
-            const data = await api(`${BASE}/${id}`, 'DELETE');
-            if (data.success) { showSuccessDialog('Collection deleted successfully'); loadCollections(1); }
-            else toast(data.message || 'Delete failed', 'error');
-        }
-    );
+    const confirmed = await Dialog.confirm({
+        title: 'Delete Collection',
+        message: `Are you sure you want to delete "<strong>${name}</strong>"?<br><span class="text-red-500 text-xs">This action cannot be undone.</span>`,
+        type: 'danger'
+    });
+
+    if (!confirmed) return;
+
+    const data = await api(`${BASE}/${id}`, 'DELETE');
+    if (data.success) { 
+        Dialog.alert({ title: 'Deleted!', message: 'Collection deleted successfully', type: 'success' });
+        loadCollections(1); 
+    }
+    else toast(data.message || 'Delete failed', 'error');
 }
 
 // ── Toggle Status ────────────────────────────────────────────────
@@ -694,19 +596,23 @@ async function applyBulk() {
     const doAction = async () => {
         const data = await api(`${BASE}/bulk-action`, 'POST', { action, ids: [...checkedIds] });
         if (data.success) {
-            if (action === 'delete') showSuccessDialog(`${checkedIds.size} collection(s) deleted`);
-            else toast(data.message);
+            if (action === 'delete') {
+                Dialog.alert({ title: 'Deleted!', message: `${checkedIds.size} collection(s) deleted`, type: 'success' });
+            } else {
+                toast(data.message);
+            }
             clearSelection(); loadCollections(1);
         }
         else toast(data.message || 'Error', 'error');
     };
 
     if (action === 'delete') {
-        showConfirmDialog(
-            'Delete Collections',
-            `Delete <strong>${checkedIds.size}</strong> selected collection(s)?<br><span class="text-red-500 text-xs">This action cannot be undone.</span>`,
-            doAction
-        );
+        const confirmed = await Dialog.confirm({
+            title: 'Delete Collections',
+            message: `Delete <strong>${checkedIds.size}</strong> selected collection(s)?<br><span class="text-red-500 text-xs">This action cannot be undone.</span>`,
+            type: 'danger'
+        });
+        if (confirmed) doAction();
     } else {
         doAction();
     }

@@ -392,6 +392,12 @@
                         </div>
                         <div>
                             <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" id="categoryTop" class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
+                                <span class="text-sm font-medium text-gray-700">Top Category</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="checkbox" id="categoryShowInMenu" checked class="w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]">
                                 <span class="text-sm font-medium text-gray-700">Show in Menu</span>
                             </label>
@@ -991,6 +997,7 @@ function openAddModal() {
     document.getElementById('categoryId').value = '';
     document.getElementById('categoryStatus').checked = true;
     document.getElementById('categoryFeatured').checked = false;
+    document.getElementById('categoryTop').checked = false;
     document.getElementById('categoryShowInMenu').checked = true;
     document.getElementById('categorySortOrder').value = 0;
     
@@ -1517,6 +1524,7 @@ function editCategory(id) {
             document.getElementById('categorySortOrder').value = category.sort_order;
             document.getElementById('categoryStatus').checked = category.is_active;
             document.getElementById('categoryFeatured').checked = category.is_featured;
+            document.getElementById('categoryTop').checked = category.is_top || false;
             document.getElementById('categoryShowInMenu').checked = category.show_in_menu;
             
             if (category.image_url) {
@@ -1594,6 +1602,7 @@ document.getElementById('categoryForm').addEventListener('submit', function(e) {
         sort_order: document.getElementById('categorySortOrder').value,
         is_active: document.getElementById('categoryStatus').checked,
         is_featured: document.getElementById('categoryFeatured').checked,
+        is_top: document.getElementById('categoryTop').checked,
         show_in_menu: document.getElementById('categoryShowInMenu').checked,
         image_url: document.getElementById('categoryImageUrl').value,
         image_id: document.getElementById('categoryImageId').value,
@@ -1637,18 +1646,18 @@ document.getElementById('categoryForm').addEventListener('submit', function(e) {
     })
     .then(data => {
         if (data.success) {
-            showNotification(data.message, 'success');
+            Dialog.alert({ title: 'Success!', message: data.message, type: 'success' });
             closeModal();
             loadCategories(currentPage);
         } else {
-            showNotification(data.message || 'Operation failed', 'error');
+            Dialog.alert({ title: 'Error', message: data.message || 'Operation failed', type: 'danger' });
         }
     })
     .catch(err => {
         if (err.validation) {
             showValidationErrors(err.errors);
         } else {
-            showNotification('An error occurred. Please try again.', 'error');
+            Dialog.alert({ title: 'Error', message: 'An error occurred. Please try again.', type: 'danger' });
         }
     })
     .finally(() => {
@@ -1716,9 +1725,38 @@ function showValidationErrors(errors) {
     }
 }
 
-function toggleStatus(id) {
-    fetch(`/admin/categories/${id}/toggle-status`, {
+async function toggleStatus(id) {
+    const res = await fetch(`/admin/categories/${id}/toggle-status`, {
         method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        }
+    });
+    const data = await res.json();
+    if (data.success) {
+        loadCategories(currentPage);
+    } else {
+        Dialog.alert({
+            title: 'Error',
+            message: data.message,
+            type: 'danger'
+        });
+    }
+}
+
+async function deleteCategory(id) {
+    const confirmed = await Dialog.confirm({
+        title: 'Delete Category',
+        message: 'Are you sure you want to delete this category? This action cannot be undone.',
+        type: 'danger'
+    });
+    
+    if (!confirmed) return;
+
+    fetch(`/admin/categories/${id}`, {
+        method: 'DELETE',
         headers: {
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
             'X-Requested-With': 'XMLHttpRequest',
@@ -1727,202 +1765,22 @@ function toggleStatus(id) {
     })
     .then(res => res.json())
     .then(data => {
-        showNotification(data.message, data.success ? 'success' : 'error');
-        if (data.success) loadCategories(currentPage);
-    });
-}
-
-function deleteCategory(id) {
-    showConfirmDialog({
-        title: 'Delete Category',
-        message: 'Are you sure you want to delete this category? This action cannot be undone.',
-        confirmText: 'Delete',
-        cancelText: 'Cancel',
-        type: 'danger',
-        onConfirm: function() {
-            fetch(`/admin/categories/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                showNotification(data.message, data.success ? 'success' : 'error');
-                if (data.success) loadCategories(currentPage);
+        if (data.success) {
+            Dialog.alert({
+                title: 'Success!',
+                message: data.message,
+                type: 'success'
+            });
+            loadCategories(currentPage);
+        } else {
+            Dialog.alert({
+                title: 'Error',
+                message: data.message,
+                type: 'danger'
             });
         }
     });
 }
-
-// Reusable Confirmation Dialog
-function showConfirmDialog(options) {
-    const defaults = {
-        title: 'Confirm Action',
-        message: 'Are you sure you want to proceed?',
-        confirmText: 'Confirm',
-        cancelText: 'Cancel',
-        type: 'warning', // 'warning', 'danger', 'info'
-        onConfirm: null,
-        onCancel: null
-    };
-    
-    const config = { ...defaults, ...options };
-    
-    // Create dialog HTML
-    const dialogId = 'confirmDialog_' + Date.now();
-    const typeColors = {
-        warning: { bg: 'bg-yellow-50', icon: 'text-yellow-600', btn: 'bg-yellow-600 hover:bg-yellow-700', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=warning&backgroundColor=fef3c7' },
-        danger: { bg: 'bg-red-50', icon: 'text-red-600', btn: 'bg-red-600 hover:bg-red-700', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=danger&backgroundColor=fee2e2' },
-        info: { bg: 'bg-blue-50', icon: 'text-blue-600', btn: 'bg-blue-600 hover:bg-blue-700', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=info&backgroundColor=dbeafe' }
-    };
-    
-    const colors = typeColors[config.type] || typeColors.warning;
-    
-    const iconPaths = {
-        warning: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>',
-        danger: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>',
-        info: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>'
-    };
-    
-    const dialogHTML = `
-        <div id="${dialogId}" class="fixed inset-0 z-[60] overflow-y-auto hidden">
-            <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                <!-- Backdrop -->
-                <div class="dialog-backdrop fixed inset-0 transition-opacity bg-gray-900 bg-opacity-50 backdrop-blur-sm"></div>
-                
-                <!-- Center alignment trick -->
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-                
-                <!-- Dialog panel -->
-                <div class="dialog-panel inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <!-- Avatar Section -->
-                    <div class="flex justify-center pt-8 pb-4">
-                        <div class="dialog-avatar relative">
-                            <div class="w-24 h-24 rounded-full ${colors.bg} p-2 shadow-lg">
-                                <img src="${colors.avatar}" alt="Avatar" class="w-full h-full rounded-full">
-                            </div>
-                            <div class="absolute -bottom-2 -right-2 w-10 h-10 ${colors.bg} rounded-full flex items-center justify-center shadow-md border-4 border-white">
-                                <svg class="h-5 w-5 ${colors.icon}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    ${iconPaths[config.type] || iconPaths.warning}
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white px-6 pb-4">
-                        <div class="text-center">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-3">
-                                ${config.title}
-                            </h3>
-                            <div class="mt-2">
-                                <p class="text-base text-gray-600 leading-relaxed">
-                                    ${config.message}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-center gap-3">
-                        <button type="button" id="${dialogId}_cancel" class="w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-6 py-3 bg-white text-base font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto transition-all">
-                            ${config.cancelText}
-                        </button>
-                        <button type="button" id="${dialogId}_confirm" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-6 py-3 ${colors.btn} text-base font-semibold text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto transition-all hover:shadow-md">
-                            ${config.confirmText}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Add to DOM
-    document.body.insertAdjacentHTML('beforeend', dialogHTML);
-    const dialog = document.getElementById(dialogId);
-    
-    // Show dialog with animation
-    requestAnimationFrame(function() {
-        dialog.classList.remove('hidden');
-        requestAnimationFrame(function() {
-            dialog.querySelector('.dialog-backdrop').style.opacity = '1';
-            dialog.querySelector('.dialog-panel').style.transform = 'scale(1) rotate(0deg)';
-            dialog.querySelector('.dialog-panel').style.opacity = '1';
-            dialog.querySelector('.dialog-avatar').style.transform = 'scale(1) rotate(0deg)';
-            dialog.querySelector('.dialog-avatar').style.opacity = '1';
-        });
-    });
-    
-    // Confirm button
-    document.getElementById(dialogId + '_confirm').addEventListener('click', function() {
-        closeDialog();
-        if (config.onConfirm) config.onConfirm();
-    });
-    
-    // Cancel button
-    document.getElementById(dialogId + '_cancel').addEventListener('click', function() {
-        closeDialog();
-        if (config.onCancel) config.onCancel();
-    });
-    
-    // Close on backdrop click
-    dialog.addEventListener('click', function(e) {
-        if (e.target === dialog || e.target.classList.contains('dialog-backdrop')) {
-            closeDialog();
-            if (config.onCancel) config.onCancel();
-        }
-    });
-    
-    // Close on Escape key
-    const escapeHandler = function(e) {
-        if (e.key === 'Escape') {
-            closeDialog();
-            if (config.onCancel) config.onCancel();
-        }
-    };
-    document.addEventListener('keydown', escapeHandler);
-    
-    function closeDialog() {
-        const backdrop = dialog.querySelector('.dialog-backdrop');
-        const panel = dialog.querySelector('.dialog-panel');
-        const avatar = dialog.querySelector('.dialog-avatar');
-        
-        backdrop.style.opacity = '0';
-        panel.style.transform = 'scale(0.8) rotate(-5deg)';
-        panel.style.opacity = '0';
-        avatar.style.transform = 'scale(0) rotate(-180deg)';
-        avatar.style.opacity = '0';
-        
-        setTimeout(function() {
-            dialog.remove();
-            document.removeEventListener('keydown', escapeHandler);
-        }, 300);
-    }
-}
-
-// Add CSS animations
-if (!document.getElementById('confirmDialogStyles')) {
-    const style = document.createElement('style');
-    style.id = 'confirmDialogStyles';
-    style.textContent = `
-        .dialog-backdrop {
-            opacity: 0;
-            transition: opacity 0.3s ease-out;
-        }
-        .dialog-panel {
-            opacity: 0;
-            transform: scale(0.8) rotate(-5deg);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .dialog-avatar {
-            opacity: 0;
-            transform: scale(0) rotate(-180deg);
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-    `;
-    document.head.appendChild(style);
-}
-
 
 function toggleSelectAll() {
     const selectAll = document.getElementById('selectAll');
@@ -1958,20 +1816,25 @@ function updateBulkActions() {
     document.getElementById('selectAll').checked = checkboxes.length > 0 && checkboxes.length === document.querySelectorAll('.category-checkbox').length;
 }
 
-function applyBulkAction() {
+async function applyBulkAction() {
     const action = document.getElementById('bulkActionSelect').value;
     if (!action) {
-        showNotification('Please select an action', 'error');
+        Dialog.alert({ title: 'Error', message: 'Please select an action', type: 'danger' });
         return;
     }
     
     if (selectedCategories.size === 0) {
-        showNotification('Please select at least one category', 'error');
+        Dialog.alert({ title: 'Error', message: 'Please select at least one category', type: 'danger' });
         return;
     }
     
-    if (action === 'delete' && !confirm(`Are you sure you want to delete ${selectedCategories.size} categories?`)) {
-        return;
+    if (action === 'delete') {
+        const confirmed = await Dialog.confirm({
+            title: 'Delete Categories',
+            message: `Are you sure you want to delete ${selectedCategories.size} categories?`,
+            type: 'danger'
+        });
+        if (!confirmed) return;
     }
     
     fetch('/admin/categories/bulk-action', {
@@ -1989,18 +1852,24 @@ function applyBulkAction() {
     })
     .then(res => res.json())
     .then(data => {
-        showNotification(data.message, data.success ? 'success' : 'error');
         if (data.success) {
+            Dialog.alert({ title: 'Success!', message: data.message, type: 'success' });
             selectedCategories.clear();
             document.getElementById('bulkActionSelect').value = '';
             loadCategories(currentPage);
+        } else {
+            Dialog.alert({ title: 'Error', message: data.message, type: 'danger' });
         }
     });
 }
 
-function openImageKit(type) {
+async function openImageKit(type) {
     if (!IMAGEKIT_READY) {
-        alert('ImageKit is not configured. Please go to Integrations → ImageKit and add your credentials.');
+        await Dialog.alert({
+            title: 'Configuration Required',
+            message: 'ImageKit is not configured. Please go to Integrations → ImageKit and add your credentials.',
+            type: 'warning'
+        });
         return;
     }
     currentImageType = type;
@@ -2087,24 +1956,28 @@ function openImageKit(type) {
                             progressContainer.classList.add('hidden');
                             progressBar.style.width = '0%';
                             
-                            showNotification('Image uploaded successfully! Multiple sizes generated for all devices.', 'success');
+                            Dialog.alert({
+                                title: 'Upload Successful',
+                                message: 'Image uploaded successfully! Multiple sizes generated for all devices.',
+                                type: 'success'
+                            });
                         } else {
                             progressContainer.classList.add('hidden');
                             progressBar.style.width = '0%';
                             if (uploadArea) uploadArea.classList.remove('hidden');
-                            showNotification(data.message || 'Upload failed', 'error');
+                            Dialog.alert({ title: 'Upload Failed', message: data.message || 'Upload failed', type: 'danger' });
                         }
                     } catch (error) {
                         progressContainer.classList.add('hidden');
                         progressBar.style.width = '0%';
                         if (uploadArea) uploadArea.classList.remove('hidden');
-                        showNotification('Upload failed. Invalid response.', 'error');
+                        Dialog.alert({ title: 'Upload Failed', message: 'Upload failed. Invalid response.', type: 'danger' });
                     }
                 } else {
                     progressContainer.classList.add('hidden');
                     progressBar.style.width = '0%';
                     if (uploadArea) uploadArea.classList.remove('hidden');
-                    showNotification('Upload failed. Server error.', 'error');
+                    Dialog.alert({ title: 'Upload Failed', message: 'Upload failed. Server error.', type: 'danger' });
                 }
             });
             
@@ -2113,7 +1986,7 @@ function openImageKit(type) {
                 progressContainer.classList.add('hidden');
                 progressBar.style.width = '0%';
                 if (uploadArea) uploadArea.classList.remove('hidden');
-                showNotification('Upload failed. Network error.', 'error');
+                Dialog.alert({ title: 'Upload Failed', message: 'Upload failed. Network error.', type: 'danger' });
             });
             
             // Send request
@@ -2151,35 +2024,7 @@ function removeImage() {
         uploadArea.classList.remove('hidden');
     }
     
-    showNotification('Image removed successfully', 'success');
-}
-
-function showNotification(message, type = 'success') {
-    const colors = {
-        success: 'bg-green-500',
-        error: 'bg-red-500',
-        info: 'bg-blue-500'
-    };
-    
-    const icons = {
-        success: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>',
-        error: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>',
-        info: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>'
-    };
-    
-    const notification = document.createElement('div');
-    notification.className = `fixed top-4 right-4 px-6 py-4 rounded-lg shadow-lg z-50 flex items-center gap-3 ${colors[type] || colors.success} text-white transform transition-all duration-300 translate-x-0`;
-    notification.innerHTML = `
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            ${icons[type] || icons.success}
-        </svg>
-        <span class="font-medium">${message}</span>
-    `;
-    document.body.appendChild(notification);
-    setTimeout(() => {
-        notification.style.transform = 'translateX(400px)';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
+    Dialog.alert({ title: 'Removed', message: 'Image removed successfully', type: 'info' });
 }
 
 document.addEventListener('keydown', function(e) {

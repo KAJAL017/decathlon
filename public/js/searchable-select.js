@@ -33,12 +33,41 @@ class SearchableSelect {
     /* ─────────────────────────── INIT ─────────────────────────── */
 
     _init() {
+        this._injectStyles();
         this.allOptions = this._readNativeOptions();
         this._buildDOM();
         this.select.style.display = 'none';
         this.select.parentNode.insertBefore(this.wrapper, this.select.nextSibling);
         this._bindEvents();
         if (this.options.ajaxUrl) this._loadAjax();
+    }
+
+    _injectStyles() {
+        if (document.getElementById('searchable-select-styles')) return;
+        const style = document.createElement('style');
+        style.id = 'searchable-select-styles';
+        style.textContent = `
+            .searchable-select-dropdown {
+                animation: ss-fade-in 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 10px 40px -10px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.1);
+            }
+            @keyframes ss-fade-in {
+                from { opacity: 0; transform: translateY(8px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .searchable-select-options::-webkit-scrollbar { width: 5px; }
+            .searchable-select-options::-webkit-scrollbar-track { background: transparent; }
+            .searchable-select-options::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+            .searchable-select-options::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+            .searchable-select-option.active { background-color: #f8fafc; }
+            .searchable-select-display {
+                min-height: 40px !important;
+                height: 40px !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+            }
+        `;
+        document.head.appendChild(style);
     }
 
     _readNativeOptions() {
@@ -54,55 +83,62 @@ class SearchableSelect {
     _buildDOM() {
         /* Wrapper (sits next to the hidden <select>) */
         this.wrapper = document.createElement('div');
-        this.wrapper.className = 'searchable-select-wrapper relative';
+        this.wrapper.className = 'searchable-select-wrapper relative w-full min-w-0';
 
         /* Trigger button */
         this.trigger = document.createElement('div');
         this.trigger.className =
-            'searchable-select-display px-3.5 py-2.5 border border-gray-300 rounded-lg ' +
-            'text-sm bg-white cursor-pointer flex items-center justify-between ' +
-            'hover:border-gray-400 transition-colors min-h-[42px]';
+            'searchable-select-display w-full min-w-0 px-4 border border-gray-200 rounded-xl ' +
+            'text-[13px] font-semibold text-gray-700 bg-white cursor-pointer flex items-center justify-between ' +
+            'hover:border-blue-400 hover:shadow-sm transition-all duration-200';
 
         if (this.isMultiple) {
             this.trigger.innerHTML = `
-                <div class="flex-1 flex flex-wrap gap-1.5 items-center searchable-select-badges">
-                    <span class="searchable-select-placeholder text-gray-400 text-sm">${this.options.placeholder}</span>
+                <div class="flex-1 min-w-0 flex flex-wrap gap-1 items-center searchable-select-badges py-1">
+                    <span class="searchable-select-placeholder text-gray-400 font-medium truncate">${this.options.placeholder}</span>
                 </div>
                 <svg class="w-4 h-4 text-gray-400 transition-transform flex-shrink-0 ml-2"
-                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                     fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
                 </svg>`;
         } else {
             this.trigger.innerHTML = `
-                <span class="searchable-select-text text-gray-400">${this._getSelectedText()}</span>
-                <svg class="w-4 h-4 text-gray-400 transition-transform"
-                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                <span class="searchable-select-text text-gray-400 truncate flex-1 min-w-0 pr-2">${this._getSelectedText()}</span>
+                <svg class="w-3.5 h-3.5 text-gray-400 transition-transform flex-shrink-0"
+                     fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
                 </svg>`;
         }
 
         /* Floating dropdown — appended to <body> to escape overflow:hidden parents */
         this.dropdown = document.createElement('div');
         this.dropdown.className =
-            'searchable-select-dropdown hidden fixed z-[99999] bg-white border border-gray-200 ' +
-            'rounded-xl shadow-xl overflow-hidden';
+            'searchable-select-dropdown hidden fixed bg-white border border-gray-100 ' +
+            'rounded-2xl shadow-2xl overflow-hidden';
+        this.dropdown.style.zIndex = '999999';
         this.dropdown.innerHTML = `
-            <div class="p-2 border-b border-gray-100 flex items-center gap-2">
-                <input type="text"
-                       class="searchable-select-search flex-1 px-3 py-2 border border-gray-200 rounded-lg
-                              text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent"
-                       placeholder="${this.options.searchPlaceholder}">
+            <div class="p-2 border-b border-gray-50 flex items-center gap-2 bg-gray-50/50">
+                <div class="relative flex-1">
+                    <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text"
+                           class="searchable-select-search block w-full pl-8 pr-3 py-1.5 bg-white border border-gray-200 rounded-lg
+                                  text-xs font-medium placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                           placeholder="${this.options.searchPlaceholder}">
+                </div>
                 <button type="button"
-                        class="searchable-select-close-btn w-8 h-8 flex items-center justify-center
-                               rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        class="searchable-select-close-btn w-7 h-7 flex items-center justify-center
+                               rounded-lg hover:bg-white hover:shadow-sm text-gray-400 hover:text-gray-600 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
             </div>
-            <div class="searchable-select-options overflow-y-auto" style="max-height:220px">
+            <div class="searchable-select-options overflow-y-auto p-1.5" style="max-height:260px">
                 ${this._renderOptions()}
-            </div>`;
+            </div>
+            <div class="h-1 bg-gradient-to-t from-gray-50 to-transparent pointer-events-none"></div>`;
 
         this.wrapper.appendChild(this.trigger);
         document.body.appendChild(this.dropdown);
@@ -210,19 +246,23 @@ class SearchableSelect {
 
     _position() {
         const rect         = this.trigger.getBoundingClientRect();
-        const dropH        = 280;
-        const spaceBelow   = window.innerHeight - rect.bottom;
-        const spaceAbove   = rect.top;
+        const dropHeight   = Math.min(this.optionsContainer.scrollHeight + 50, 320); // 50 for search bar, 320 max
+        const spaceBelow   = window.innerHeight - rect.bottom - 10;
+        const spaceAbove   = rect.top - 10;
 
         this.dropdown.style.left  = rect.left  + 'px';
         this.dropdown.style.width = rect.width + 'px';
 
-        if (spaceBelow < dropH && spaceAbove > spaceBelow) {
+        if (spaceBelow < dropHeight && spaceAbove > spaceBelow) {
+            // Show Above
             this.dropdown.style.top    = 'auto';
             this.dropdown.style.bottom = (window.innerHeight - rect.top + 4) + 'px';
+            this.dropdown.classList.add('origin-bottom');
         } else {
+            // Show Below
             this.dropdown.style.top    = (rect.bottom + 4) + 'px';
             this.dropdown.style.bottom = 'auto';
+            this.dropdown.classList.add('origin-top');
         }
     }
 
@@ -230,23 +270,24 @@ class SearchableSelect {
 
     _renderOptions(opts = this.allOptions) {
         if (opts.length === 0) {
-            return `<div class="px-3 py-6 text-sm text-gray-400 text-center">${this.options.noResultsText}</div>`;
+            return `<div class="px-4 py-8 text-xs font-medium text-gray-400 text-center uppercase tracking-widest">No Results</div>`;
         }
 
         if (this.isMultiple) {
             return opts.map(o => `
-                <div class="searchable-select-option flex items-center gap-2.5 px-3 py-2.5 text-sm
-                            cursor-pointer hover:bg-blue-50 transition-colors ${o.selected ? 'bg-blue-50' : ''}"
+                <div class="searchable-select-option flex items-center gap-3 px-3 py-2 text-[13px] font-medium
+                            cursor-pointer hover:bg-blue-50/50 rounded-lg transition-all ${o.selected ? 'bg-blue-50' : ''} mb-0.5 last:mb-0"
                      data-value="${o.value}">
-                    <input type="checkbox" ${o.selected ? 'checked' : ''}
-                           class="w-4 h-4 text-[#0082C3] border-gray-300 rounded pointer-events-none">
-                    <span class="${o.selected ? 'text-[#0082C3] font-medium' : 'text-gray-700'}">${o.text}</span>
+                    <div class="w-4 h-4 border border-gray-300 rounded flex items-center justify-center transition-all ${o.selected ? 'bg-[#0082C3] border-[#0082C3]' : 'bg-white'}">
+                        ${o.selected ? '<svg class="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : ''}
+                    </div>
+                    <span class="${o.selected ? 'text-[#0082C3] font-bold' : 'text-gray-600'} truncate">${o.text}</span>
                 </div>`).join('');
         }
 
         return opts.map(o => `
-            <div class="searchable-select-option px-3 py-2.5 text-sm cursor-pointer
-                        hover:bg-blue-50 transition-colors ${o.selected ? 'bg-blue-50 text-[#0082C3] font-medium' : 'text-gray-700'}"
+            <div class="searchable-select-option px-3 py-2 text-[13px] font-medium cursor-pointer
+                        hover:bg-blue-50/50 rounded-lg transition-all ${o.selected ? 'bg-blue-50 text-[#0082C3] font-bold shadow-sm' : 'text-gray-600'} mb-0.5 last:mb-0"
                  data-value="${o.value}">
                 ${o.text}
             </div>`).join('');

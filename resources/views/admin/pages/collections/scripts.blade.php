@@ -488,8 +488,14 @@ function editCollection(id) {
 }
 
 // Delete collection
-function deleteCollection(id, name) {
-    if (!confirm(`Are you sure you want to delete "${name}"?`)) {
+async function deleteCollection(id, name) {
+    const confirmed = await Dialog.confirm({
+        title: 'Delete Collection',
+        message: `Are you sure you want to delete "${name}"?`,
+        type: 'danger'
+    });
+
+    if (!confirmed) {
         return;
     }
 
@@ -770,7 +776,7 @@ function updateBulkActions() {
     }
 }
 
-function applyBulkAction() {
+async function applyBulkAction() {
     const action = document.getElementById('bulkActionSelect').value;
     const checkboxes = document.querySelectorAll('.collection-checkbox:checked');
     const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
@@ -785,8 +791,13 @@ function applyBulkAction() {
         return;
     }
 
-    if (action === 'delete' && !confirm(`Are you sure you want to delete ${ids.length} collections?`)) {
-        return;
+    if (action === 'delete') {
+        const confirmed = await Dialog.confirm({
+            title: 'Delete Collections',
+            message: `Are you sure you want to delete ${ids.length} collections?`,
+            type: 'danger'
+        });
+        if (!confirmed) return;
     }
 
     fetch('/admin/collections/bulk-action', {

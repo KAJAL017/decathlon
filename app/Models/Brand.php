@@ -83,6 +83,11 @@ class Brand extends Model
         return $query->where('status', true);
     }
 
+    public function scopeFeatured($query)
+    {
+        return $query->active()->ordered();
+    }
+
     public function scopeOrdered($query)
     {
         return $query->orderBy('sort_order')->orderBy('name');

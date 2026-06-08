@@ -31,6 +31,7 @@ class Product extends Model
         'is_featured',
         'is_new',
         'is_best_seller',
+        'is_trending',
         'average_rating',
         'reviews_count',
         'manage_stock',
@@ -56,6 +57,7 @@ class Product extends Model
         'is_featured' => 'boolean',
         'is_new' => 'boolean',
         'is_best_seller' => 'boolean',
+        'is_trending' => 'boolean',
         'average_rating' => 'decimal:2',
         'reviews_count' => 'integer',
         'download_limit' => 'integer',
@@ -180,6 +182,16 @@ class Product extends Model
         return $this->hasMany(ProductFaq::class)->ordered();
     }
 
+    public function sections()
+    {
+        return $this->hasMany(ProductSection::class)->ordered();
+    }
+
+    public function downloads()
+    {
+        return $this->hasMany(ProductDownload::class)->ordered();
+    }
+
     public function versions()
     {
         return $this->hasMany(ProductVersion::class)->latest();
@@ -301,6 +313,11 @@ class Product extends Model
     public function scopeBestSeller($query)
     {
         return $query->where('is_best_seller', true);
+    }
+
+    public function scopeTrending($query)
+    {
+        return $query->where('is_trending', true);
     }
 
     public function scopeByType($query, $type)

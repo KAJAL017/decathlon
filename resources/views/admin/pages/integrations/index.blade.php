@@ -2110,26 +2110,10 @@
             <button onclick="closeWhModal()" class="px-5 py-2.5 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50">Cancel</button>
             <button id="whSaveBtn" onclick="saveWebhook()" class="px-5 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] disabled:opacity-60">Save Webhook</button>
         </div>
-    </div>
-</div>
-
-{{-- Confirm Dialog --}}
-<div id="whConfirm" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
-    <div class="fixed inset-0 bg-black/50" onclick="closeWhConfirm()"></div>
-    <div id="whConfirmBox" class="relative bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm" style="transform:scale(0.8) translateY(20px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1)">
-        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
         </div>
-        <h3 class="text-lg font-bold text-gray-900 text-center mb-1">Delete Webhook</h3>
-        <p id="whConfirmMsg" class="text-sm text-gray-500 text-center mb-6"></p>
-        <div class="flex gap-3">
-            <button onclick="closeWhConfirm()" class="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-50">Cancel</button>
-            <button id="whConfirmOk" class="flex-1 px-4 py-2.5 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700">Delete</button>
         </div>
-    </div>
-</div>
 
-@endsection
+        @endsection
 
 @push('scripts')
 <script>
@@ -2725,8 +2709,14 @@ let fmItems       = [];
 
 // ── Brevo Templates ───────────────────────────────────────────────
 async function seedBrevoTemplates() {
-    if (!confirm('Create 19 enterprise Decathlon email templates in Brevo? This will add them to your Brevo account.')) return;
+    const confirmed = await Dialog.confirm({
+        title: 'Seed Templates',
+        message: 'Create 19 enterprise Decathlon email templates in Brevo? This will add them to your Brevo account.',
+        type: 'info'
+    });
+    if (!confirmed) return;
     const btn = document.getElementById('brevoSeedBtn');
+
     btn.disabled = true;
     btn.innerHTML = '<svg class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Creating...';
 
@@ -2961,8 +2951,14 @@ async function saveTplModal() {
 }
 
 async function deleteBrevoTemplate(id, name) {
-    if (!confirm(`Delete template "${name}"? This cannot be undone.`)) return;
+    const confirmed = await Dialog.confirm({
+        title: 'Delete Template',
+        message: `Delete template "${name}"? This cannot be undone.`,
+        type: 'danger'
+    });
+    if (!confirmed) return;
     try {
+
         const r    = await fetch(`/admin/brevo/templates/${id}`, {
             method: 'DELETE', credentials: 'same-origin',
             headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
@@ -3156,8 +3152,14 @@ async function submitAddSender() {
     }
 }
 
-async function deleteBrevoSender(id, email) {
-    if (!confirm(`Delete sender "${email}"?`)) return;
+async function deleteBrevoSender(email) {
+    const confirmed = await Dialog.confirm({
+        title: 'Delete Sender?',
+        message: `Are you sure you want to delete the sender "${email}"?`,
+        type: 'danger',
+        confirmText: 'Delete'
+    });
+    if (!confirmed) return;
     try {
         const r    = await fetch(`/admin/brevo/senders/${id}`, {
             method: 'DELETE', credentials: 'same-origin',
@@ -3377,8 +3379,14 @@ async function loadBrevoLists() {
 }
 
 async function disconnectBrevo() {
-    if (!confirm('Disconnect Brevo?')) return;
+    const confirmed = await Dialog.confirm({
+        title: 'Disconnect Brevo',
+        message: 'Disconnect Brevo?',
+        type: 'danger'
+    });
+    if (!confirmed) return;
     const r    = await fetch('/admin/brevo/disconnect', {
+
         method: 'POST', credentials: 'same-origin',
         headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
     });
@@ -3530,8 +3538,14 @@ async function sendTestEmail() {
 }
 
 async function disconnectSMTP() {
-    if (!confirm('Remove SMTP configuration?')) return;
+    const confirmed = await Dialog.confirm({
+        title: 'Remove SMTP',
+        message: 'Remove SMTP configuration?',
+        type: 'danger'
+    });
+    if (!confirmed) return;
     const body = { smtp_host: '', smtp_username: '', smtp_password: '', smtp_from_email: '', smtp_from_name: '' };
+
     const r = await fetch('/admin/settings/integrations', {
         method: 'POST', credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
@@ -3875,7 +3889,13 @@ async function fmNewFolder() {
 }
 
 async function fmDeleteFile(fileId, name) {
-    if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    const confirmed = await Dialog.confirm({
+        title: 'Delete File',
+        message: `Are you sure you want to delete "${name}"? This cannot be undone.`,
+        type: 'danger',
+        confirmText: 'Delete'
+    });
+    if (!confirmed) return;
     try {
         const res = await fetch('/api/imagekit-delete', {
             method: 'DELETE', credentials: 'same-origin',
@@ -3889,7 +3909,13 @@ async function fmDeleteFile(fileId, name) {
 }
 
 async function fmDeleteFolder(folderPath, name) {
-    if (!confirm(`Delete folder "${name}" and all its contents? This cannot be undone.`)) return;
+    const confirmed = await Dialog.confirm({
+        title: 'Delete Folder',
+        message: `Are you sure you want to delete folder "${name}" and all its contents? This cannot be undone.`,
+        type: 'danger',
+        confirmText: 'Delete'
+    });
+    if (!confirmed) return;
     try {
         const res = await fetch('/api/imagekit-folder', {
             method: 'DELETE', credentials: 'same-origin',
@@ -4132,22 +4158,20 @@ async function testWebhook(id, name) {
     else toast(`Test failed: ${data.message}`, 'error');
 }
 
-function deleteWebhook(id, name) {
-    document.getElementById('whConfirmMsg').textContent = `Delete webhook "${name}"? This cannot be undone.`;
-    document.getElementById('whConfirm').classList.remove('hidden');
-    requestAnimationFrame(() => { const b = document.getElementById('whConfirmBox'); b.style.transform = 'scale(1) translateY(0)'; b.style.opacity = '1'; });
-    document.getElementById('whConfirmOk').onclick = async () => {
-        closeWhConfirm();
-        const r = await fetch(`/admin/webhooks/${id}`, { method: 'DELETE', credentials: 'same-origin', headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' } });
-        const data = await r.json();
-        if (data.success) { toast('Webhook deleted'); loadWebhooks(); }
-        else toast(data.message || 'Error', 'error');
-    };
+async function deleteWebhook(id, name) {
+    const confirmed = await Dialog.confirm({
+        title: 'Delete Webhook',
+        message: `Delete webhook "${name}"? This cannot be undone.`,
+        type: 'danger'
+    });
+    if (!confirmed) return;
+
+    const r = await fetch(`/admin/webhooks/${id}`, { method: 'DELETE', credentials: 'same-origin', headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' } });
+    const data = await r.json();
+    if (data.success) { toast('Webhook deleted'); loadWebhooks(); }
+    else toast(data.message || 'Error', 'error');
 }
-function closeWhConfirm() {
-    const b = document.getElementById('whConfirmBox'); b.style.transform = 'scale(0.8) translateY(20px)'; b.style.opacity = '0';
-    setTimeout(() => document.getElementById('whConfirm').classList.add('hidden'), 300);
-}
+
 
 </script>
 @endpush

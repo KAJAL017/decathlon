@@ -29,6 +29,7 @@ class Category extends Model
         'meta_keywords',
         'is_active',
         'is_featured',
+        'is_top',
         'show_in_menu',
         'sort_order',
         'products_count',
@@ -37,6 +38,7 @@ class Category extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
+        'is_top' => 'boolean',
         'show_in_menu' => 'boolean',
         'sort_order' => 'integer',
         'products_count' => 'integer',
@@ -125,6 +127,11 @@ class Category extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function scopeTop($query)
+    {
+        return $query->where('is_top', true);
     }
 
     public function scopeParent($query)

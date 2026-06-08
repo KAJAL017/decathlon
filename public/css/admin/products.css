@@ -1,0 +1,64 @@
+/* Product Management Styles */
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+.skeleton-row { animation: fadeIn 0.3s ease-in; }
+.skeleton-text, .skeleton-avatar {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+    border-radius: 4px;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.tab-btn {
+    color: #6b7280;
+    background: transparent;
+}
+.tab-btn.active {
+    color: #0082C3;
+    background: #e0f2fe;
+}
+
+#content-basic, #content-pricing, #content-media, #content-variants, #content-organization, #content-seo, #content-advanced {
+    display: none !important;
+}
+#content-basic.tab-active, #content-pricing.tab-active, #content-media.tab-active, #content-variants.tab-active, #content-organization.tab-active, #content-seo.tab-active, #content-advanced.tab-active {
+    display: block !important;
+}
+
+.collapsible-section {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    background: #f9fafb;
+    border-bottom: 1px solid transparent;
+}
+.collapsible-header.active {
+    border-bottom-color: #e5e7eb;
+}
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+}
+.collapsible-content.active {
+    max-height: 5000px;
+    opacity: 1;
+}

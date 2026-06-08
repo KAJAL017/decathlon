@@ -263,37 +263,6 @@
     </div>
 </div>
 
-{{-- Confirm Dialog --}}
-<div id="confirmDialog" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
-    <div class="fixed inset-0 bg-black/50" onclick="closeConfirm()"></div>
-    <div id="confirmBox" class="relative bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm" style="transform:scale(0.8) translateY(20px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1)">
-        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-            </svg>
-        </div>
-        <h3 class="text-lg font-bold text-gray-900 text-center mb-1">Delete Warehouse</h3>
-        <p id="confirmMsg" class="text-sm text-gray-500 text-center mb-6"></p>
-        <div class="flex gap-3">
-            <button onclick="closeConfirm()" class="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-50">Cancel</button>
-            <button id="confirmOkBtn" class="flex-1 px-4 py-2.5 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700">Delete</button>
-        </div>
-    </div>
-</div>
-
-{{-- Success Dialog --}}
-<div id="successDialog" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
-    <div class="fixed inset-0 bg-black/40"></div>
-    <div id="successBox" class="relative bg-white rounded-2xl shadow-2xl p-8 w-full max-w-xs text-center" style="transform:scale(0.8) translateY(20px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1)">
-        <svg class="w-16 h-16 mx-auto mb-4" viewBox="0 0 64 64">
-            <circle cx="32" cy="32" r="30" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
-            <path id="checkPath" d="M18 32 L28 42 L46 22" fill="none" stroke="#16a34a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
-                  style="stroke-dasharray:40;stroke-dashoffset:40;transition:stroke-dashoffset .5s ease .2s"/>
-        </svg>
-        <p id="successMsg" class="text-gray-800 font-semibold text-base"></p>
-    </div>
-</div>
-
 {{-- Toast --}}
 <div id="toast" class="hidden fixed top-5 right-5 z-[9999] px-5 py-3 rounded-xl shadow-xl text-white text-sm font-medium transition-all"></div>
 
@@ -328,43 +297,25 @@ function toast(msg, type = 'success') {
     setTimeout(() => el.classList.add('hidden'), 3000);
 }
 
-// ── Confirm Dialog ───────────────────────────────────────────────
-let confirmCallback = null;
-function showConfirmDialog(msg, cb) {
-    confirmCallback = cb;
-    document.getElementById('confirmMsg').textContent = msg;
-    document.getElementById('confirmDialog').classList.remove('hidden');
-    requestAnimationFrame(() => {
-        const box = document.getElementById('confirmBox');
-        box.style.transform = 'scale(1) translateY(0)';
-        box.style.opacity   = '1';
+// ── Dialogs ──────────────────────────────────────────────────────
+async function showConfirmDialog(msg, cb) {
+    const confirmed = await Dialog.confirm({
+        title: 'Are you sure?',
+        message: msg,
+        type: 'danger',
+        confirmText: 'Confirm',
+        cancelText: 'Cancel'
     });
-    document.getElementById('confirmOkBtn').onclick = () => { closeConfirm(); cb(); };
+    if (confirmed) cb();
 }
-function closeConfirm() {
-    const box = document.getElementById('confirmBox');
-    box.style.transform = 'scale(0.8) translateY(20px)';
-    box.style.opacity   = '0';
-    setTimeout(() => document.getElementById('confirmDialog').classList.add('hidden'), 300);
-}
+
 function showSuccessDialog(msg) {
-    document.getElementById('successMsg').textContent = msg;
-    document.getElementById('successDialog').classList.remove('hidden');
-    requestAnimationFrame(() => {
-        const box = document.getElementById('successBox');
-        box.style.transform = 'scale(1) translateY(0)';
-        box.style.opacity   = '1';
-        setTimeout(() => { document.getElementById('checkPath').style.strokeDashoffset = '0'; }, 50);
+    Dialog.alert({
+        title: 'Success!',
+        message: msg,
+        type: 'success',
+        confirmText: 'Great'
     });
-    setTimeout(() => {
-        const box = document.getElementById('successBox');
-        box.style.transform = 'scale(0.8) translateY(20px)';
-        box.style.opacity   = '0';
-        setTimeout(() => {
-            document.getElementById('successDialog').classList.add('hidden');
-            document.getElementById('checkPath').style.strokeDashoffset = '40';
-        }, 300);
-    }, 2000);
 }
 
 // ── Load & Render ────────────────────────────────────────────────

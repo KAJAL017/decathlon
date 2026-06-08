@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class ProductVariant extends Model
 {
@@ -41,6 +42,8 @@ class ProductVariant extends Model
         'allow_backorder' => 'boolean',
         'available_date' => 'date',
     ];
+
+    protected $appends = ['variant_name'];
 
     // Relationships
     public function product()
@@ -102,9 +105,7 @@ class ProductVariant extends Model
 
     public function getVariantNameAttribute()
     {
-        $attributes = $this->variantAttributes()
-            ->with(['attribute', 'attributeValue'])
-            ->get()
+        $attributes = $this->variantAttributes
             ->map(function($item) {
                 return $item->attributeValue->value ?? '';
             })
@@ -112,5 +113,64 @@ class ProductVariant extends Model
             ->implode(' / ');
 
         return $attributes ?: 'Default';
+    }
+
+    /**
+     * Get the size attribute value for this variant
+     */
+    public function getSizeAttribute()
+    {
+        if ($this->relationLoaded('variantAttributes')) {
+            $attribute = $this->variantAttributes->first(function($item) {
+                $slug = strtolower($item->attribute->slug ?? '');
+                $name = strtolower($item->attribute->name ?? '');
+                return strpos($slug, 'size') !== false || strpos($name, 'size') !== false;
+            });
+            if ($attribute) {
+                return $attribute->attributeValue->value ?? null;
+            }
+        }
+
+        // Fallback to query if relationship not loaded or not found in collection
+        $attribute = $this->variantAttributes()
+            ->whereHas('attribute', function($q) {
+                $q->where('slug', 'like', '%size%')
+                  ->orWhere('name', 'like', '%size%');
+            })
+            ->with('attributeValue')
+            ->first();
+
+        return $attribute?->attributeValue?->value;
+    }
+
+    /**
+     * Get the color attribute value for this variant
+     */
+    public function getColorAttribute()
+    {
+        if ($this->relationLoaded('variantAttributes')) {
+            $attribute = $this->variantAttributes->first(function($item) {
+                $slug = strtolower($item->attribute->slug ?? '');
+                $name = strtolower($item->attribute->name ?? '');
+                return strpos($slug, 'color') !== false || strpos($slug, 'colour') !== false || 
+                       strpos($name, 'color') !== false || strpos($name, 'colour') !== false;
+            });
+            if ($attribute) {
+                return $attribute->attributeValue->value ?? null;
+            }
+        }
+
+        // Fallback to query
+        $attribute = $this->variantAttributes()
+            ->whereHas('attribute', function($q) {
+                $q->where('slug', 'like', '%color%')
+                  ->orWhere('slug', 'like', '%colour%')
+                  ->orWhere('name', 'like', '%color%')
+                  ->orWhere('name', 'like', '%colour%');
+            })
+            ->with('attributeValue')
+            ->first();
+
+        return $attribute?->attributeValue?->value;
     }
 }

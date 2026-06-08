@@ -218,6 +218,7 @@
     </div>
 
     <!-- Scripts -->
+    @include('partials.dialog')
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');

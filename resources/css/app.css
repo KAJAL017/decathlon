@@ -9,3 +9,19 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@layer components {
+    /* Custom pagination styling to match Decathlon */
+    .pagination {
+        @apply flex justify-center gap-2;
+    }
+    .page-item .page-link {
+        @apply rounded-full w-10 h-10 flex items-center justify-center border border-gray-200 text-gray-700 font-bold text-sm transition-all duration-200;
+    }
+    .page-item.active .page-link {
+        @apply bg-[#0082C3] border-[#0082C3] text-white;
+    }
+    .page-item .page-link:hover:not(.active) {
+        @apply bg-gray-100 border-gray-300;
+    }
+}

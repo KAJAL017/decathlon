@@ -87,6 +87,7 @@ class CategoryController extends Controller
             'meta_keywords' => 'nullable|string',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
+            'is_top' => 'boolean',
             'show_in_menu' => 'boolean',
             'sort_order' => 'nullable|integer',
         ]);
@@ -171,6 +172,7 @@ class CategoryController extends Controller
             'meta_keywords' => 'nullable|string',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
+            'is_top' => 'boolean',
             'show_in_menu' => 'boolean',
             'sort_order' => 'nullable|integer',
         ]);
