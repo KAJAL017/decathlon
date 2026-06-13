@@ -123,7 +123,7 @@
                 <div id="adminLogoPreview" class="{{ empty($settings['general']['admin_logo']) ? 'hidden' : '' }} mb-3">
                     <img id="adminLogoPreviewImg" src="{{ $settings['general']['admin_logo'] ?? '' }}" class="h-16 object-contain mx-auto rounded-lg bg-white border border-gray-200 p-1.5 shadow-sm">
                 </div>
-                <button type="button" onclick="openSettingImageKit('admin_logo')" class="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-gray-200 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors shadow-sm">
+                <button type="button" onclick="openSettingImagePicker('admin_logo')" class="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-gray-200 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors shadow-sm">
                     <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                     </svg>
@@ -140,7 +140,7 @@
                 <div id="websiteLogoPreview" class="{{ empty($settings['general']['website_logo']) ? 'hidden' : '' }} mb-3">
                     <img id="websiteLogoPreviewImg" src="{{ $settings['general']['website_logo'] ?? '' }}" class="h-16 object-contain mx-auto rounded-lg bg-white border border-gray-200 p-1.5 shadow-sm">
                 </div>
-                <button type="button" onclick="openSettingImageKit('website_logo')" class="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-gray-200 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors shadow-sm">
+                <button type="button" onclick="openSettingImagePicker('website_logo')" class="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-gray-200 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors shadow-sm">
                     <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                     </svg>
@@ -157,7 +157,7 @@
                 <div id="footerLogoPreview" class="{{ empty($settings['general']['website_footer_logo']) ? 'hidden' : '' }} mb-3">
                     <img id="footerLogoPreviewImg" src="{{ $settings['general']['website_footer_logo'] ?? '' }}" class="h-16 object-contain mx-auto rounded-lg bg-white border border-gray-200 p-1.5 shadow-sm">
                 </div>
-                <button type="button" onclick="openSettingImageKit('website_footer_logo')" class="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-gray-200 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors shadow-sm">
+                <button type="button" onclick="openSettingImagePicker('website_footer_logo')" class="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-gray-200 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors shadow-sm">
                     <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                     </svg>
@@ -639,25 +639,10 @@
 @endsection
 
 @push('scripts')
-<script src="https://unpkg.com/imagekit-javascript/dist/imagekit.min.js"></script>
 <script>
-@php
-    $ikPublicKey   = \App\Models\Setting::get('imagekit_public_key')   ?: config('imagekit.public_key', '');
-    $ikUrlEndpoint = \App\Models\Setting::get('imagekit_url_endpoint') ?: config('imagekit.url_endpoint', '');
-    $ikReady       = !empty($ikPublicKey) && !empty($ikUrlEndpoint);
-@endphp
-const IMAGEKIT_READY = {{ $ikReady ? 'true' : 'false' }};
-const imagekit = IMAGEKIT_READY ? new ImageKit({
-    publicKey: "{{ $ikPublicKey }}",
-    urlEndpoint: "{{ $ikUrlEndpoint }}",
-    authenticationEndpoint: "{{ parse_url(route('imagekit.auth'), PHP_URL_PATH) }}"
-}) : null;
 
-function openSettingImageKit(fieldName) {
-    if (!IMAGEKIT_READY) {
-        alert('ImageKit is not configured. Please go to Integrations → ImageKit and add your credentials.');
-        return;
-    }
+
+function openSettingImagePicker(fieldName) {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
@@ -665,52 +650,43 @@ function openSettingImageKit(fieldName) {
         const file = e.target.files[0];
         if (!file) return;
 
-        toast('Uploading logo to ImageKit...', 'info');
+        toast('Uploading logo...', 'info');
 
-        // Manual fetch to ensure session cookies are sent correctly
-        fetch("{{ parse_url(route('imagekit.auth'), PHP_URL_PATH) }}")
-            .then(response => response.json())
-            .then(authParams => {
-                imagekit.upload({
-                    file: file,
-                    fileName: 'setting-' + fieldName + '-' + Date.now(),
-                    folder: '/settings',
-                    useUniqueFileName: true,
-                    tags: ['setting', fieldName],
-                    token: authParams.token,
-                    signature: authParams.signature,
-                    expire: authParams.expire
-                }, function(err, result) {
-                    if (err) {
-                        console.error('ImageKit upload error:', err);
-                        toast('Error uploading image: ' + (err.message || JSON.stringify(err)), 'error');
-                        return;
-                    }
-                    
-                    document.getElementById(fieldName).value = result.url;
-                    
-                    let previewId, previewImgId;
-                    if (fieldName === 'admin_logo') {
-                        previewId = 'adminLogoPreview';
-                        previewImgId = 'adminLogoPreviewImg';
-                    } else if (fieldName === 'website_logo') {
-                        previewId = 'websiteLogoPreview';
-                        previewImgId = 'websiteLogoPreviewImg';
-                    } else if (fieldName === 'website_footer_logo') {
-                        previewId = 'footerLogoPreview';
-                        previewImgId = 'footerLogoPreviewImg';
-                    }
-                    
-                    document.getElementById(previewImgId).src = result.url;
-                    document.getElementById(previewId).classList.remove('hidden');
-                    
-                    toast('Logo uploaded successfully!', 'success');
-                });
-            })
-            .catch(error => {
-                console.error('Auth fetch error:', error);
-                toast('Failed to fetch authentication parameters', 'error');
-            });
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('folder', 'settings');
+
+        fetch('/api/upload', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('input_' + fieldName).value = data.url;
+                const previewImg = document.getElementById('preview_' + fieldName);
+                if (previewImg) {
+                    previewImg.src = data.url;
+                } else {
+                    // Create preview block if it didn't exist
+                    const container = document.getElementById('input_' + fieldName).parentElement;
+                    const prevDiv = document.createElement('div');
+                    prevDiv.className = 'mt-3 p-3 bg-gray-50 border border-gray-100 rounded-xl inline-block';
+                    prevDiv.innerHTML = `<img id="preview_${fieldName}" src="${data.url}" class="h-12 object-contain">`;
+                    container.appendChild(prevDiv);
+                }
+                toast('Logo uploaded successfully!', 'success');
+            } else {
+                toast(data.message || 'Error uploading image', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Upload error:', error);
+            toast('Failed to upload image', 'error');
+        });
     };
     input.click();
 }

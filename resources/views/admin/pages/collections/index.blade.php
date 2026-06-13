@@ -160,6 +160,41 @@
             <div id="mt-basic" class="px-6 py-5 space-y-4">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Collection Image</label>
+                        <div class="relative group mt-1">
+                            <div id="imagePlaceholder" class="aspect-[3/1] w-full border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center bg-gray-50 hover:border-[#0082C3] hover:bg-blue-50/30 transition-all cursor-pointer overflow-hidden" onclick="document.getElementById('cImageInput').click()">
+                                <div id="uploadUI" class="flex flex-col items-center">
+                                    <div class="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-700">Click to upload image</p>
+                                    <p class="text-xs text-gray-500 mt-1">PNG, JPG, WEBP (Max {{ \App\Models\Setting::group('media')['max_upload_size'] ?? 500 }}KB)</p>
+                                </div>
+                                <img id="imagePreview" src="" class="hidden absolute inset-0 w-full h-full object-cover">
+                                
+                                <div id="uploadLoader" class="hidden absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
+                                    <div class="flex flex-col items-center">
+                                        <svg class="animate-spin h-6 w-6 text-[#0082C3] mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        <p class="text-xs font-medium text-gray-600">Uploading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="file" id="cImageInput" class="hidden" accept="image/*" onchange="handleImageUpload(event)">
+                            <input type="hidden" id="cImageUrl">
+                            
+                            <button type="button" id="removeImageBtn" onclick="removeImage(event)" class="hidden absolute top-2 right-2 p-1.5 bg-red-600 text-white rounded-lg shadow-lg hover:bg-red-700 transition-colors z-10">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Name <span class="text-red-500">*</span></label>
                         <input id="cName" type="text"
                                class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
@@ -348,8 +383,8 @@ function renderTable(rows) {
             <td class="px-5 py-3.5">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                        ${c.image_url
-                            ? `<img src="${c.image_url}" class="w-full h-full object-cover">`
+                        ${(c.thumbnail_url || c.image_url)
+                            ? `<img src="${c.thumbnail_url || c.image_url}" class="w-full h-full object-cover">`
                             : `<svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>`}
                     </div>
                     <div>
@@ -443,6 +478,7 @@ function openAdd() {
     document.getElementById('cId').value = '';
     document.getElementById('cForm').reset();
     document.getElementById('cSort').value = 0;
+    removeImage();
     mTab('basic');
     showModal();
 }
@@ -467,6 +503,16 @@ async function openEdit(id) {
     document.getElementById('cFeatured').checked   = !!c.is_featured;
     document.getElementById('cSeoTitle').value     = c.seo_title || '';
     document.getElementById('cSeoDesc').value      = c.seo_description || '';
+    
+    if (c.image_url) {
+        document.getElementById('cImageUrl').value = c.image_url;
+        document.getElementById('imagePreview').src = c.image_url;
+        document.getElementById('imagePreview').classList.remove('hidden');
+        document.getElementById('uploadUI').classList.add('hidden');
+        document.getElementById('removeImageBtn').classList.remove('hidden');
+    } else {
+        removeImage();
+    }
 }
 
 function showModal() {
@@ -500,6 +546,77 @@ function autoSlug() {
     }
 }
 
+// ── Image Upload ─────────────────────────────────────────────────
+async function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+        Dialog.alert({ title: 'Invalid File', message: 'Please select an image file (PNG, JPG, WEBP).', type: 'danger' });
+        return;
+    }
+
+    const maxSizeKB = {{ \App\Models\Setting::group('media')['max_upload_size'] ?? 500 }};
+    if (file.size > maxSizeKB * 1024) {
+        Dialog.alert({ title: 'File Too Large', message: `Image size should not exceed ${maxSizeKB}KB.`, type: 'danger' });
+        return;
+    }
+
+    const loader = document.getElementById('uploadLoader');
+    const preview = document.getElementById('imagePreview');
+    const uploadUI = document.getElementById('uploadUI');
+    const removeBtn = document.getElementById('removeImageBtn');
+    const submitBtn = document.getElementById('saveBtn');
+
+    loader.classList.remove('hidden');
+    submitBtn.disabled = true;
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', 'collections');
+    formData.append('folder', 'collections');
+    
+    const oldUrl = document.getElementById('cImageUrl').value;
+    if (oldUrl) {
+        formData.append('oldPath', oldUrl);
+    }
+
+    try {
+        const response = await fetch('/api/upload', {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': CSRF },
+            body: formData
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById('cImageUrl').value = data.url;
+            preview.src = data.url;
+            preview.classList.remove('hidden');
+            uploadUI.classList.add('hidden');
+            removeBtn.classList.remove('hidden');
+        } else {
+            Dialog.alert({ title: 'Upload Failed', message: data.message || 'Failed to upload image.', type: 'danger' });
+        }
+    } catch (error) {
+        console.error('Upload error:', error);
+        Dialog.alert({ title: 'Error', message: 'An error occurred during upload.', type: 'danger' });
+    } finally {
+        loader.classList.add('hidden');
+        submitBtn.disabled = false;
+    }
+}
+
+function removeImage(event) {
+    if (event) event.stopPropagation();
+    document.getElementById('cImageUrl').value = '';
+    document.getElementById('imagePreview').classList.add('hidden');
+    document.getElementById('imagePreview').src = '';
+    document.getElementById('uploadUI').classList.remove('hidden');
+    document.getElementById('removeImageBtn').classList.add('hidden');
+    document.getElementById('cImageInput').value = '';
+}
+
 // ── Save (Create/Update) ─────────────────────────────────────────
 async function save() {
     const name = document.getElementById('cName').value.trim();
@@ -513,6 +630,7 @@ async function save() {
         name,
         slug:            document.getElementById('cSlug').value.trim() || undefined,
         description:     document.getElementById('cDesc').value,
+        image_url:       document.getElementById('cImageUrl').value || null,
         type:            document.getElementById('cType').value,
         visibility:      document.getElementById('cVisibility').value,
         status:          document.getElementById('cStatus').value === '1',

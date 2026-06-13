@@ -411,7 +411,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
-                        Category Image (ImageKit)
+                        Category Image
                     </h4>
 
                     <!-- Category Image - Full Width -->
@@ -437,7 +437,7 @@
                                 <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
-                                <button type="button" onclick="openImageKit('image')" class="inline-flex items-center gap-2 px-6 py-3 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-all shadow-sm hover:shadow-md">
+                                <button type="button" onclick="openImagePicker('image')" class="inline-flex items-center gap-2 px-6 py-3 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-all shadow-sm hover:shadow-md">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                                     </svg>
@@ -604,20 +604,7 @@ table {
 }
 </style>
 
-<script src="https://unpkg.com/imagekit-javascript/dist/imagekit.min.js"></script>
 
-<script>
-@php
-    $ikPublicKey  = \App\Models\Setting::get('imagekit_public_key')   ?: config('imagekit.public_key', '');
-    $ikUrlEndpoint= \App\Models\Setting::get('imagekit_url_endpoint') ?: config('imagekit.url_endpoint', '');
-    $ikReady      = !empty($ikPublicKey) && !empty($ikUrlEndpoint);
-@endphp
-const IMAGEKIT_READY = {{ $ikReady ? 'true' : 'false' }};
-const imagekit = IMAGEKIT_READY ? new ImageKit({
-    publicKey: "{{ $ikPublicKey }}",
-    urlEndpoint: "{{ $ikUrlEndpoint }}",
-    authenticationEndpoint: "{{ parse_url(route('imagekit.auth'), PHP_URL_PATH) }}"
-}) : null;
 
 let currentPage = 1;
 let searchTimeout;
@@ -815,8 +802,8 @@ function renderCategories(categories) {
     }
 
     tbody.innerHTML = categories.map(category => {
-        const categoryImage = category.image_url 
-            ? category.image_url
+        const categoryImage = (category.thumbnail_url || category.image_url)
+            ? (category.thumbnail_url || category.image_url)
             : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(category.name) + '&size=48&background=0082C3&color=fff';
         
         const badges = [];
@@ -1863,15 +1850,7 @@ async function applyBulkAction() {
     });
 }
 
-async function openImageKit(type) {
-    if (!IMAGEKIT_READY) {
-        await Dialog.alert({
-            title: 'Configuration Required',
-            message: 'ImageKit is not configured. Please go to Integrations → ImageKit and add your credentials.',
-            type: 'warning'
-        });
-        return;
-    }
+async function openImagePicker(type) {
     currentImageType = type;
     
     const input = document.createElement('input');
@@ -1899,7 +1878,7 @@ async function openImageKit(type) {
         
         // Small delay to ensure UI updates before upload starts
         setTimeout(function() {
-            // Upload to ImageKit via server with progress tracking
+            // Upload to local storage via server with progress tracking
             const formData = new FormData();
             formData.append('file', file);
             formData.append('folder', 'categories');
@@ -1935,21 +1914,14 @@ async function openImageKit(type) {
                         const data = JSON.parse(xhr.responseText);
                         
                         if (data.success) {
-                            const imageUrl = data.data.url;
-                            const fileId = data.data.fileId;
-                            const responsiveUrls = data.data.responsiveUrls;
+                            const imageUrl = data.url;
+                            const fileId = data.fileId;
                             
-                            // Store all responsive URLs
-                            document.getElementById('categoryImageUrl').value = responsiveUrls.mobile_webp || imageUrl;
+                            document.getElementById('categoryImageUrl').value = imageUrl;
                             document.getElementById('categoryImageId').value = fileId;
-                            document.getElementById('categoryImageResponsive').value = JSON.stringify(responsiveUrls);
                             
-                            // Store dimensions if available
-                            if (data.data.width) document.getElementById('categoryImageWidth').value = data.data.width;
-                            if (data.data.height) document.getElementById('categoryImageHeight').value = data.data.height;
-                            
-                            // Show preview with responsive image
-                            document.getElementById('categoryImagePreviewImg').src = responsiveUrls.card_webp || responsiveUrls.mobile_webp || imageUrl;
+                            // Show preview
+                            document.getElementById('categoryImagePreviewImg').src = imageUrl;
                             document.getElementById('categoryImagePreview').classList.remove('hidden');
                             
                             // Hide progress
@@ -1958,7 +1930,7 @@ async function openImageKit(type) {
                             
                             Dialog.alert({
                                 title: 'Upload Successful',
-                                message: 'Image uploaded successfully! Multiple sizes generated for all devices.',
+                                message: 'Image uploaded successfully!',
                                 type: 'success'
                             });
                         } else {
@@ -1990,7 +1962,7 @@ async function openImageKit(type) {
             });
             
             // Send request
-            xhr.open('POST', '/api/imagekit-upload');
+            xhr.open('POST', '/api/upload');
             xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr.send(formData);

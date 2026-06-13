@@ -19,7 +19,6 @@ class Setting extends Model
         'mailchimp_api_key',
         'msg91_auth_key',
         'twilio_auth_token',
-        'imagekit_private_key',
         'ai_api_key',
     ];
 

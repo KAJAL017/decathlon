@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class Category extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, \App\Traits\HasMediaThumbnails;
 
     protected $fillable = [
         'name',
@@ -44,6 +44,13 @@ class Category extends Model
         'products_count' => 'integer',
         'image_responsive' => 'array',
     ];
+
+    protected $appends = ['thumbnail_url'];
+
+    public function getThumbnailUrlAttribute()
+    {
+        return $this->getThumbnailUrl($this->image_url);
+    }
 
     // Relationships
     public function parent()

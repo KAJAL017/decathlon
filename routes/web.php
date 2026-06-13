@@ -247,11 +247,6 @@ Route::get('/admin/reports/customers', [App\Http\Controllers\Admin\ReportControl
 Route::get('/admin/reports/catalog', [App\Http\Controllers\Admin\ReportController::class, 'catalog'])->name('admin.reports.catalog');
 Route::get('/admin/reports/activity', [App\Http\Controllers\Admin\ReportController::class, 'activity'])->name('admin.reports.activity');
 
-// Settings
-Route::get('/admin/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('admin.settings.index');
-Route::post('/admin/settings/{group}', [App\Http\Controllers\Admin\SettingController::class, 'save'])->name('admin.settings.save');
-Route::get('/admin/settings/{group}', [App\Http\Controllers\Admin\SettingController::class, 'get'])->name('admin.settings.get');
-
 // Reviews Management
 Route::get('/admin/reviews', [App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('admin.reviews.index');
 Route::get('/admin/reviews/list', [App\Http\Controllers\Admin\ReviewController::class, 'list'])->name('admin.reviews.list');
@@ -364,6 +359,11 @@ Route::put('/admin/orders/{id}', [App\Http\Controllers\Admin\OrderController::cl
 Route::delete('/admin/orders/{id}', [App\Http\Controllers\Admin\OrderController::class, 'destroy'])->name('admin.orders.destroy');
 Route::post('/admin/orders/{id}/status', [App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('admin.orders.status');
 
+// Order Tracking
+Route::get('/admin/order-tracking', [App\Http\Controllers\Admin\OrderTrackingController::class, 'index'])->name('admin.order-tracking.index');
+Route::get('/admin/order-tracking/search', [App\Http\Controllers\Admin\OrderTrackingController::class, 'track'])->name('admin.order-tracking.search');
+Route::get('/admin/order-tracking/recent', [App\Http\Controllers\Admin\OrderTrackingController::class, 'recent'])->name('admin.order-tracking.recent');
+
 // Returns & Refunds Management
 Route::get('/admin/returns', [App\Http\Controllers\Admin\ReturnController::class, 'index'])->name('admin.returns.index');
 Route::get('/admin/returns/list', [App\Http\Controllers\Admin\ReturnController::class, 'list'])->name('admin.returns.list');
@@ -407,18 +407,29 @@ Route::put('/admin/brevo/senders/{id}',    [App\Http\Controllers\Admin\BrevoCont
 Route::delete('/admin/brevo/senders/{id}', [App\Http\Controllers\Admin\BrevoController::class, 'deleteSender'])->name('admin.brevo.senders.delete');
 Route::post('/admin/brevo/senders/{id}/verify', [App\Http\Controllers\Admin\BrevoController::class, 'validateSenderOTP'])->name('admin.brevo.senders.verify');
 
+// Media Settings
+Route::get('/admin/settings/media', [App\Http\Controllers\Admin\MediaSettingsController::class, 'index'])->name('admin.settings.media');
+Route::post('/admin/settings/media/global', [App\Http\Controllers\Admin\MediaSettingsController::class, 'updateGlobal'])->name('admin.settings.media.global');
+Route::put('/admin/settings/media/{id}', [App\Http\Controllers\Admin\MediaSettingsController::class, 'updateType'])->name('admin.settings.media.type.update');
+Route::post('/admin/settings/media/{id}/reset', [App\Http\Controllers\Admin\MediaSettingsController::class, 'resetType'])->name('admin.settings.media.type.reset');
+
+// Settings
+Route::get('/admin/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('admin.settings.index');
+Route::post('/admin/settings/{group}', [App\Http\Controllers\Admin\SettingController::class, 'save'])->name('admin.settings.save');
+Route::get('/admin/settings/{group}', [App\Http\Controllers\Admin\SettingController::class, 'get'])->name('admin.settings.get');
+
 // Notifications
 Route::get('/admin/notifications', [App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('admin.notifications');
 
-// ImageKit Integration
-Route::get('/api/imagekit-auth', [App\Http\Controllers\ImageKitController::class, 'auth'])->name('imagekit.auth');
-Route::post('/api/imagekit-upload', [App\Http\Controllers\ImageKitController::class, 'upload'])->name('imagekit.upload');
-Route::delete('/api/imagekit-delete', [App\Http\Controllers\ImageKitController::class, 'delete'])->name('imagekit.delete');
-// ImageKit File Manager
-Route::get('/api/imagekit-usage', [App\Http\Controllers\ImageKitController::class, 'usage'])->name('imagekit.usage');
-Route::get('/api/imagekit-files', [App\Http\Controllers\ImageKitController::class, 'listFiles'])->name('imagekit.files');
-Route::post('/api/imagekit-folder', [App\Http\Controllers\ImageKitController::class, 'createFolder'])->name('imagekit.folder.create');
-Route::delete('/api/imagekit-folder', [App\Http\Controllers\ImageKitController::class, 'deleteFolder'])->name('imagekit.folder.delete');
-Route::post('/api/imagekit-upload-folder', [App\Http\Controllers\ImageKitController::class, 'uploadToFolder'])->name('imagekit.upload.folder');
 
 }); // end admin.auth middleware group
+
+// Media Upload Routes
+Route::post('/api/upload', [App\Http\Controllers\UploadController::class, 'upload'])->name('upload.media');
+Route::delete('/api/upload/delete', [App\Http\Controllers\UploadController::class, 'delete'])->name('upload.media.delete');
+
+
+Route::get('/api/media-usage', [App\Http\Controllers\UploadController::class, 'usage'])->name('upload.media.usage');
+Route::get('/api/media-files', [App\Http\Controllers\UploadController::class, 'listFiles'])->name('upload.media.files');
+Route::post('/api/media-folder', [App\Http\Controllers\UploadController::class, 'createFolder'])->name('upload.media.folder.create');
+Route::delete('/api/media-folder', [App\Http\Controllers\UploadController::class, 'deleteFolder'])->name('upload.media.folder.delete');

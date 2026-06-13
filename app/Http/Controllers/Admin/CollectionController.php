@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class CollectionController extends Controller
 {
+    protected $mediaService;
+
+    public function __construct(\App\Services\MediaService $mediaService)
+    {
+        $this->mediaService = $mediaService;
+    }
+
     public function index(Request $request)
     {
         $query = \App\Models\Collection::query();
@@ -219,6 +226,10 @@ class CollectionController extends Controller
                 unset($data['slug']);
             }
 
+            if ($collection->image_url && $request->image_url !== $collection->image_url) {
+                $this->mediaService->delete($collection->image_url);
+            }
+
             $collection->update($data);
 
             // Handle products for manual collections
@@ -271,6 +282,10 @@ class CollectionController extends Controller
             "Deleted collection: {$collection->name}",
             ['collection_id' => $collection->id]
         );
+
+        if ($collection->image_url) {
+            $this->mediaService->delete($collection->image_url);
+        }
 
         $collection->delete();
 
@@ -353,6 +368,9 @@ class CollectionController extends Controller
                     $count++;
                     break;
                 case 'delete':
+                    if ($collection->image_url) {
+                        $this->mediaService->delete($collection->image_url);
+                    }
                     $collection->delete();
                     $count++;
                     break;

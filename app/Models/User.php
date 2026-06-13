@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, \App\Traits\HasMediaThumbnails;
 
     /**
      * The attributes that are mass assignable.
@@ -36,6 +36,13 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected $appends = ['thumbnail_url'];
+
+    public function getThumbnailUrlAttribute()
+    {
+        return $this->getThumbnailUrl($this->profile_image);
+    }
 
     /**
      * Get the attributes that should be cast.

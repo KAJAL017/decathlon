@@ -26,7 +26,7 @@
                     'webhooks'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>',
                     'apps'      => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>',
                 ];
-                $intLabels = ['analytics'=>'Analytics','payments'=>'Payments','shipping'=>'Shipping','marketing'=>'Marketing','imagekit'=>'ImageKit','webhooks'=>'Webhooks','apps'=>'Third Party Apps'];
+                $intLabels = ['analytics'=>'Analytics','payments'=>'Payments','shipping'=>'Shipping','marketing'=>'Marketing','webhooks'=>'Webhooks','apps'=>'Third Party Apps'];
                 @endphp
                 @foreach($intLabels as $key=>$label)
                 <button onclick="switchTab('{{$key}}')" id="nav-{{$key}}"
@@ -1428,253 +1428,6 @@
 
             </div>
 
-            {{-- ══ IMAGEKIT TAB ══ --}}
-            <div id="tab-imagekit" class="int-tab space-y-5" style="display:none">
-
-                {{-- Status Banner --}}
-                @if(\App\Models\Setting::get('imagekit_public_key'))
-                <div class="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                        <img src="https://imagekit.io/favicon.ico" class="w-10 h-10" alt="ImageKit" onerror="this.outerHTML='<span class=\'text-2xl\'>🖼️</span>'">
-                    </div>
-                    <div class="flex-1">
-                        <p class="text-sm font-bold text-green-800">ImageKit is Connected</p>
-                        <p class="text-xs text-green-600 font-mono mt-0.5">{{ \App\Models\Setting::get('imagekit_url_endpoint', '—') }}</p>
-                    </div>
-                    <span class="px-3 py-1.5 bg-green-600 text-white text-xs font-semibold rounded-full">✓ Active</span>
-                </div>
-                @else
-                <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                        <img src="https://imagekit.io/favicon.ico" class="w-10 h-10" alt="ImageKit" onerror="this.outerHTML='<span class=\'text-2xl\'>🖼️</span>'">
-                    </div>
-                    <div>
-                        <p class="text-sm font-bold text-yellow-800">ImageKit Not Connected</p>
-                        <p class="text-xs text-yellow-600 mt-0.5">Add your credentials below to enable image uploads and CDN</p>
-                    </div>
-                </div>
-                @endif
-
-                {{-- Credentials --}}
-                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                        <h3 class="text-sm font-semibold text-gray-900">API Credentials</h3>
-                        <a href="https://imagekit.io/dashboard" target="_blank"
-                           class="text-xs text-[#0082C3] hover:underline flex items-center gap-1">
-                            Open Dashboard
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                        </a>
-                    </div>
-                    <div class="px-6 py-5 space-y-4">
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">
-                                    Public Key <span class="text-red-500">*</span>
-                                    <span class="text-gray-400 font-normal text-xs ml-1">(starts with public_)</span>
-                                </label>
-                                <input id="imagekit_public_key" type="text"
-                                       value="{{ \App\Models\Setting::get('imagekit_public_key', '') }}"
-                                       placeholder="public_XXXXXXXXXXXXXXXX"
-                                       class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">
-                                    Private Key <span class="text-red-500">*</span>
-                                    <span class="text-gray-400 font-normal text-xs ml-1">(keep secret)</span>
-                                </label>
-                                <div class="relative">
-                                    <input id="imagekit_private_key" type="password"
-                                           value="{{ \App\Models\Setting::get('imagekit_private_key', '') }}"
-                                           placeholder="private_XXXXXXXXXXXXXXXX"
-                                           class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3] pr-10">
-                                    <button onclick="toggleVisibility('imagekit_private_key')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-span-2">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">
-                                    URL Endpoint <span class="text-red-500">*</span>
-                                </label>
-                                <input id="imagekit_url_endpoint" type="text"
-                                       value="{{ \App\Models\Setting::get('imagekit_url_endpoint', '') }}"
-                                       placeholder="https://ik.imagekit.io/your_imagekit_id"
-                                       class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
-                                <p class="text-xs text-gray-400 mt-1">Found on ImageKit Dashboard home page under URL Endpoints</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-3 pt-2 border-t border-gray-100">
-                            <button onclick="saveImageKit()" id="saveIkBtn"
-                                    class="px-6 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-colors disabled:opacity-60">
-                                Save ImageKit Settings
-                            </button>
-                            <button onclick="testImageKit()" id="testIkBtn"
-                                    class="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">
-                                🧪 Test Connection
-                            </button>
-                            @if(\App\Models\Setting::get('imagekit_public_key'))
-                            <button onclick="disconnectImageKit()"
-                                    class="px-4 py-2.5 bg-red-50 text-red-600 text-sm font-medium rounded-lg hover:bg-red-100 border border-red-200 transition-colors ml-auto">
-                                Disconnect
-                            </button>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Usage Info --}}
-                <div class="bg-white rounded-xl border border-gray-200 p-6">
-                    <h3 class="text-sm font-semibold text-gray-900 mb-4">Where ImageKit is Used</h3>
-                    <div class="grid grid-cols-3 gap-3">
-                        @foreach([
-                            ['📦 Products','Product images, gallery, variants'],
-                            ['📂 Categories','Category thumbnail images'],
-                            ['🏷️ Brands','Brand logo images'],
-                            ['🖼️ CDN','All images served via CDN'],
-                            ['⚡ Auto-optimize','WebP conversion, compression'],
-                            ['📐 Responsive','Multiple sizes for all devices'],
-                        ] as [$title, $desc])
-                        <div class="p-3 bg-gray-50 rounded-xl border border-gray-100">
-                            <p class="text-sm font-semibold text-gray-800">{{ $title }}</p>
-                            <p class="text-xs text-gray-400 mt-0.5">{{ $desc }}</p>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                {{-- ── STORAGE STATS ── --}}
-                @if(\App\Models\Setting::get('imagekit_public_key'))
-                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div class="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 bg-gray-50">
-                        <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
-                            <svg class="w-4 h-4 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                            </svg>
-                            Storage & Usage
-                        </h3>
-                        <button onclick="loadIkStats()" id="ikStatsRefreshBtn"
-                            class="flex items-center gap-1.5 text-xs text-gray-400 hover:text-[#0082C3] transition-colors">
-                            <svg id="ikStatsRefreshIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                            </svg>
-                            Refresh
-                        </button>
-                    </div>
-                    <div class="p-5">
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="ikStatsGrid">
-                            <div class="bg-gray-50 rounded-xl p-4 animate-pulse"><div class="h-3 bg-gray-200 rounded w-2/3 mb-2"></div><div class="h-6 bg-gray-200 rounded w-1/2"></div></div>
-                            <div class="bg-gray-50 rounded-xl p-4 animate-pulse"><div class="h-3 bg-gray-200 rounded w-2/3 mb-2"></div><div class="h-6 bg-gray-200 rounded w-1/2"></div></div>
-                            <div class="bg-gray-50 rounded-xl p-4 animate-pulse"><div class="h-3 bg-gray-200 rounded w-2/3 mb-2"></div><div class="h-6 bg-gray-200 rounded w-1/2"></div></div>
-                        </div>
-                        <div class="mt-4" id="ikStorageBar" style="display:none">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-semibold text-gray-600">Storage Used</span>
-                                <span id="ikStorageText" class="text-xs text-gray-500"></span>
-                            </div>
-                            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                                <div id="ikStorageFill" class="h-full rounded-full transition-all duration-700" style="width:0%;background:#0082C3"></div>
-                            </div>
-                            <div class="flex justify-between mt-1">
-                                <span class="text-[10px] text-gray-400">0 GB</span>
-                                <span class="text-[10px] text-gray-400">20 GB (Free plan limit)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endif
-
-                @if(\App\Models\Setting::get('imagekit_public_key'))
-                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    {{-- Toolbar --}}
-                    <div class="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-gray-50">
-                        <div class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
-                            </svg>
-                            <h3 class="text-sm font-bold text-gray-900">File Manager</h3>
-                            <span class="text-xs text-gray-400">— ImageKit Storage</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            {{-- View toggle --}}
-                            <div class="flex items-center bg-white border border-gray-200 rounded-lg overflow-hidden">
-                                <button id="fmViewGrid" onclick="fmSetView('grid')" title="Grid view"
-                                    class="p-1.5 text-[#0082C3] bg-blue-50 transition-colors">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-                                </button>
-                                <button id="fmViewList" onclick="fmSetView('list')" title="List view"
-                                    class="p-1.5 text-gray-400 hover:text-gray-600 transition-colors">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-                                </button>
-                            </div>
-                            <button onclick="fmNewFolder()" title="New Folder"
-                                class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                New Folder
-                            </button>
-                            <label class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#0082C3] rounded-lg hover:bg-[#006ba3] transition-colors cursor-pointer">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                                Upload
-                                <input type="file" id="fmUploadInput" multiple accept="image/*" class="hidden" onchange="fmUploadFiles(this.files)">
-                            </label>
-                            <button onclick="fmRefresh()" title="Refresh"
-                                class="p-1.5 text-gray-400 hover:text-gray-600 bg-white border border-gray-200 rounded-lg transition-colors">
-                                <svg id="fmRefreshIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    {{-- Breadcrumb --}}
-                    <div class="flex items-center gap-1 px-5 py-2 border-b border-gray-100 bg-white text-xs overflow-x-auto">
-                        <svg class="w-3.5 h-3.5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-                        <div id="fmBreadcrumb" class="flex items-center gap-1 flex-wrap">
-                            <button onclick="fmNavigate('/')" class="text-[#0082C3] hover:underline font-medium">Root</button>
-                        </div>
-                    </div>
-
-                    {{-- Status bar --}}
-                    <div id="fmStatusBar" class="flex items-center justify-between px-5 py-1.5 bg-gray-50 border-b border-gray-100 text-xs text-gray-500">
-                        <span id="fmStatusText">Loading...</span>
-                        <span id="fmSelectedInfo" class="hidden text-[#0082C3] font-medium"></span>
-                    </div>
-
-                    {{-- Content area --}}
-                    <div id="fmContent" class="p-4 min-h-[320px] relative" style="max-height:520px;overflow-y:auto">
-                        <div class="flex items-center justify-center h-48 text-gray-400">
-                            <svg class="w-6 h-6 animate-spin mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-                            Loading...
-                        </div>
-                    </div>
-
-                    {{-- Upload progress --}}
-                    <div id="fmUploadProgress" class="hidden px-5 py-3 border-t border-gray-100 bg-blue-50">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-4 h-4 text-blue-600 animate-spin flex-shrink-0" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between mb-1">
-                                    <span id="fmUploadLabel" class="text-xs font-medium text-blue-700">Uploading...</span>
-                                    <span id="fmUploadPct" class="text-xs text-blue-600">0%</span>
-                                </div>
-                                <div class="h-1.5 bg-blue-200 rounded-full overflow-hidden">
-                                    <div id="fmUploadBar" class="h-full bg-blue-600 rounded-full transition-all" style="width:0%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @else
-                <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-5 flex items-center gap-4">
-                    <svg class="w-8 h-8 text-yellow-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    <div>
-                        <p class="text-sm font-bold text-yellow-800">File Manager not available</p>
-                        <p class="text-xs text-yellow-600 mt-0.5">Connect ImageKit above to browse and manage your images</p>
-                    </div>
-                </div>
-                @endif
-
-            </div>
-
             {{-- ══ WEBHOOKS TAB ══ --}}
             <div id="tab-webhooks" class="int-tab space-y-4" style="display:none">
 
@@ -1827,15 +1580,6 @@
                                 'detail'  => \App\Models\Setting::get('fb_pixel_id') ? 'Pixel ID: ' . \App\Models\Setting::get('fb_pixel_id') : null,
                             ],
                             [
-                                'name'    => 'ImageKit',
-                                'desc'    => 'Image optimization, CDN & transformations',
-                                'icon'    => '🖼️',
-                                'color'   => 'purple',
-                                'tab'     => 'imagekit',
-                                'status'  => \App\Models\Setting::get('imagekit_public_key') ? 'connected' : 'not_connected',
-                                'detail'  => \App\Models\Setting::get('imagekit_url_endpoint') ?: null,
-                            ],
-                            [
                                 'name'    => 'Delhivery',
                                 'desc'    => 'Direct Delhivery API integration',
                                 'icon'    => '🚚',
@@ -1857,7 +1601,6 @@
                             'Google Analytics 4'  => '<img src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png" class="w-8 h-8 rounded" alt="Google Analytics" onerror="this.style.display=\'none\'">',
                             'Google Tag Manager'  => '<img src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png" class="w-8 h-8 rounded" alt="GTM" onerror="this.style.display=\'none\'">',
                             'Facebook Pixel'      => '<img src="https://static.xx.fbcdn.net/rsrc.php/yb/r/hLRJ1GG_y0J.ico" class="w-8 h-8 rounded" alt="Facebook" onerror="this.style.display=\'none\'">',
-                            'ImageKit'            => '<img src="https://imagekit.io/favicon.ico" class="w-8 h-8 rounded" alt="ImageKit" onerror="this.style.display=\'none\'">',
                             'Delhivery'           => '<img src="https://www.delhivery.com/favicon.ico" class="w-8 h-8 rounded" alt="Delhivery" onerror="this.style.display=\'none\'">',
                         ];
                         @endphp
@@ -2636,69 +2379,6 @@ async function sendTwilioTest() {
     const channel = document.getElementById('twilio_test_channel').value;
     if (!number) { toast('Enter phone number', 'error'); return; }
     toast(`Test ${channel === 'whatsapp' ? 'WhatsApp' : 'SMS'} sent to ${number} (simulation)`);
-}
-
-// ── ImageKit ──────────────────────────────────────────────────────
-async function saveImageKit() {
-    const pubKey  = document.getElementById('imagekit_public_key').value.trim();
-    const privKey = document.getElementById('imagekit_private_key').value.trim();
-    const url     = document.getElementById('imagekit_url_endpoint').value.trim();
-    if (!pubKey)  { toast('Public Key is required', 'error'); return; }
-    if (!privKey) { toast('Private Key is required', 'error'); return; }
-    if (!url)     { toast('URL Endpoint is required', 'error'); return; }
-    if (!url.startsWith('https://ik.imagekit.io/')) {
-        toast('URL Endpoint must start with https://ik.imagekit.io/', 'error'); return;
-    }
-
-    const btn = document.getElementById('saveIkBtn');
-    btn.disabled = true; btn.textContent = 'Saving…';
-
-    const body = {
-        imagekit_public_key:   pubKey,
-        imagekit_private_key:  privKey,
-        imagekit_url_endpoint: url,
-    };
-
-    const r = await fetch('/admin/settings/integrations', {
-        method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
-        body: JSON.stringify(body),
-    });
-    const data = await r.json();
-    btn.disabled = false; btn.textContent = 'Save ImageKit Settings';
-    if (data.success) { toast('ImageKit settings saved!'); setTimeout(() => location.reload(), 800); }
-    else toast(data.message || 'Error', 'error');
-}
-
-async function testImageKit() {
-    const pubKey = document.getElementById('imagekit_public_key').value.trim();
-    const url    = document.getElementById('imagekit_url_endpoint').value.trim();
-    if (!pubKey || !url) { toast('Enter Public Key and URL Endpoint first', 'error'); return; }
-    const btn = document.getElementById('testIkBtn');
-    btn.disabled = true; btn.textContent = 'Testing…';
-    await new Promise(r => setTimeout(r, 1000));
-    btn.disabled = false; btn.textContent = '🧪 Test Connection';
-    if (pubKey.startsWith('public_') && url.startsWith('https://ik.imagekit.io/')) {
-        toast('✓ ImageKit credentials look valid! Save to connect.');
-    } else {
-        toast('Invalid credentials format', 'error');
-    }
-}
-
-async function disconnectImageKit() {
-    const body = { imagekit_public_key: '', imagekit_private_key: '', imagekit_url_endpoint: '' };
-    const r = await fetch('/admin/settings/integrations', {
-        method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
-        body: JSON.stringify(body),
-    });
-    const data = await r.json();
-    if (data.success) { toast('ImageKit disconnected'); setTimeout(() => location.reload(), 800); }
-    else toast(data.message || 'Error', 'error');
-}
-
-function copyKey(key) {
-    navigator.clipboard.writeText(key).then(() => toast('API key copied'));
 }
 
 // ══ FILE MANAGER ══════════════════════════════════════════════════
@@ -3562,7 +3242,7 @@ async function loadIkStats() {
     if (icon) icon.classList.add('animate-spin');
 
     try {
-        const res  = await fetch('/api/imagekit-usage', { credentials: 'same-origin', headers: { 'Accept': 'application/json' } });
+        const res  = await fetch('/api/media-usage', { credentials: 'same-origin', headers: { 'Accept': 'application/json' } });
         const data = await res.json();
         if (!data.success) throw new Error(data.message);
 
@@ -3630,7 +3310,7 @@ async function fmNavigate(path) {
     fmUpdateBreadcrumb(path);
 
     try {
-        const res  = await fetch(`/api/imagekit-files?path=${encodeURIComponent(path)}`, {
+        const res  = await fetch(`/api/media-files?path=${encodeURIComponent(path)}`, {
             credentials: 'same-origin', headers: { 'Accept': 'application/json' }
         });
         const data = await res.json();
@@ -3877,7 +3557,7 @@ async function fmNewFolder() {
     const name = prompt('Enter folder name:');
     if (!name || !name.trim()) return;
     try {
-        const res = await fetch('/api/imagekit-folder', {
+        const res = await fetch('/api/media-folder', {
             method: 'POST', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF },
             body: JSON.stringify({ folder_name: name.trim(), parent_path: fmCurrentPath }),
@@ -3897,7 +3577,7 @@ async function fmDeleteFile(fileId, name) {
     });
     if (!confirmed) return;
     try {
-        const res = await fetch('/api/imagekit-delete', {
+        const res = await fetch('/api/upload/delete', {
             method: 'DELETE', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF },
             body: JSON.stringify({ fileId }),
@@ -3917,7 +3597,7 @@ async function fmDeleteFolder(folderPath, name) {
     });
     if (!confirmed) return;
     try {
-        const res = await fetch('/api/imagekit-folder', {
+        const res = await fetch('/api/media-folder', {
             method: 'DELETE', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF },
             body: JSON.stringify({ folder_path: folderPath }),
@@ -3943,7 +3623,7 @@ async function fmUploadFiles(files) {
         fd.append('file', file);
         fd.append('folder', fmCurrentPath);
         try {
-            const res = await fetch('/api/imagekit-upload-folder', {
+            const res = await fetch('/api/upload', {
                 method: 'POST', credentials: 'same-origin',
                 headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
                 body: fd,

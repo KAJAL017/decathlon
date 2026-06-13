@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class Brand extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, \App\Traits\HasMediaThumbnails;
 
     protected $fillable = [
         'name',
@@ -25,6 +25,13 @@ class Brand extends Model
         'status' => 'boolean',
         'sort_order' => 'integer',
     ];
+
+    protected $appends = ['thumbnail_url'];
+
+    public function getThumbnailUrlAttribute()
+    {
+        return $this->getThumbnailUrl($this->logo_url);
+    }
 
     // Relationships
     public function products()

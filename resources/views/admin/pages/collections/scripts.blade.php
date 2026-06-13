@@ -333,20 +333,48 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ImageKit integration
-function openImageKitPicker(type) {
-    if (typeof window.imageKitPicker === 'function') {
-        window.imageKitPicker((url) => {
-            if (type === 'collection') {
-                document.getElementById('collectionImageUrl').value = url;
-                document.getElementById('collectionImagePreview').innerHTML = `
-                    <img src="${url}" alt="Collection" class="w-full h-full object-cover">
-                `;
+// Local storage upload integration
+function openImagePicker(type) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        showToast('Uploading image...', 'info');
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('folder', 'collections');
+
+        fetch('/api/upload', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (type === 'collection') {
+                    document.getElementById('collectionImageUrl').value = data.url;
+                    document.getElementById('collectionImagePreview').innerHTML = `
+                        <img src="${data.url}" alt="Collection" class="w-full h-full object-cover">
+                    `;
+                }
+                showToast('Image uploaded successfully!', 'success');
+            } else {
+                showToast(data.message || 'Error uploading image', 'error');
             }
+        })
+        .catch(error => {
+            console.error('Upload error:', error);
+            showToast('Error uploading image', 'error');
         });
-    } else {
-        showToast('ImageKit picker not available', 'error');
-    }
+    };
+    input.click();
 }
 
 function removeCollectionImage() {

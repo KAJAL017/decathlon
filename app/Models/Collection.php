@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class Collection extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, \App\Traits\HasMediaThumbnails;
 
     protected $fillable = [
         'name',
@@ -35,7 +35,34 @@ class Collection extends Model
         'products_count' => 'integer',
     ];
 
-    // Relationships
+    protected $appends = ['thumbnail_url'];
+
+    public function getThumbnailUrlAttribute()
+    {
+        return $this->getThumbnailUrl($this->image_url);
+    }
+
+    // Accessors
+    public function getImageUrlAttribute($value)
+    {
+        if (!$value) return null;
+        if (str_starts_with($value, 'http')) return $value;
+        return \Illuminate\Support\Facades\Storage::disk('public')->url($value);
+    }
+    public function setImageUrlAttribute($value)
+    {
+        if ($value && str_starts_with($value, 'http')) {
+            $path = parse_url($value, PHP_URL_PATH);
+            if (str_starts_with($path, '/storage/')) {
+                $this->attributes['image_url'] = substr($path, 9); // Remove '/storage/'
+            } else {
+                $this->attributes['image_url'] = $path;
+            }
+        } else {
+            $this->attributes['image_url'] = $value;
+        }
+    }
+
     public function products()
     {
         return $this->belongsToMany(Product::class, 'collection_products')

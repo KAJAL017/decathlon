@@ -130,7 +130,6 @@
                                     <option value="price_points">Price Points Grid</option>
                                 </optgroup>
                                 <optgroup label="Content & Story">
-                                    <option value="image_with_text">Image with Text</option>
                                     <option value="rich_text">Rich Text / Content Block</option>
                                     <option value="gallery">Image Gallery Grid</option>
                                     <option value="testimonials">Testimonials Slider</option>
@@ -303,11 +302,11 @@ function updateSettingsFields(section = null) {
     const settings = section ? section.settings : {};
     
     const generateMultiSelect = (key, label, items, selectedIds = [], help = '') => {
-        const options = items.map(item => `
-            <option value="${item.id}" ${selectedIds.includes(item.id) ? 'selected' : ''}>
-                ${item.name || item.title} ${item.position ? `(${item.position})` : ''}
-            </option>
-        `).join('');
+        const options = items.map(item => {
+            let label = item.name || item.title || `Banner #${item.id}`;
+            let position = item.position ? `(${item.position})` : '';
+            return `<option value="${item.id}" ${selectedIds.includes(item.id) ? 'selected' : ''}>${label} ${position}</option>`;
+        }).join('');
 
         return `
             <div>
@@ -451,7 +450,7 @@ function updateSettingsFields(section = null) {
                     </div>
                     <div>
                         <label class="block text-[10px] font-black text-gray-600 uppercase tracking-widest mb-3">Heading</label>
-                        <input type="text" data-setting="title" value="${settings.title || ''}" class="w-full px-5 py-4 bg-white border border-gray-100 rounded-2xl text-sm font-bold">
+                        <input type="text" id="sectionTitle" data-setting="title" value="${settings.title || ''}" class="w-full px-5 py-4 bg-white border border-gray-100 rounded-2xl text-sm font-bold">
                     </div>
                     <div>
                         <label class="block text-[10px] font-black text-gray-600 uppercase tracking-widest mb-3">Body (HTML Allowed)</label>
@@ -461,28 +460,6 @@ function updateSettingsFields(section = null) {
                         <input type="text" data-setting="button_text" value="${settings.button_text || ''}" class="w-full px-5 py-4 bg-white border border-gray-100 rounded-2xl text-sm font-bold" placeholder="BTN TEXT">
                         <input type="text" data-setting="button_link" value="${settings.button_link || ''}" class="w-full px-5 py-4 bg-white border border-gray-100 rounded-2xl text-sm font-bold" placeholder="/link">
                     </div>
-                </div>`;
-            break;
-
-        case 'image_with_text':
-            html = `
-                <div class="space-y-6">
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-600 uppercase tracking-widest mb-3">Layout</label>
-                        <select data-setting="alignment" class="w-full px-5 py-4 bg-white border border-gray-100 rounded-2xl text-sm font-black">
-                            <option value="left" ${settings.alignment === 'left' ? 'selected' : ''}>Image Left, Text Right</option>
-                            <option value="right" ${settings.alignment === 'right' ? 'selected' : ''}>Image Right, Text Left</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-600 uppercase tracking-widest mb-3">Image URL</label>
-                        <input type="text" data-setting="image_url" value="${settings.image_url || ''}" class="w-full px-5 py-4 bg-white border border-gray-100 rounded-2xl text-sm font-bold">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-600 uppercase tracking-widest mb-3">Heading</label>
-                        <input type="text" data-setting="title" value="${settings.title || ''}" class="w-full px-5 py-4 bg-white border border-gray-100 rounded-2xl text-sm font-bold">
-                    </div>
-                    <textarea data-setting="content" rows="3" class="w-full px-5 py-4 bg-white border border-gray-100 rounded-2xl text-sm font-bold" placeholder="Enter story text...">${settings.content || ''}</textarea>
                 </div>`;
             break;
 

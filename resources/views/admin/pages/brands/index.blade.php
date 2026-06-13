@@ -225,12 +225,12 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Brand Logo (ImageKit)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Brand Logo</label>
                     <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-[#0082C3] transition-colors">
                         <div id="brandLogoPreview" class="hidden mb-3">
                             <img id="brandLogoPreviewImg" src="" class="w-24 h-24 object-contain mx-auto rounded-lg">
                         </div>
-                        <button type="button" onclick="openImageKit()" class="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-200 transition-colors">
+                        <button type="button" onclick="openImagePicker()" class="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-200 transition-colors">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                             </svg>
@@ -272,20 +272,7 @@
     </div>
 </div>
 
-<script src="https://unpkg.com/imagekit-javascript/dist/imagekit.min.js"></script>
 
-<script>
-@php
-    $ikPublicKey   = \App\Models\Setting::get('imagekit_public_key')   ?: config('imagekit.public_key', '');
-    $ikUrlEndpoint = \App\Models\Setting::get('imagekit_url_endpoint') ?: config('imagekit.url_endpoint', '');
-    $ikReady       = !empty($ikPublicKey) && !empty($ikUrlEndpoint);
-@endphp
-const IMAGEKIT_READY = {{ $ikReady ? 'true' : 'false' }};
-const imagekit = IMAGEKIT_READY ? new ImageKit({
-    publicKey: "{{ $ikPublicKey }}",
-    urlEndpoint: "{{ $ikUrlEndpoint }}",
-    authenticationEndpoint: "{{ parse_url(route('imagekit.auth'), PHP_URL_PATH) }}"
-}) : null;
 
 let currentPage = 1;
 let searchTimeout;
@@ -358,7 +345,7 @@ function renderBrands(brands) {
             </td>
             <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
-                    ${brand.logo_url ? `<img src="${brand.logo_url}" class="w-12 h-12 rounded-lg object-contain bg-gray-50 border border-gray-200" alt="${brand.name}">` : `<div class="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400 text-xs font-medium">${brand.name.substring(0, 2).toUpperCase()}</div>`}
+                    ${(brand.thumbnail_url || brand.logo_url) ? `<img src="${brand.thumbnail_url || brand.logo_url}" class="w-12 h-12 rounded-lg object-contain bg-gray-50 border border-gray-200" alt="${brand.name}">` : `<div class="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400 text-xs font-medium">${brand.name.substring(0, 2).toUpperCase()}</div>`}
                     <div>
                         <p class="text-sm font-medium text-gray-900">${brand.name}</p>
                         <p class="text-xs text-gray-500">${brand.slug}</p>
@@ -722,15 +709,7 @@ async function applyBulkAction() {
     });
 }
 
-async function openImageKit() {
-    if (!IMAGEKIT_READY) {
-        await Dialog.alert({
-            title: 'Configuration Required',
-            message: 'ImageKit is not configured. Please go to Integrations → ImageKit and add your credentials.',
-            type: 'warning'
-        });
-        return;
-    }
+async function openImagePicker() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
@@ -738,38 +717,35 @@ async function openImageKit() {
         const file = e.target.files[0];
         if (!file) return;
 
-        showBrandToast('Uploading image to ImageKit...', 'info');
+        showBrandToast('Uploading image...', 'info');
 
-        // Manual fetch to ensure session cookies are sent correctly
-        fetch("{{ parse_url(route('imagekit.auth'), PHP_URL_PATH) }}")
-            .then(response => response.json())
-            .then(authParams => {
-                imagekit.upload({
-                    file: file,
-                    fileName: 'brand-logo-' + Date.now(),
-                    folder: '/brands',
-                    useUniqueFileName: true,
-                    tags: ['brand', 'logo'],
-                    token: authParams.token,
-                    signature: authParams.signature,
-                    expire: authParams.expire
-                }, function(err, result) {
-                    if (err) {
-                        console.error('ImageKit upload error:', err);
-                        showBrandToast('Error uploading image: ' + (err.message || JSON.stringify(err)), 'error');
-                        return;
-                    }
-                    document.getElementById('brandLogoUrl').value = result.url;
-                    document.getElementById('brandLogoId').value = result.fileId;
-                    document.getElementById('brandLogoPreviewImg').src = result.url;
-                    document.getElementById('brandLogoPreview').classList.remove('hidden');
-                    showBrandToast('Logo uploaded successfully!', 'success');
-                });
-            })
-            .catch(error => {
-                console.error('Auth fetch error:', error);
-                showBrandToast('Failed to fetch authentication parameters', 'error');
-            });
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('folder', 'brands');
+
+        fetch('/api/upload', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('brandLogoUrl').value = data.url;
+                document.getElementById('brandLogoId').value = data.fileId;
+                document.getElementById('brandLogoPreviewImg').src = data.url;
+                document.getElementById('brandLogoPreview').classList.remove('hidden');
+                showBrandToast('Logo uploaded successfully!', 'success');
+            } else {
+                showBrandToast(data.message || 'Error uploading image', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Upload error:', error);
+            showBrandToast('Error uploading image', 'error');
+        });
     };
     input.click();
 }

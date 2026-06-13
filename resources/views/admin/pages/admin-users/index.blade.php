@@ -278,7 +278,7 @@
                     </div>
                     <div>
                         <p class="text-sm font-medium text-gray-900">Profile Photo</p>
-                        <p class="text-xs text-gray-500 mt-0.5">JPG, PNG or GIF. Max 2MB</p>
+                        <p class="text-xs text-gray-500 mt-0.5">JPG, PNG or GIF. Max {{ \App\Models\Setting::group('media')['max_upload_size'] ?? 500 }}KB</p>
                     </div>
                 </div>
 
@@ -510,9 +510,7 @@ function renderUsers(users) {
     }
 
     tbody.innerHTML = users.map(user => {
-        const profileImg = user.profile_image 
-            ? (user.profile_image.startsWith('http') ? user.profile_image : (user.profile_image.startsWith('uploads/') ? `/${user.profile_image}` : `/uploads/profiles/${user.profile_image}`))
-            : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&size=40&background=0082C3&color=fff`;
+        const profileImg = user.thumbnail_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&size=40&background=0082C3&color=fff`;
         
         const lastLogin = user.last_login 
             ? new Date(user.last_login).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
@@ -636,6 +634,12 @@ function renderPagination(pagination) {
 function previewImage(event) {
     const file = event.target.files[0];
     if (file) {
+        const maxSizeKB = {{ \App\Models\Setting::group('media')['max_upload_size'] ?? 500 }};
+        if (file.size > maxSizeKB * 1024) {
+            Dialog.alert({ title: 'File Too Large', message: `Image size should not exceed ${maxSizeKB}KB.`, type: 'danger' });
+            event.target.value = '';
+            return;
+        }
         const reader = new FileReader();
         reader.onload = function(e) {
             document.getElementById('profilePreview').src = e.target.result;

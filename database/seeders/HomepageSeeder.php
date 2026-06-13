@@ -70,19 +70,6 @@ class HomepageSeeder extends Seeder
                 'settings' => ['limit' => 2],
             ],
             [
-                'title' => 'Innovation in Sports',
-                'type' => 'image_with_text',
-                'sort_order' => 6,
-                'settings' => [
-                    'alignment' => 'left',
-                    'image_url' => 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&q=80&w=1500',
-                    'title' => 'DESIGNED FOR ATHLETES',
-                    'content' => 'Our research and development teams work tirelessly to create products that enhance your performance while ensuring maximum comfort and safety.',
-                    'button_text' => 'Our Story',
-                    'button_link' => '/about'
-                ],
-            ],
-            [
                 'title' => 'What Customers Say',
                 'type' => 'testimonials',
                 'sort_order' => 7,

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductImage extends Model
 {
+    use \App\Traits\HasMediaThumbnails;
+
     protected $fillable = [
         'product_id',
         'variant_id',
@@ -20,6 +22,13 @@ class ProductImage extends Model
         'sort_order' => 'integer',
         'is_featured' => 'boolean',
     ];
+
+    protected $appends = ['thumbnail_url'];
+
+    public function getThumbnailUrlAttribute()
+    {
+        return $this->getThumbnailUrl($this->image_url);
+    }
 
     // Relationships
     public function product()

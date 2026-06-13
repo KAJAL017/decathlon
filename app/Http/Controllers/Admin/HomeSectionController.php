@@ -14,7 +14,7 @@ class HomeSectionController extends Controller
         $data = [
             'categories' => \App\Models\Category::active()->orderBy('name')->get(['id', 'name']),
             'brands' => \App\Models\Brand::active()->orderBy('name')->get(['id', 'name']),
-            'banners' => \App\Models\Banner::active()->orderBy('title')->get(['id', 'title', 'position']),
+            'banners' => \App\Models\Banner::active()->orderBy('sort_order')->get(['id', 'image_url']),
             'promotions' => \App\Models\Promotion::active()->orderBy('name')->get(['id', 'name']),
             // For products, we only get featured/recent ones for the list to keep it performant, 
             // but in a real large app we'd use a search-based selector.

@@ -6,8 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dashboard') - Decathlon Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- ImageKit SDK -->
-    <script src="https://unpkg.com/imagekit-javascript/dist/imagekit.min.js"></script>
+
     <!-- Sortable.js for Drag & Drop -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <!-- Custom Searchable Select (Pure Vanilla JS) -->

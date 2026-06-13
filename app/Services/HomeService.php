@@ -44,7 +44,7 @@ class HomeService
                         ->orderByRaw("FIELD(id, " . implode(',', $ids) . ")")
                         ->get();
                 }
-                return $query->where('position', $settings['position'] ?? 'hero')->orderBy('sort_order')->get();
+                return $query->orderBy('sort_order')->get();
 
             case 'category_grid':
                 $query = Category::active();
@@ -88,7 +88,7 @@ class HomeService
                         ->orderByRaw("FIELD(id, " . implode(',', $ids) . ")")
                         ->get();
                 }
-                return $query->where('position', $settings['position'] ?? 'promo')->orderBy('sort_order')->get();
+                return $query->orderBy('sort_order')->get();
 
             case 'banner_grid':
                 $query = Banner::active();
@@ -98,7 +98,7 @@ class HomeService
                         ->orderByRaw("FIELD(id, " . implode(',', $ids) . ")")
                         ->get();
                 }
-                return $query->where('position', $settings['position'] ?? 'banner')->orderBy('sort_order')->limit($limit)->get();
+                return $query->orderBy('sort_order')->limit($limit)->get();
 
             case 'featured_categories':
                 $query = Category::active();
@@ -197,16 +197,6 @@ class HomeService
                     'button_text' => $settings['button_text'] ?? '',
                     'button_link' => $settings['button_link'] ?? '',
                     'alignment' => $settings['alignment'] ?? 'center',
-                ];
-
-            case 'image_with_text':
-                return [
-                    'image' => $settings['image_url'] ?? '',
-                    'title' => $settings['title'] ?? '',
-                    'text' => $settings['content'] ?? '',
-                    'button_text' => $settings['button_text'] ?? '',
-                    'button_link' => $settings['button_link'] ?? '',
-                    'alignment' => $settings['alignment'] ?? 'left', // left or right (image position)
                 ];
 
             case 'video':

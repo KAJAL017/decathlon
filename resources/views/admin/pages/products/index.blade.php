@@ -1302,8 +1302,8 @@ function renderProducts(products) {
             'service': 'bg-orange-100 text-orange-700'
         };
         
-        const imageUrl = product.featured_image?.image_url || '';
-        
+        const imageUrl = product.featured_image?.thumbnail_url || product.featured_image?.image_url || '';
+
         return `
             <tr class="hover:bg-gray-50 transition-colors">
                 <td class="px-6 py-4">
@@ -1921,7 +1921,7 @@ function deleteProduct(id, name, variantsCount) {
 }
 
 // ImageKit Integration - Multiple Images Upload with Responsive Sizes
-function openImageKitUpload() {
+function openMultipleImagePicker() {
     // Create file input element
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -1943,10 +1943,10 @@ function openImageKitUpload() {
                 continue;
             }
             
-            // Validate file size (max 10MB)
-            const maxSize = 10 * 1024 * 1024; // 10MB
-            if (file.size > maxSize) {
-                showToast(`${file.name} is too large (max 10MB)`, 'error');
+            // Validate file size
+            const maxSizeKB = {{ \App\Models\Setting::group('media')['max_upload_size'] ?? 500 }};
+            if (file.size > maxSizeKB * 1024) {
+                showToast(`${file.name} is too large (max ${maxSizeKB}KB)`, 'error');
                 continue;
             }
             
@@ -1962,7 +1962,7 @@ function openImageKitUpload() {
     fileInput.click();
 }
 
-function uploadMultipleToImageKit(files) {
+function uploadMultipleImages(files) {
     if (typeof ImageKit === 'undefined') {
         showToast('ImageKit SDK not loaded', 'error');
         return;
@@ -2070,18 +2070,12 @@ function generateResponsiveUrls(baseUrl) {
     
     const responsiveUrls = {};
     
-    for (const [sizeName, params] of Object.entries(sizes)) {
-        if (params.width && params.height) {
-            // Force WebP format for all images
-            const transformedUrl = `${baseUrl}?tr=w-${params.width},h-${params.height},q-${params.quality},f-webp,fo-auto`;
-            responsiveUrls[sizeName] = transformedUrl;
-        } else {
-            // Original also in WebP
-            responsiveUrls[sizeName] = `${baseUrl}?tr=f-webp,q-${params.quality}`;
-        }
-    }
     
+    for (const [sizeName, params] of Object.entries(sizes)) {
+        responsiveUrls[sizeName] = baseUrl; // Cloudflare will handle caching and resizing
+    }
     return responsiveUrls;
+
 }
 
 function generateResponsiveTransformations() {
@@ -2705,7 +2699,7 @@ function uploadVariantImage(variantIndex) {
         try {
             // Upload to ImageKit (you'll need to implement this)
             for (const file of files) {
-                const imageUrl = await uploadToImageKit(file);
+                const imageUrl = await uploadImageLocal(file);
                 
                 // Add image to variant
                 if (!productVariants[variantIndex].images) {
@@ -2740,7 +2734,7 @@ function removeVariantImage(variantIndex, imageIndex) {
 }
 
 // Placeholder for ImageKit upload - you'll need to implement actual ImageKit integration
-async function uploadToImageKit(file) {
+async function uploadImageLocal(file) {
     // For now, create a local URL for preview
     // In production, this should upload to ImageKit and return the URL
     return new Promise((resolve) => {
@@ -4341,7 +4335,7 @@ const _origResetForm = typeof resetForm === 'function' ? resetForm : null;
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">CSV File</label>
                 <input type="file" name="file" accept=".csv,.txt" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <p class="text-xs text-gray-500 mt-1">Maximum file size: 10MB</p>
+                <p class="text-xs text-gray-500 mt-1">Maximum file size: {{ \App\Models\Setting::group('media')['max_upload_size'] ?? 500 }}KB</p>
             </div>
             
             <div class="grid grid-cols-2 gap-4">

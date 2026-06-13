@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Validator;
 
 class BannerController extends Controller
 {
+    protected $mediaService;
+
+    public function __construct(\App\Services\MediaService $mediaService)
+    {
+        $this->mediaService = $mediaService;
+    }
+
     public function index()
     {
         return view('admin.pages.banners.index');
@@ -17,15 +24,6 @@ class BannerController extends Controller
     public function list(Request $request)
     {
         $query = Banner::query();
-
-        // Search
-        if ($request->has('search') && $request->search) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('subtitle', 'like', "%{$search}%");
-            });
-        }
 
         // Filter by status
         if ($request->filled('status')) {
@@ -51,23 +49,17 @@ class BannerController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'button_text' => 'nullable|string|max:255',
-            'button_link' => 'nullable|string|max:255',
             'image_url' => 'required|string',
             'image_id' => 'nullable|string',
-            'background_color' => 'nullable|string|max:20',
-            'accent_color' => 'nullable|string|max:20',
-            'price_text' => 'nullable|string|max:255',
-            'sort_order' => 'nullable|integer',
-            'is_active' => 'boolean',
+            'banner_link' => 'nullable|string|max:500',
+            'sort_order' => 'required|integer',
+            'is_active' => 'required|boolean',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'message' => $validator->errors()->first()
             ], 422);
         }
 
@@ -77,7 +69,7 @@ class BannerController extends Controller
         \App\Models\ActivityLog::log(
             'created',
             'banners',
-            "Created banner: {$banner->title}",
+            "Created a new banner",
             ['banner_id' => $banner->id]
         );
 
@@ -117,24 +109,23 @@ class BannerController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'button_text' => 'nullable|string|max:255',
-            'button_link' => 'nullable|string|max:255',
             'image_url' => 'required|string',
             'image_id' => 'nullable|string',
-            'background_color' => 'nullable|string|max:20',
-            'accent_color' => 'nullable|string|max:20',
-            'price_text' => 'nullable|string|max:255',
-            'sort_order' => 'nullable|integer',
-            'is_active' => 'boolean',
+            'banner_link' => 'nullable|string|max:500',
+            'sort_order' => 'required|integer',
+            'is_active' => 'required|boolean',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'message' => $validator->errors()->first()
             ], 422);
+        }
+
+        // Delete old image if changed
+        if ($banner->image_url && $request->image_url !== $banner->getRawOriginal('image_url')) {
+            $this->mediaService->delete($banner->getRawOriginal('image_url'));
         }
 
         $banner->update($request->all());
@@ -143,7 +134,7 @@ class BannerController extends Controller
         \App\Models\ActivityLog::log(
             'updated',
             'banners',
-            "Updated banner: {$banner->title}",
+            "Updated banner #{$banner->id}",
             ['banner_id' => $banner->id]
         );
 
@@ -169,9 +160,13 @@ class BannerController extends Controller
         \App\Models\ActivityLog::log(
             'deleted',
             'banners',
-            "Deleted banner: {$banner->title}",
+            "Deleted banner #{$banner->id}",
             ['banner_id' => $banner->id]
         );
+
+        if ($banner->image_url) {
+            $this->mediaService->delete($banner->getRawOriginal('image_url'));
+        }
 
         $banner->delete();
 
@@ -199,7 +194,7 @@ class BannerController extends Controller
         \App\Models\ActivityLog::log(
             'status_changed',
             'banners',
-            "Changed status of {$banner->title} to " . ($banner->is_active ? 'Active' : 'Inactive'),
+            "Changed status of banner #{$banner->id} to " . ($banner->is_active ? 'Active' : 'Inactive'),
             ['banner_id' => $banner->id, 'status' => $banner->is_active]
         );
 
@@ -245,6 +240,9 @@ class BannerController extends Controller
                     $count++;
                     break;
                 case 'delete':
+                    if ($banner->image_url) {
+                        $this->mediaService->delete($banner->getRawOriginal('image_url'));
+                    }
                     $banner->delete();
                     $count++;
                     break;
