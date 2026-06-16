@@ -60,7 +60,7 @@ class HomepageSeeder extends Seeder
                     'end_date' => now()->addDays(3)->format('Y-m-d\TH:i'),
                     'button_text' => 'Shop the Sale',
                     'button_link' => '/shop',
-                    'background_image' => 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=2000'
+                    'background_image' => 'home/countdown-bg.jpg'
                 ],
             ],
             [
@@ -88,11 +88,11 @@ class HomepageSeeder extends Seeder
                 'settings' => [
                     'username' => '@decathlon_india',
                     'images' => [
-                        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=600',
-                        'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=600',
-                        'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80&w=600',
-                        'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&q=80&w=600',
-                        'https://images.unsplash.com/photo-1517838276537-c70104047f50?auto=format&fit=crop&q=80&w=600'
+                        'home/instagram-01.jpg',
+                        'home/instagram-02.jpg',
+                        'home/instagram-03.jpg',
+                        'home/instagram-04.jpg',
+                        'home/instagram-05.jpg'
                     ]
                 ],
             ],

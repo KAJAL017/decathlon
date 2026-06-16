@@ -16,24 +16,23 @@ trait HasMediaThumbnails
     {
         if (!$path) return null;
 
-        $originalPath = $path;
+        // Reject external URLs — only local paths allowed
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return null;
+        }
 
-        // If it's already a full URL, we can't easily find a thumbnail
-        if (str_starts_with($path, 'http')) {
-            $baseUrl = Storage::disk('public')->url('');
-            // Normalize slashes
-            $normalizedBase = rtrim($baseUrl, '/');
-            if (str_starts_with($path, $normalizedBase)) {
-                $path = ltrim(substr($path, strlen($normalizedBase)), '/');
-            } else {
-                return $path; // External URL
-            }
+        // Strip leading slash and /storage/ prefix if present
+        $path = ltrim($path, '/');
+        if (str_starts_with($path, 'storage/')) {
+            $path = substr($path, 8);
         }
 
         $pathInfo = pathinfo($path);
-        
+
         // Ensure extension exists
-        if (!isset($pathInfo['extension'])) return $originalPath;
+        if (!isset($pathInfo['extension'])) {
+            return Storage::disk('public')->url($path);
+        }
 
         $thumbPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '_thumb.' . $pathInfo['extension'];
 
@@ -49,6 +48,6 @@ trait HasMediaThumbnails
             }
         }
 
-        return str_starts_with($originalPath, 'http') ? $originalPath : Storage::disk('public')->url($path);
+        return Storage::disk('public')->url($path);
     }
 }

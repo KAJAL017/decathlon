@@ -26,7 +26,7 @@ class Banner extends Model
 
     public function getThumbnailUrlAttribute()
     {
-        return $this->getThumbnailUrl($this->image_url);
+        return $this->getThumbnailUrl($this->getRawOriginal('image_url'));
     }
 
     /**
@@ -35,8 +35,15 @@ class Banner extends Model
     public function getImageUrlAttribute($value)
     {
         if (!$value) return null;
-        if (str_starts_with($value, 'http')) return $value;
-        return \Illuminate\Support\Facades\Storage::disk('public')->url($value);
+
+        // Reject external URLs
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return null;
+        }
+
+        $path = $this->normalizeImagePath($value);
+
+        return \Illuminate\Support\Facades\Storage::disk('public')->url($path);
     }
 
     /**
@@ -44,16 +51,27 @@ class Banner extends Model
      */
     public function setImageUrlAttribute($value)
     {
-        if ($value && str_starts_with($value, 'http')) {
-            $path = parse_url($value, PHP_URL_PATH);
-            if (str_starts_with($path, '/storage/')) {
-                $this->attributes['image_url'] = substr($path, 9); // Remove '/storage/'
-            } else {
-                $this->attributes['image_url'] = $path;
-            }
-        } else {
-            $this->attributes['image_url'] = $value;
+        $this->attributes['image_url'] = $this->normalizeImagePath($value);
+    }
+
+    protected function normalizeImagePath($value)
+    {
+        if (!$value) return $value;
+
+        $path = str_starts_with($value, 'http') ? parse_url($value, PHP_URL_PATH) : $value;
+        $path = str_replace('\\', '/', $path);
+
+        if (str_contains($path, '/storage/')) {
+            return ltrim(substr($path, strpos($path, '/storage/') + 9), '/');
         }
+
+        $path = ltrim($path, '/');
+
+        if (str_starts_with($path, 'storage/')) {
+            return substr($path, 8);
+        }
+
+        return $path;
     }
 
     /**

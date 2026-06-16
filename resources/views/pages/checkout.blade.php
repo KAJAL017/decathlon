@@ -3,19 +3,57 @@
 @section('title', 'Secure Checkout - Decathlon')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="w-full px-5 sm:px-10 lg:px-20 py-12">
+
+    {{-- Guest banner --}}
+    @if($isGuest)
+    <div class="bg-[#f0f5ff] border border-[#dce6fa] rounded-2xl p-4 mb-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+            <i data-lucide="user" class="w-5 h-5 text-[#1c4bbf]"></i>
+            <p class="text-sm text-[#1c4bbf] font-bold">Checking out as guest? <a href="{{ route('login') }}" class="font-black underline hover:text-[#0c246b]">Log in</a> for faster checkout and order tracking.</p>
+        </div>
+    </div>
+    @endif
+
     <h1 class="text-3xl font-black text-gray-900 uppercase tracking-tight mb-8">Secure Checkout</h1>
 
     <form id="checkout-form" action="{{ route('checkout.store') }}" method="POST">
         @csrf
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        @if($isGuest)
+        <input type="hidden" name="is_guest" value="1">
+        @endif
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-16">
             <!-- Left: Shipping & Payment -->
-            <div class="lg:col-span-2 space-y-8">
-                
-                <!-- Shipping Address -->
+            <div class="lg:col-span-3 space-y-8">
+
+                {{-- Guest Contact Info --}}
+                @if($isGuest)
                 <section class="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="w-8 h-8 bg-[#0082C3] text-white rounded-full flex items-center justify-center font-black text-sm">1</div>
+                        <h2 class="text-xl font-black text-gray-900 uppercase tracking-wide">Contact Information</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-1">Full Name</label>
+                            <input type="text" name="guest_name" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm" placeholder="John Doe">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-1">Email</label>
+                            <input type="email" name="guest_email" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm" placeholder="you@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-1">Phone</label>
+                            <input type="text" name="guest_phone" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm" placeholder="+91 98765 43210">
+                        </div>
+                    </div>
+                </section>
+                @endif
+
+                <!-- Shipping Address -->
+                <section class="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 bg-[#0082C3] text-white rounded-full flex items-center justify-center font-black text-sm">{{ $isGuest ? '2' : '1' }}</div>
                         <h2 class="text-xl font-black text-gray-900 uppercase tracking-wide">Shipping Address</h2>
                     </div>
 
@@ -35,9 +73,7 @@
                                     </div>
                                     @if($address->id == ($defaultAddress->id ?? 0))
                                         <div class="absolute top-4 right-4 text-[#0082C3]">
-                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                            </svg>
+                                            <i data-lucide="circle-check" class="w-5 h-5"></i>
                                         </div>
                                     @endif
                                 </label>
@@ -46,9 +82,7 @@
                                 <input type="radio" name="address_id" value="new" class="sr-only">
                                 <div class="flex flex-col items-center justify-center w-full py-4">
                                     <div class="w-10 h-10 bg-gray-50 text-gray-400 group-hover:bg-blue-50 group-hover:text-[#0082C3] rounded-full flex items-center justify-center transition-colors mb-2">
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                        </svg>
+                                        <i data-lucide="plus" class="w-6 h-6"></i>
                                     </div>
                                     <span class="text-sm font-bold text-gray-500 group-hover:text-[#0082C3]">Add New Address</span>
                                 </div>
@@ -58,34 +92,38 @@
                         <input type="hidden" name="address_id" value="new">
                     @endif
 
-                    <!-- New Address Form (hidden if address_id != 'new') -->
+                    <!-- New Address Form -->
                     <div id="new-address-fields" class="{{ $addresses->isNotEmpty() ? 'hidden' : '' }} space-y-4 mt-6 p-6 bg-gray-50 rounded-xl border border-gray-100">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-1">Full Name</label>
-                                <input type="text" name="new_address[full_name]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm">
+                                <input type="text" name="new_address[full_name]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm" @if($isGuest) required @endif>
                             </div>
                             <div>
                                 <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-1">Phone Number</label>
-                                <input type="text" name="new_address[phone]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm">
+                                <input type="text" name="new_address[phone]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm" @if($isGuest) required @endif>
                             </div>
                         </div>
                         <div>
                             <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-1">Address Line 1 (House No, Street)</label>
-                            <input type="text" name="new_address[address_line1]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm">
+                            <input type="text" name="new_address[address_line1]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm" @if($isGuest) required @endif>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-1">Address Line 2 (Optional)</label>
+                            <input type="text" name="new_address[address_line2]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm">
                         </div>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                             <div>
                                 <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-1">City</label>
-                                <input type="text" name="new_address[city]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm">
+                                <input type="text" name="new_address[city]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm" @if($isGuest) required @endif>
                             </div>
                             <div>
                                 <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-1">State</label>
-                                <input type="text" name="new_address[state]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm">
+                                <input type="text" name="new_address[state]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm" @if($isGuest) required @endif>
                             </div>
                             <div class="col-span-2 md:col-span-1">
                                 <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-1">Pincode</label>
-                                <input type="text" name="new_address[pincode]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm">
+                                <input type="text" name="new_address[pincode]" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-[#0082C3] focus:border-[#0082C3] text-sm" @if($isGuest) required @endif>
                             </div>
                         </div>
                     </div>
@@ -94,7 +132,7 @@
                 <!-- Payment Method -->
                 <section class="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="w-8 h-8 bg-[#0082C3] text-white rounded-full flex items-center justify-center font-black text-sm">2</div>
+                        <div class="w-8 h-8 bg-[#0082C3] text-white rounded-full flex items-center justify-center font-black text-sm">{{ $isGuest ? '3' : '2' }}</div>
                         <h2 class="text-xl font-black text-gray-900 uppercase tracking-wide">Payment Method</h2>
                     </div>
 
@@ -103,9 +141,7 @@
                             <input type="radio" name="payment_method" value="cod" class="w-4 h-4 text-[#0082C3] focus:ring-[#0082C3]" checked>
                             <div class="ml-4 flex items-center gap-3">
                                 <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                                    </svg>
+                                    <i data-lucide="banknote" class="w-6 h-6"></i>
                                 </div>
                                 <div>
                                     <span class="block text-sm font-black text-gray-900 uppercase tracking-tight">Cash on Delivery</span>
@@ -118,9 +154,7 @@
                             <input type="radio" name="payment_method" value="razorpay" class="w-4 h-4 text-[#0082C3] focus:ring-[#0082C3]">
                             <div class="ml-4 flex items-center gap-3">
                                 <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                                    </svg>
+                                    <i data-lucide="credit-card" class="w-6 h-6"></i>
                                 </div>
                                 <div>
                                     <span class="block text-sm font-black text-gray-900 uppercase tracking-tight">Online Payment</span>
@@ -134,19 +168,19 @@
             </div>
 
             <!-- Right: Order Summary -->
-            <div class="space-y-6">
+            <div class="lg:col-span-2 space-y-6">
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-lg sticky top-24">
                     <div class="p-6 border-b border-gray-100">
                         <h3 class="text-lg font-black text-gray-900 uppercase tracking-widest">Order Summary</h3>
                     </div>
-                    
+
                     <div class="p-6 space-y-4">
                         <div class="max-h-[300px] overflow-y-auto space-y-4 pr-2 scrollbar-hide">
                             @foreach($cart->items as $item)
                                 <div class="flex gap-4">
                                     <div class="w-16 h-16 bg-gray-50 rounded-lg border border-gray-100 flex-shrink-0 overflow-hidden">
                                         @php $image = $item->product->featuredImage ?? $item->product->images->first(); @endphp
-                                        <img src="{{ $image?->image_url ?? 'https://images.unsplash.com/photo-1560362614-890275988ce7?w=200' }}" alt="{{ $item->product->name }}" class="w-full h-full object-contain">
+                                        <img src="{{ $image?->image_url ?? asset('images/placeholder-product.svg') }}" alt="{{ $item->product->name }}" class="w-full h-full object-contain">
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <h4 class="text-xs font-bold text-gray-900 truncate uppercase tracking-tight">{{ $item->product->name }}</h4>
@@ -174,14 +208,9 @@
 
                         <button type="submit" id="place-order-btn" class="w-full bg-[#183a9e] hover:bg-[#0c246b] text-white py-4 rounded-xl text-sm font-black uppercase tracking-[0.2em] shadow-xl transition-all flex items-center justify-center gap-2 group">
                             <span class="btn-text">Place Order</span>
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
+                            <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                             <span class="loading-spinner hidden">
-                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
+                                <i data-lucide="loader" class="animate-spin h-5 w-5 text-white"></i>
                             </span>
                         </button>
 
@@ -189,13 +218,13 @@
                             By placing this order, you agree to Decathlon's <br>
                             <a href="#" class="underline">Terms of Use</a> and <a href="#" class="underline">Sale Conditions</a>.
                         </p>
+
+                        <div class="flex items-center justify-center gap-4 pt-4 border-t border-gray-100 grayscale opacity-50 contrast-125">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="h-4">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" class="h-3">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="h-5">
+                        </div>
                     </div>
-                </div>
-                
-                <div class="flex items-center justify-center gap-4 py-4 grayscale opacity-50 contrast-125">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="h-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" class="h-3">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="h-5">
                 </div>
             </div>
         </div>
@@ -215,13 +244,11 @@
         // Toggle New Address Fields
         addressRadios.forEach(radio => {
             radio.addEventListener('change', function() {
-                // Remove styling from all
                 document.querySelectorAll('input[name="address_id"]').forEach(r => {
                     r.closest('label').classList.remove('border-[#0082C3]', 'bg-blue-50/30');
                     r.closest('label').classList.add('border-gray-200');
                 });
-                
-                // Add styling to checked
+
                 if (this.checked) {
                     this.closest('label').classList.add('border-[#0082C3]', 'bg-blue-50/30');
                     this.closest('label').classList.remove('border-gray-200');
@@ -229,7 +256,6 @@
 
                 if (this.value === 'new') {
                     newAddressFields.classList.remove('hidden');
-                    // Scroll to fields
                     newAddressFields.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 } else {
                     newAddressFields.classList.add('hidden');
@@ -240,8 +266,7 @@
         // Handle Form Submission
         checkoutForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Disable button
+
             placeOrderBtn.disabled = true;
             btnText.classList.add('hidden');
             spinner.classList.remove('hidden');
@@ -267,7 +292,7 @@
                         position: "center",
                         backgroundColor: "#10b981",
                     }).showToast();
-                    
+
                     setTimeout(() => {
                         window.location.href = data.redirect;
                     }, 1000);
@@ -279,7 +304,7 @@
                         position: "center",
                         backgroundColor: "#ef4444",
                     }).showToast();
-                    
+
                     placeOrderBtn.disabled = false;
                     btnText.classList.remove('hidden');
                     spinner.classList.add('hidden');
@@ -294,7 +319,7 @@
                     position: "center",
                     backgroundColor: "#ef4444",
                 }).showToast();
-                
+
                 placeOrderBtn.disabled = false;
                 btnText.classList.remove('hidden');
                 spinner.classList.add('hidden');

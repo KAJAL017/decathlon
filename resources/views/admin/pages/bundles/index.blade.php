@@ -11,9 +11,7 @@
             <p class="text-sm text-gray-600 mt-1">Create and manage product bundles to increase AOV</p>
         </div>
         <button onclick="openAddBundleModal()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-all shadow-sm hover:shadow-md">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
+            <i data-lucide="plus" class="w-5 h-5"></i>
             Create Bundle
         </button>
     </div>
@@ -27,9 +25,7 @@
                     <p class="text-2xl font-bold text-gray-900 mt-1" id="totalBundles">0</p>
                 </div>
                 <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                    </svg>
+                    <i data-lucide="package" class="w-6 h-6 text-purple-600"></i>
                 </div>
             </div>
         </div>
@@ -40,9 +36,7 @@
                     <p class="text-2xl font-bold text-gray-900 mt-1" id="activeBundles">0</p>
                 </div>
                 <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                    <i data-lucide="circle-check" class="w-6 h-6 text-green-600"></i>
                 </div>
             </div>
         </div>

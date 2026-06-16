@@ -6,6 +6,7 @@ use App\Models\MediaSetting;
 use App\Models\Setting;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -44,13 +45,12 @@ class MediaService
         $settings = MediaSetting::getType($type);
         $globalSettings = Setting::group('media');
 
-        // 1. Validation (Size & Extension)
-        $maxSize = ($globalSettings['max_upload_size'] ?? 500); // Size is now in KB
+        // 1. Validation (Type & Extension)
         $allowedExts = explode(',', $globalSettings['allowed_extensions'] ?? 'jpg,jpeg,png,webp');
 
-        $file->validate([
-            'file' => "image|max:{$maxSize}|mimes:" . implode(',', $allowedExts)
-        ]);
+        Validator::make(['file' => $file], [
+            'file' => 'image|mimes:' . implode(',', $allowedExts)
+        ])->validate();
 
         // 2. Generate Filename
         $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -72,26 +72,33 @@ class MediaService
         $fullPath = $path . '/' . $filename;
 
         // 4. Image Processing (Only if driver is available)
-        if ($this->driverAvailable && ($settings->auto_optimize || $settings->format !== 'original')) {
+        $requiresProcessing = $settings->auto_optimize || $settings->format !== 'original' || ($globalSettings['strip_metadata'] ?? true);
+
+        if ($requiresProcessing && !$this->driverAvailable) {
+            throw new \RuntimeException('Image optimization is unavailable because no PHP image driver is enabled.');
+        }
+
+        if ($requiresProcessing) {
             try {
                 $image = $this->manager->read($file);
 
-                // Resize if needed
                 if ($settings->auto_optimize) {
                     $image->scaleDown($settings->max_width, $settings->max_height);
                 }
 
-                // Encode to desired format and quality
-                $encoded = $this->encodeImage($image, $settings->format, $settings->quality);
+                $encoded = $this->encodeImageToTargetSize(
+                    $image,
+                    $settings->format,
+                    $settings->quality,
+                    (int) ($globalSettings['max_upload_size'] ?? 0)
+                );
 
-                // Store processed file
                 Storage::disk('public')->put($fullPath, (string) $encoded);
             } catch (\Exception $e) {
-                \Log::error("MediaService: Image processing failed. Storing raw file. Error: " . $e->getMessage());
-                Storage::disk('public')->putFileAs($path, $file, $filename);
+                \Log::error("MediaService: Image processing failed. Error: " . $e->getMessage());
+                throw $e;
             }
         } else {
-            // No driver or no optimization needed: Just store raw
             Storage::disk('public')->putFileAs($path, $file, $filename);
         }
 
@@ -129,6 +136,25 @@ class MediaService
             default:
                 return $image->encode();
         }
+    }
+
+    protected function encodeImageToTargetSize($image, string $format, int $quality, int $targetKb)
+    {
+        $encoded = $this->encodeImage($image, $format, $quality);
+
+        if ($targetKb <= 0 || strtolower($format) === 'png') {
+            return $encoded;
+        }
+
+        $targetBytes = $targetKb * 1024;
+        $currentQuality = min(100, max(10, $quality));
+
+        while (strlen((string) $encoded) > $targetBytes && $currentQuality > 35) {
+            $currentQuality -= 10;
+            $encoded = $this->encodeImage($image, $format, $currentQuality);
+        }
+
+        return $encoded;
     }
 
     /**

@@ -22,7 +22,7 @@ class AdminAuth
         if ($adminId) {
             $user = \App\Models\User::find($adminId);
             if (!$user || !$user->is_active) {
-                session()->forget(['admin_logged_in', 'admin_id', 'admin_email', 'admin_name']);
+                session()->forget(['admin_logged_in', 'admin_id', 'admin_email', 'admin_name', 'admin_role']);
                 if ($request->expectsJson()) {
                     return response()->json(['success' => false, 'message' => 'Account deactivated.'], 401);
                 }

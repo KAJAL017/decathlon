@@ -16,10 +16,10 @@
             <!-- Navigation Buttons -->
             <div class="flex items-center gap-3">
                 <button id="testimonial-prev-{{ $section->id }}" class="w-14 h-14 rounded-full border-2 border-gray-200 flex items-center justify-center text-gray-950 hover:bg-gray-950 hover:text-white hover:border-gray-950 transition-all duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
                 </button>
                 <button id="testimonial-next-{{ $section->id }}" class="w-14 h-14 rounded-full border-2 border-gray-200 flex items-center justify-center text-gray-950 hover:bg-gray-950 hover:text-white hover:border-gray-950 transition-all duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
                 </button>
             </div>
         </div>
@@ -31,7 +31,7 @@
                         <div class="bg-white p-10 rounded-[48px] shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 h-full flex flex-col border border-gray-100">
                             <div class="flex gap-1 mb-8">
                                 @for($i=0; $i<5; $i++)
-                                    <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
                                 @endfor
                             </div>
                             <blockquote class="text-xl text-gray-800 font-medium leading-relaxed flex-1">
@@ -39,7 +39,7 @@
                             </blockquote>
                             <div class="mt-10 flex items-center gap-5">
                                 <div class="w-14 h-14 rounded-2xl bg-gray-100 overflow-hidden ring-4 ring-gray-50">
-                                    <img src="{{ $item['avatar'] ?? 'https://ui-avatars.com/api/?name='.urlencode($item['author']) }}" alt="{{ $item['author'] }}" class="w-full h-full object-cover">
+                                    <img src="{{ $item['avatar'] ?? asset('images/placeholder-avatar.svg') }}" alt="{{ $item['author'] }}" class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <div class="text-base font-black text-gray-950 uppercase tracking-widest leading-none">{{ $item['author'] }}</div>

@@ -70,7 +70,7 @@ class AdminUserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
             'role_id' => 'required|exists:roles,id',
-            'profile_image' => 'nullable|image|max:2048',
+            'profile_image' => 'nullable|image',
         ]);
 
         if ($validator->fails()) {
@@ -144,7 +144,7 @@ class AdminUserController extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|min:6',
             'role_id' => 'required|exists:roles,id',
-            'profile_image' => 'nullable|image|max:2048',
+            'profile_image' => 'nullable|image',
         ]);
 
         if ($validator->fails()) {

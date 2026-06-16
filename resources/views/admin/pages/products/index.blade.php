@@ -14,39 +14,27 @@
             <!-- Import/Export Dropdown -->
             <div class="relative" id="importExportDropdown">
                 <button onclick="toggleImportExportDropdown()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
-                    </svg>
+                    <i data-lucide="download" class="w-4 h-4"></i>
                     Import/Export
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
+                    <i data-lucide="arrow-down" class="w-4 h-4"></i>
                 </button>
                 <div id="importExportMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                     <div class="py-1">
                         <button onclick="openImportModal()" class="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                            </svg>
+                            <i data-lucide="download" class="w-4 h-4"></i>
                             Import Products
                         </button>
                         <button onclick="openExportModal()" class="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
-                            </svg>
+                            <i data-lucide="download" class="w-4 h-4"></i>
                             Export Products
                         </button>
                         <hr class="my-1">
                         <a href="/admin/products/import/template" class="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
+                            <i data-lucide="file-text" class="w-4 h-4"></i>
                             Download Template
                         </a>
                         <button onclick="openImportExportJobsModal()" class="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                            </svg>
+                            <i data-lucide="clipboard" class="w-4 h-4"></i>
                             View Jobs
                         </button>
                     </div>
@@ -54,9 +42,7 @@
             </div>
             
             <a href="{{ route('admin.products.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-all shadow-sm hover:shadow-md">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                </svg>
+                <i data-lucide="plus" class="w-5 h-5"></i>
                 Add Product
             </a>
         </div>
@@ -73,9 +59,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                    </svg>
+                    <i data-lucide="package" class="w-6 h-6 text-blue-600"></i>
                 </div>
             </div>
         </div>
@@ -88,9 +72,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                    <i data-lucide="circle-check" class="w-6 h-6 text-green-600"></i>
                 </div>
             </div>
         </div>
@@ -103,9 +85,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-yellow-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                    </svg>
+                    <i data-lucide="pencil" class="w-6 h-6 text-yellow-600"></i>
                 </div>
             </div>
         </div>
@@ -118,9 +98,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
-                    </svg>
+                    <i data-lucide="star" class="w-6 h-6 text-purple-600"></i>
                 </div>
             </div>
         </div>
@@ -133,9 +111,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                    </svg>
+                    <i data-lucide="tag" class="w-6 h-6 text-pink-600"></i>
                 </div>
             </div>
         </div>
@@ -148,9 +124,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                    </svg>
+                    <i data-lucide="trending-up" class="w-6 h-6 text-orange-600"></i>
                 </div>
             </div>
         </div>
@@ -177,9 +151,7 @@
             <!-- Search -->
             <div class="flex-1 min-w-[240px] relative group">
                 <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                    <svg class="h-4 w-4 text-gray-400 group-focus-within:text-[#0082C3] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
+                    <i data-lucide="search" class="h-4 w-4 text-gray-400 group-focus-within:text-[#0082C3] transition-colors"></i>
                 </div>
                 <input 
                     type="text" 
@@ -315,9 +287,7 @@
         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-lg font-semibold text-gray-900" id="selectorModalTitle">Select Products</h3>
             <button type="button" onclick="closeProductSelector()" class="text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
 
@@ -566,6 +536,7 @@ let variantAttributes = [];
 let relatedProducts = { related: [], upsell: [], cross_sell: [] };
 let currentRelationType = '';
 let selectedProductsForRelation = new Set();
+let isFirstLoad = true;
 
 // Collapsible sections state (stored in localStorage)
 let collapsibleState = {};
@@ -868,9 +839,7 @@ function addCustomField() {
                 <div class="flex gap-2">
                     <input type="text" placeholder="Field Value" class="custom-field-value flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
                     <button type="button" onclick="removeCustomField(${fieldId})" class="px-3 py-2 bg-red-600 text-white text-xs font-medium rounded-lg hover:bg-red-700 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                        </svg>
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
@@ -898,9 +867,7 @@ function removeCustomField(fieldId) {
     if (container.children.length === 0) {
         container.innerHTML = `
             <div class="text-center py-6 text-gray-500 text-sm border-2 border-dashed border-gray-200 rounded-lg">
-                <svg class="w-10 h-10 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
-                </svg>
+                <i data-lucide="settings" class="w-10 h-10 mx-auto mb-2 text-gray-400"></i>
                 <p class="font-medium">No custom fields added</p>
                 <p class="text-xs mt-1">Click "Add Field" to add custom metadata</p>
             </div>
@@ -1061,6 +1028,7 @@ function loadProducts(page = 1) {
             renderPagination(data.pagination);
             updateStats(data.data, data.pagination);
         }
+        if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
     })
     .catch(error => {
         console.error('Error loading products:', error);
@@ -1073,6 +1041,7 @@ function loadProducts(page = 1) {
                 </tr>
             `;
         }
+        if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
     });
 }
 
@@ -1278,9 +1247,7 @@ function renderProducts(products) {
         tbody.innerHTML = `
             <tr>
                 <td colspan="9" class="px-6 py-12 text-center">
-                    <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-                    </svg>
+                    <i data-lucide="inbox" class="w-16 h-16 mx-auto text-gray-300 mb-4"></i>
                     <p class="text-gray-500 text-sm">No products found</p>
                 </td>
             </tr>
@@ -1315,9 +1282,7 @@ function renderProducts(products) {
                             <img src="${imageUrl}" alt="${product.name}" class="w-16 h-16 object-cover rounded-lg border border-gray-200">
                         ` : `
                             <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
+                                <i data-lucide="image" class="w-8 h-8 text-gray-400"></i>
                             </div>
                         `}
                         <div>
@@ -1353,19 +1318,13 @@ function renderProducts(products) {
                 <td class="px-6 py-4">
                     <div class="flex items-center justify-end gap-2">
                         <button onclick="duplicateProduct(${product.id}, '${product.name.replace(/'/g, "\\'")}')" class="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors" title="Duplicate">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                            </svg>
+                            <i data-lucide="copy" class="w-4 h-4"></i>
                         </button>
                         <a href="/admin/products/${product.id}/edit" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                            </svg>
+                            <i data-lucide="pencil" class="w-4 h-4"></i>
                         </a>
                         <button onclick="deleteProduct(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.variants_count || 0})" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                            </svg>
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </td>
@@ -1920,159 +1879,91 @@ function deleteProduct(id, name, variantsCount) {
     );
 }
 
-// ImageKit Integration - Multiple Images Upload with Responsive Sizes
 function openMultipleImagePicker() {
-    // Create file input element
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = 'image/*';
-    fileInput.multiple = true; // Allow multiple file selection
-    
+    fileInput.multiple = true;
+
     fileInput.onchange = function(e) {
         const files = Array.from(e.target.files);
         if (files.length === 0) {
             return;
         }
-        
-        // Validate files
+
         const validFiles = [];
         for (const file of files) {
-            // Validate file type
             if (!file.type.startsWith('image/')) {
                 showToast(`${file.name} is not an image file`, 'error');
                 continue;
             }
-            
-            // Validate file size
-            const maxSizeKB = {{ \App\Models\Setting::group('media')['max_upload_size'] ?? 500 }};
-            if (file.size > maxSizeKB * 1024) {
-                showToast(`${file.name} is too large (max ${maxSizeKB}KB)`, 'error');
-                continue;
-            }
-            
+
             validFiles.push(file);
         }
-        
+
         if (validFiles.length > 0) {
-            uploadMultipleToImageKit(validFiles);
+            uploadMultipleImages(validFiles);
         }
     };
-    
-    // Trigger file selection
+
     fileInput.click();
 }
 
-function uploadMultipleImages(files) {
-    if (typeof ImageKit === 'undefined') {
-        showToast('ImageKit SDK not loaded', 'error');
-        return;
-    }
-    
+async function uploadMultipleImages(files) {
     showToast(`Uploading ${files.length} image(s)...`, 'info');
-    
+
     let uploadedCount = 0;
     let failedCount = 0;
-    
-    // Upload each file with fresh authentication
-    files.forEach((file, index) => {
-        // Get fresh authentication parameters for each file
-        fetch("{{ parse_url(route('imagekit.auth'), PHP_URL_PATH) }}")
-            .then(response => response.json())
-            .then(authParams => {
-                const imageKitConfig = {
-                    publicKey: "{{ \App\Models\Setting::get('imagekit_public_key') ?: config('imagekit.public_key', '') }}",
-                    urlEndpoint: "{{ \App\Models\Setting::get('imagekit_url_endpoint') ?: config('imagekit.url_endpoint', '') }}",
-                    authenticationEndpoint: "{{ parse_url(route('imagekit.auth'), PHP_URL_PATH) }}"
-                };
 
-                if (!imageKitConfig.publicKey || !imageKitConfig.urlEndpoint) {
-                    failedCount++;
-                    console.error('ImageKit not configured. Go to Integrations → ImageKit.');
-                    if (uploadedCount + failedCount === files.length) {
-                        finishUpload(uploadedCount, failedCount, uploadedImages);
-                    }
-                    return;
-                }
+    for (const file of files) {
+        try {
+            const result = await uploadImageLocal(file);
 
-                const imagekit = new ImageKit(imageKitConfig);
-                imagekit.upload({
-                    file: file,
-                    fileName: `product_${Date.now()}_${index}_${file.name}`,
-                    folder: '/products',
-                    useUniqueFileName: true,
-                    tags: ['product', 'responsive'],
-                    // Pass fresh authentication parameters
-                    token: authParams.token,
-                    signature: authParams.signature,
-                    expire: authParams.expire
-                }, function(err, result) {
-                    if (err) {
-                        console.error(`Upload error for file ${index + 1}:`, err);
-                        failedCount++;
-                        
-                        // Show specific error message
-                        if (err.message) {
-                            showToast(`${file.name}: ${err.message}`, 'error');
-                        }
-                    } else {
-                        // Add image with responsive URLs to productImages array
-                        productImages.push({
-                            image_url: result.url,
-                            image_id: result.fileId,
-                            alt_text: '',
-                            sort_order: productImages.length,
-                            is_featured: productImages.length === 0,
-                            responsive_urls: generateResponsiveUrls(result.url),
-                            file_name: result.name,
-                            file_size: result.size,
-                            width: result.width,
-                            height: result.height
-                        });
-                        uploadedCount++;
-                    }
-                    
-                    // Check if all uploads are complete
-                    if (uploadedCount + failedCount === files.length) {
-                        renderProductImages();
-                        initImageSortable(); // Initialize drag & drop
-                        
-                        if (uploadedCount > 0) {
-                            showToast(`${uploadedCount} image(s) uploaded successfully`, 'success');
-                        }
-                        if (failedCount > 0) {
-                            showToast(`${failedCount} image(s) failed to upload`, 'error');
-                        }
-                    }
-                });
-            })
-            .catch(error => {
-                console.error(`Auth fetch error for file ${index + 1}:`, error);
-                failedCount++;
-                
-                if (uploadedCount + failedCount === files.length) {
-                    showToast('Failed to get authentication parameters', 'error');
-                }
+            productImages.push({
+                image_url: result.url,
+                image_id: result.fileId || result.filePath || null,
+                alt_text: '',
+                sort_order: productImages.length,
+                is_featured: productImages.length === 0,
+                responsive_urls: generateResponsiveUrls(result.url),
+                file_name: file.name,
+                file_size: file.size,
+                width: null,
+                height: null
             });
-    });
+            uploadedCount++;
+        } catch (error) {
+            console.error(`Upload error for ${file.name}:`, error);
+            failedCount++;
+            showToast(`${file.name}: ${error.message || 'Upload failed'}`, 'error');
+        }
+    }
+
+    renderProductImages();
+    initImageSortable();
+
+    if (uploadedCount > 0) {
+        showToast(`${uploadedCount} image(s) uploaded successfully`, 'success');
+    }
+    if (failedCount > 0) {
+        showToast(`${failedCount} image(s) failed to upload`, 'error');
+    }
 }
 
-// Generate responsive URLs for different devices (Shopify-style)
 function generateResponsiveUrls(baseUrl) {
-    // ImageKit transformation parameters
     const sizes = {
-        thumbnail: { width: 150, height: 150, quality: 80 },      // Admin thumbnails
-        small: { width: 320, height: 320, quality: 85 },          // Mobile
-        medium: { width: 640, height: 640, quality: 85 },         // Tablet
-        large: { width: 1024, height: 1024, quality: 90 },        // Desktop
-        xlarge: { width: 1920, height: 1920, quality: 90 },       // Large screens
-        original: { width: null, height: null, quality: 95 }      // Original size
+        thumbnail: 'Admin thumbnail',
+        small: 'Mobile',
+        medium: 'Tablet',
+        large: 'Desktop',
+        xlarge: 'Large screen',
+        original: 'Original size'
     };
-    
+
     const responsiveUrls = {};
-    
-    
-    for (const [sizeName, params] of Object.entries(sizes)) {
-        responsiveUrls[sizeName] = baseUrl; // Cloudflare will handle caching and resizing
+
+    for (const sizeName of Object.keys(sizes)) {
+        responsiveUrls[sizeName] = baseUrl;
     }
     return responsiveUrls;
 
@@ -2087,7 +1978,6 @@ function generateResponsiveTransformations() {
         { name: 'xlarge', width: 1920, height: 1920 }
     ];
 }
-
 function renderProductImages() {
     const grid = document.getElementById('productImagesGrid');
     
@@ -2100,18 +1990,14 @@ function renderProductImages() {
         <div class="sortable-item relative group border-2 border-gray-200 rounded-xl overflow-hidden hover:border-[#0082C3] transition-all cursor-move bg-white shadow-sm hover:shadow-md" data-index="${index}">
             <!-- Drag Handle -->
             <div class="absolute top-2 left-2 z-10 bg-gray-900/75 text-white px-2 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
-                </svg>
+                <i data-lucide="menu" class="w-3.5 h-3.5"></i>
                 ${index + 1}
             </div>
             
             <!-- Featured Badge -->
             ${index === 0 ? `
                 <div class="absolute top-2 right-2 z-10 bg-blue-600 text-white px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1">
-                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                    </svg>
+                    <i data-lucide="star" class="w-3.5 h-3.5"></i>
                     Featured
                 </div>
             ` : ''}
@@ -2133,20 +2019,14 @@ function renderProductImages() {
                 <!-- Action Buttons -->
                 <div class="flex items-center gap-2">
                     <button type="button" onclick="setFeaturedImage(${index})" class="flex-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
-                        </svg>
+                        <i data-lucide="star" class="w-3.5 h-3.5"></i>
                         Feature
                     </button>
                     <button type="button" onclick="viewResponsiveSizes(${index})" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-lg transition-colors" title="View Responsive Sizes">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
+                        <i data-lucide="image" class="w-3.5 h-3.5"></i>
                     </button>
                     <button type="button" onclick="removeProductImage(${index})" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-lg transition-colors" title="Remove">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                        </svg>
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
             </div>
@@ -2251,9 +2131,7 @@ function viewResponsiveSizes(index) {
                 <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-gray-900">Responsive Image Sizes</h3>
                     <button onclick="closeResponsiveSizesModal()" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
+                        <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
                 </div>
                 <div class="p-6 overflow-y-auto max-h-[calc(90vh-80px)]">
@@ -2338,15 +2216,11 @@ function renderVariantAttributesSelector() {
     if (variantAttributes.length === 0) {
         container.innerHTML = `
             <div class="text-center py-6">
-                <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-                </svg>
+                <i data-lucide="inbox" class="w-12 h-12 text-gray-400 mx-auto mb-3"></i>
                 <p class="text-sm font-medium text-gray-900 mb-1">No Variant Attributes Found</p>
                 <p class="text-xs text-gray-500 mb-3">Create variant attributes (like Color, Size) first to generate product variants</p>
                 <a href="/admin/attributes" class="inline-flex items-center gap-2 px-4 py-2 bg-[#0082C3] text-white text-sm font-medium rounded-lg hover:bg-[#006ba3] transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
+                    <i data-lucide="plus" class="w-4 h-4"></i>
                     Create Attributes
                 </a>
             </div>
@@ -2555,9 +2429,7 @@ function renderVariantsList() {
                 <h5 class="text-sm font-semibold text-gray-900">${productVariants.length} Variants Generated</h5>
                 <div class="flex items-center gap-2">
                     <button type="button" onclick="regenAllVariantSkus()" class="inline-flex items-center gap-1 text-xs text-purple-600 hover:text-purple-700 font-medium border border-purple-200 px-2 py-1 rounded hover:bg-purple-50 transition-colors">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                        </svg>
+                        <i data-lucide="refresh-cw" class="w-3 h-3"></i>
                         Regen All SKUs
                     </button>
                     <button type="button" onclick="clearVariants()" class="text-xs text-red-600 hover:text-red-700">Clear All</button>
@@ -2571,9 +2443,7 @@ function renderVariantsList() {
                             <span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded">${variant.attributes.map(a => a.valueName).join(' • ')}</span>
                         </div>
                         <button type="button" onclick="removeVariant(${index})" class="text-red-600 hover:text-red-700">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
+                            <i data-lucide="x" class="w-4 h-4"></i>
                         </button>
                     </div>
                     
@@ -2587,10 +2457,7 @@ function renderVariantsList() {
                             <button type="button" title="Regenerate SKU"
                                     onclick="regenVariantSku(${index})"
                                     class="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-600 transition-colors">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                                </svg>
+                                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                             </button>
                         </div>
                         <input type="number" step="0.01" placeholder="Price (₹)" value="${variant.price}" onchange="updateVariant(${index}, 'price', this.value)" class="px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-purple-500">
@@ -2603,9 +2470,7 @@ function renderVariantsList() {
                         <div class="flex items-center justify-between mb-2">
                             <label class="text-xs font-medium text-gray-700">Variant Images</label>
                             <button type="button" onclick="uploadVariantImage(${index})" class="inline-flex items-center gap-1 px-2 py-1 bg-purple-600 text-white text-xs font-medium rounded hover:bg-purple-700 transition-colors">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                </svg>
+                                <i data-lucide="plus" class="w-3 h-3"></i>
                                 Upload Image
                             </button>
                         </div>
@@ -2615,9 +2480,7 @@ function renderVariantsList() {
                                     <div class="relative group">
                                         <img src="${img.image_url}" alt="Variant image" class="w-full h-20 object-cover rounded border border-gray-200">
                                         <button type="button" onclick="removeVariantImage(${index}, ${imgIndex})" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                            </svg>
+                                            <i data-lucide="x" class="w-3 h-3"></i>
                                         </button>
                                     </div>
                                 `).join('') 
@@ -2684,44 +2547,41 @@ function regenAllVariantSkus() {
 
 // Variant Image Functions
 function uploadVariantImage(variantIndex) {
-    // Create hidden file input
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
     input.multiple = true;
-    
+
     input.onchange = async (e) => {
         const files = Array.from(e.target.files);
         if (files.length === 0) return;
-        
+
         showToast('Uploading images...', 'info');
-        
+
         try {
-            // Upload to ImageKit (you'll need to implement this)
             for (const file of files) {
-                const imageUrl = await uploadImageLocal(file);
-                
-                // Add image to variant
+                const result = await uploadImageLocal(file);
+
                 if (!productVariants[variantIndex].images) {
                     productVariants[variantIndex].images = [];
                 }
-                
+
                 productVariants[variantIndex].images.push({
-                    image_url: imageUrl,
-                    image_id: null, // Will be set after ImageKit upload
+                    image_url: result.url,
+                    image_id: result.fileId || result.filePath || null,
                     alt_text: productVariants[variantIndex].name,
                     sort_order: productVariants[variantIndex].images.length
                 });
             }
-            
+
             renderVariantsList();
             showToast(`${files.length} image(s) uploaded successfully`, 'success');
         } catch (error) {
             console.error('Image upload error:', error);
-            showToast('Failed to upload images', 'error');
+            showToast(error.message || 'Failed to upload images', 'error');
         }
     };
-    
+
     input.click();
 }
 
@@ -2733,18 +2593,28 @@ function removeVariantImage(variantIndex, imageIndex) {
     }
 }
 
-// Placeholder for ImageKit upload - you'll need to implement actual ImageKit integration
 async function uploadImageLocal(file) {
-    // For now, create a local URL for preview
-    // In production, this should upload to ImageKit and return the URL
-    return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            resolve(e.target.result);
-        };
-        reader.readAsDataURL(file);
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', 'products');
+    formData.append('folder', 'products');
+
+    const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'application/json'
+        },
+        body: formData
     });
-    // return data.url;
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Upload failed');
+    }
+
+    return data;
 }
 
 
@@ -2875,9 +2745,7 @@ function showConfirmDialog(title, message, onConfirm) {
         <div class="dlg-box relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6">
             <div class="flex flex-col items-center text-center gap-3 mb-5">
                 <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center">
-                    <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                    </svg>
+                    <i data-lucide="trash-2" class="w-7 h-7 text-red-500"></i>
                 </div>
                 <div>
                     <h3 class="text-base font-semibold text-gray-900">${title}</h3>
@@ -3048,9 +2916,7 @@ function renderRelatedProducts() {
                             <p class="text-xs text-gray-500">${product.brand?.name || 'No Brand'}</p>
                         </div>
                         <button type="button" onclick="removeRelatedProduct('${type}', ${product.id})" class="text-red-600 hover:text-red-800">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
+                            <i data-lucide="x" class="w-4 h-4"></i>
                         </button>
                     </div>
                 `;
@@ -3134,9 +3000,7 @@ function renderVideosList() {
     if (productVideos.length === 0) {
         container.innerHTML = `
             <div class="text-center py-8 text-gray-500 text-sm">
-                <svg class="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                </svg>
+                <i data-lucide="video" class="w-12 h-12 mx-auto mb-2 text-gray-400"></i>
                 No videos added yet
             </div>
         `;
@@ -3149,10 +3013,7 @@ function renderVideosList() {
                 ${video.thumbnail_url 
                     ? `<img src="${video.thumbnail_url}" alt="${video.title}" class="w-full h-full object-cover">`
                     : `<div class="w-full h-full flex items-center justify-center">
-                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+                        <i data-lucide="info" class="w-8 h-8 text-gray-400"></i>
                     </div>`
                 }
             </div>
@@ -3173,16 +3034,12 @@ function renderVideosList() {
             <div class="flex items-center gap-2">
                 ${!video.is_featured 
                     ? `<button type="button" onclick="setFeaturedVideo(${index})" class="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors" title="Set as Featured">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
-                        </svg>
+                        <i data-lucide="star" class="w-4 h-4"></i>
                     </button>`
                     : ''
                 }
                 <button type="button" onclick="removeVideo(${index})" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Remove">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                    </svg>
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
                 </button>
             </div>
         </div>
@@ -3236,9 +3093,7 @@ function renderFaqsList() {
     if (productFaqs.length === 0) {
         container.innerHTML = `
             <div class="text-center py-8 text-gray-500 text-sm">
-                <svg class="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
+                <i data-lucide="help-circle" class="w-12 h-12 mx-auto mb-2 text-gray-400"></i>
                 No FAQs added yet
             </div>
         `;
@@ -3266,29 +3121,21 @@ function renderFaqsList() {
                     <div class="flex items-center gap-2 flex-shrink-0">
                         ${index > 0 
                             ? `<button type="button" onclick="moveFaqUp(${index})" class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" title="Move Up">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-                                </svg>
+                                <i data-lucide="arrow-up" class="w-4 h-4"></i>
                             </button>`
                             : ''
                         }
                         ${index < productFaqs.length - 1 
                             ? `<button type="button" onclick="moveFaqDown(${index})" class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" title="Move Down">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
+                                <i data-lucide="arrow-down" class="w-4 h-4"></i>
                             </button>`
                             : ''
                         }
                         <button type="button" onclick="editFaq(${index})" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                            </svg>
+                            <i data-lucide="pencil" class="w-4 h-4"></i>
                         </button>
                         <button type="button" onclick="removeFaq(${index})" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Remove">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                            </svg>
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
@@ -3528,9 +3375,7 @@ function renderImportExportJobs(jobs) {
     if (jobs.length === 0) {
         container.innerHTML = `
             <div class="text-center py-8 text-gray-500">
-                <svg class="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                </svg>
+                <i data-lucide="clipboard" class="w-12 h-12 mx-auto mb-2 text-gray-400"></i>
                 No import/export jobs found
             </div>
         `;
@@ -3611,9 +3456,7 @@ function showNotification(message, type = 'success') {
         </svg>
         <span class="font-medium">${message}</span>
         <button onclick="this.parentElement.remove()" class="ml-2 hover:bg-white/20 rounded p-1 transition-colors">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
+            <i data-lucide="x" class="w-4 h-4"></i>
         </button>
     `;
     
@@ -4185,11 +4028,7 @@ function _renderProductAttrs() {
     if (_productAttrs.length === 0) {
         container.innerHTML = `
             <div class="text-center py-6 text-gray-500 text-sm border-2 border-dashed border-gray-200 rounded-lg">
-                <svg class="w-8 h-8 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2
-                             M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                </svg>
+                <i data-lucide="clipboard" class="w-8 h-8 mx-auto mb-2 text-gray-300"></i>
                 <p class="font-medium text-gray-400">No attributes added yet</p>
                 <p class="text-xs mt-1 text-gray-400">Click "Add Attribute" above to add product specs</p>
             </div>`;
@@ -4207,9 +4046,7 @@ function _renderProductAttrs() {
             </div>
             <button type="button" onclick="removeProductAttr(${i})"
                     class="text-red-400 hover:text-red-600 transition-colors ml-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+                <i data-lucide="x" class="w-4 h-4"></i>
             </button>
         </div>`).join('');
 }
@@ -4236,18 +4073,13 @@ const _origResetForm = typeof resetForm === 'function' ? resetForm : null;
         <!-- Header -->
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
             <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2
-                             M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3"/>
+                <i data-lucide="clipboard" class="w-5 h-5 text-green-600"></i>
                 </svg>
                 <h3 class="text-base font-semibold text-gray-900">Add Product Attribute</h3>
             </div>
             <button type="button" onclick="closeAddAttributeModal()"
                     class="text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
 
@@ -4325,9 +4157,7 @@ const _origResetForm = typeof resetForm === 'function' ? resetForm : null;
         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-lg font-semibold text-gray-900">Import Products</h3>
             <button onclick="closeImportModal()" class="text-gray-400 hover:text-gray-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
         
@@ -4335,7 +4165,7 @@ const _origResetForm = typeof resetForm === 'function' ? resetForm : null;
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">CSV File</label>
                 <input type="file" name="file" accept=".csv,.txt" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <p class="text-xs text-gray-500 mt-1">Maximum file size: {{ \App\Models\Setting::group('media')['max_upload_size'] ?? 500 }}KB</p>
+                <p class="text-xs text-gray-500 mt-1">CSV or TXT import file.</p>
             </div>
             
             <div class="grid grid-cols-2 gap-4">
@@ -4404,9 +4234,7 @@ const _origResetForm = typeof resetForm === 'function' ? resetForm : null;
         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-lg font-semibold text-gray-900">Export Products</h3>
             <button onclick="closeExportModal()" class="text-gray-400 hover:text-gray-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
         
@@ -4455,9 +4283,7 @@ const _origResetForm = typeof resetForm === 'function' ? resetForm : null;
         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-lg font-semibold text-gray-900">Import/Export Jobs</h3>
             <button onclick="closeJobsModal()" class="text-gray-400 hover:text-gray-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
         

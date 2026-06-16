@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Decathlon - Sports Equipment & Sportswear')</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -54,6 +55,22 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        /* Cart Count Bounce */
+        .cart-bounce {
+            animation: cartBounce 0.4s ease;
+        }
+        @keyframes cartBounce {
+            0%   { transform: scale(1); }
+            30%  { transform: scale(1.35); }
+            60%  { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        /* Cart Button Spinner */
+        @keyframes cartSpin {
+            to { transform: rotate(360deg); }
         }
 
         /* Toast Overrides */
@@ -204,26 +221,20 @@
     <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 px-2 py-2 flex justify-between items-center safe-area-bottom">
         <!-- Home (Active) -->
         <a href="{{ route('home') }}" class="flex flex-col items-center gap-1 w-[20%] text-[#0082C3]">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M11.47 3.841a.75.75 0 011.06 0l8.99 8.99a.75.75 0 11-1.06 1.06L20 13.43V21a1 1 0 01-1 1h-4.5a1 1 0 01-1-1v-4.5h-3V21a1 1 0 01-1 1H4a1 1 0 01-1-1v-7.57l-.46.46a.75.75 0 01-1.06-1.06l8.99-8.99z" />
-            </svg>
+            <i data-lucide="house" class="w-6 h-6"></i>
             <span class="text-[10px] font-semibold">Home</span>
         </a>
 
         <!-- Categories -->
         <a href="{{ route('categories') }}" class="flex flex-col items-center gap-1 w-[20%] text-gray-500 hover:text-[#0082C3] transition-colors">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
-            </svg>
+            <i data-lucide="layout-grid" class="w-6 h-6"></i>
             <span class="text-[10px] font-semibold">Categories</span>
         </a>
 
         <!-- Search -->
         <a href="javascript:void(0)" onclick="openSearchOverlay()" class="flex flex-col items-center justify-center w-[20%] -mt-6">
             <div class="bg-[#0082C3] text-white p-3 rounded-full shadow-lg border-4 border-gray-100 flex items-center justify-center relative">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
+                <i data-lucide="search" class="w-6 h-6"></i>
             </div>
             <span class="text-[10px] font-semibold text-gray-500 mt-1">Search</span>
         </a>
@@ -231,20 +242,22 @@
         <!-- Cart -->
         <a href="{{ route('cart') }}" class="flex flex-col items-center gap-1 w-[20%] text-gray-500 hover:text-[#0082C3] transition-colors relative">
             <span class="cart-count absolute top-0 right-2 bg-[#F7C844] text-gray-900 text-[9px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-white hidden">0</span>
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-            </svg>
+            <i data-lucide="shopping-cart" class="w-6 h-6"></i>
             <span class="text-[10px] font-semibold">Cart</span>
         </a>
 
         <!-- Account -->
         <a href="#" class="flex flex-col items-center gap-1 w-[20%] text-gray-500 hover:text-[#0082C3] transition-colors relative">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-            </svg>
+            <i data-lucide="user" class="w-6 h-6"></i>
             <span class="text-[10px] font-semibold text-center leading-tight mt-0.5">Account</span>
         </a>
     </nav>
+<script>
+    window.initLucideIcons = function() {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
+    document.addEventListener('DOMContentLoaded', window.initLucideIcons);
+</script>
 </body>
 
 </html>

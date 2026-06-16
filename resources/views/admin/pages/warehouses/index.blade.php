@@ -12,9 +12,7 @@
         </div>
         <button onclick="openAdd()"
                 class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-colors shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
+            <i data-lucide="plus" class="w-4 h-4"></i>
             Add Warehouse
         </button>
     </div>
@@ -22,16 +20,14 @@
     {{-- Stats --}}
     <div class="grid grid-cols-4 gap-4">
         @foreach([
-            ['id'=>'statTotal',   'label'=>'Total',    'color'=>'blue',   'icon'=>'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'],
-            ['id'=>'statActive',  'label'=>'Active',   'color'=>'green',  'icon'=>'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
-            ['id'=>'statDefault', 'label'=>'Default',  'color'=>'purple', 'icon'=>'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z'],
-            ['id'=>'statReturns', 'label'=>'Accepts Returns', 'color'=>'yellow', 'icon'=>'M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6'],
+            ['id'=>'statTotal',   'label'=>'Total',    'color'=>'blue',   'icon'=>'warehouse'],
+            ['id'=>'statActive',  'label'=>'Active',   'color'=>'green',  'icon'=>'circle-check'],
+            ['id'=>'statDefault', 'label'=>'Default',  'color'=>'purple', 'icon'=>'star'],
+            ['id'=>'statReturns', 'label'=>'Accepts Returns', 'color'=>'yellow', 'icon'=>'rotate-ccw'],
         ] as $s)
         <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-{{ $s['color'] }}-50 flex items-center justify-center flex-shrink-0">
-                <svg class="w-5 h-5 text-{{ $s['color'] }}-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $s['icon'] }}"/>
-                </svg>
+                <i data-lucide="{{ $s['icon'] }}" class="w-5 h-5 text-{{ $s['color'] }}-600"></i>
             </div>
             <div>
                 <p class="text-xs text-gray-500">{{ $s['label'] }}</p>
@@ -44,9 +40,7 @@
     {{-- Filters --}}
     <div class="bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap gap-3 items-center">
         <div class="relative flex-1 min-w-[220px]">
-            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
+            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
             <input id="fSearch" type="text" placeholder="Search warehouses…"
                    class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
                    oninput="debounceLoad()">
@@ -125,9 +119,7 @@
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
             <h3 id="modalTitle" class="text-lg font-semibold text-gray-900">Add Warehouse</h3>
             <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
 
@@ -273,6 +265,7 @@
 const CSRF = document.querySelector('meta[name="csrf-token"]').content;
 const BASE  = '/admin/warehouses';
 let searchTimer, checkedIds = new Set(), allRows = [];
+let isFirstLoad = true;
 
 // ── API ──────────────────────────────────────────────────────────
 async function api(url, method = 'GET', body = null) {
@@ -342,6 +335,7 @@ async function loadWarehouses(page = 1) {
     renderTable(data.data);
     renderPagination(data.pagination, page);
     renderStats(data.data, data.pagination.total);
+    if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
 }
 
 const TYPE_COLORS = { main: 'bg-blue-100 text-blue-700', regional: 'bg-green-100 text-green-700', dropship: 'bg-purple-100 text-purple-700', virtual: 'bg-gray-100 text-gray-600' };
@@ -362,9 +356,7 @@ function renderTable(rows) {
             <td class="px-5 py-3.5">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                        </svg>
+                        <i data-lucide="warehouse" class="w-5 h-5 text-blue-600"></i>
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
@@ -398,13 +390,13 @@ function renderTable(rows) {
             <td class="px-5 py-3.5">
                 <div class="flex items-center justify-end gap-1">
                     ${!w.is_default ? `<button onclick="setDefault(${w.id}, '${w.name.replace(/'/g,"&#39;")}')" class="p-2 rounded-lg text-gray-500 hover:text-yellow-600 hover:bg-yellow-50 transition-colors" title="Set as Default">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                        <i data-lucide="star" class="w-4 h-4"></i>
                     </button>` : ''}
                     <button onclick="openEdit(${w.id})" class="p-2 rounded-lg text-gray-500 hover:text-[#0082C3] hover:bg-blue-50 transition-colors" title="Edit">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
                     </button>
                     <button onclick="del(${w.id}, '${w.name.replace(/'/g,"&#39;")}')" class="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors" title="Delete">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
             </td>

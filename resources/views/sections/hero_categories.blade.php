@@ -3,7 +3,7 @@
         @foreach($data as $category)
         <a href="{{ route('shop') }}?category={{ $category->slug }}" class="group flex flex-col w-full">
             <div class="w-full aspect-square rounded-t-xl overflow-hidden bg-white shadow-sm group-hover:shadow-md transition-shadow">
-                <img src="{{ $category->image_url ?? 'https://images.unsplash.com/photo-1551524559-8af4e6624178?w=500&auto=format&fit=crop&q=60' }}"
+                <img src="{{ $category->image_url ?? asset('images/placeholder-category.svg') }}"
                     alt="{{ $category->name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
             </div>
             <div class="w-full bg-[#333333] py-2.5 rounded-b-xl flex items-center justify-center group-hover:bg-[#0082C3] transition-colors duration-300">

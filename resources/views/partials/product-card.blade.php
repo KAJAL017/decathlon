@@ -1,6 +1,6 @@
 @php
     $featuredImage = $product->featuredImage ?? $product->images->first();
-    $imageUrl = $featuredImage?->image_url ?? ($featuredImage?->path ?? 'https://images.unsplash.com/photo-1560362614-890275988ce7?w=400&auto=format&fit=crop&q=80');
+    $imageUrl = $featuredImage?->image_url ?? asset('images/placeholder-product.svg');
     $variant = $product->variants->first();
     $price = $variant?->price ?? 0;
     $comparePrice = $variant?->compare_price;
@@ -19,13 +19,11 @@
         @endif
         
         <button class="absolute top-2 right-2 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50 z-10">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gray-600">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-            </svg>
+            <i data-lucide="heart" class="w-4 h-4 text-gray-600"></i>
         </button>
         
         <a href="{{ route('product', $product->slug) }}" class="block overflow-hidden">
-            <img src="{{ $imageUrl }}" alt="{{ $product->name }}" class="w-full h-[160px] md:h-[250px] object-cover group-hover:scale-105 transition-transform duration-500">
+            <img src="{{ $imageUrl }}" alt="{{ $product->name }}" loading="lazy" class="w-full h-[160px] md:h-[250px] object-cover group-hover:scale-105 transition-transform duration-500">
         </a>
     </div>
     <div class="p-2">
@@ -58,7 +56,7 @@
                     ADD TO CART
                 </button>
             @else
-                <button class="add-to-cart-btn w-full border border-gray-900 text-gray-900 text-[11px] font-bold py-1.5 rounded hover:bg-gray-900 hover:text-white transition-colors"
+                <button type="button" class="add-to-cart-btn w-full border border-gray-900 text-gray-900 text-[11px] font-bold py-1.5 rounded hover:bg-gray-900 hover:text-white transition-colors"
                         data-product-id="{{ $product->id }}"
                         data-variant-id="{{ $vId }}">
                     ADD TO CART

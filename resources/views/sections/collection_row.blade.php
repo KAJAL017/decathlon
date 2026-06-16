@@ -15,8 +15,8 @@
                     <h3 class="text-3xl font-black text-white uppercase tracking-tighter mb-4">{{ $col->name }}</h3>
                     <p class="text-white/70 text-sm font-medium mb-6 line-clamp-2">{{ $col->description }}</p>
                     <a href="{{ route('shop', ['collection' => $col->slug]) }}" class="inline-flex items-center gap-3 px-8 py-3 bg-white text-gray-950 text-[10px] font-black uppercase tracking-[0.2em] rounded-full hover:bg-[#0082C3] hover:text-white transition-all shadow-xl">
-                        Explore Collection
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        {{ $section->settings['cta_text'] ?? 'Explore Collection' }}
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </a>
                 </div>
             </div>
@@ -24,7 +24,7 @@
             <!-- Product Grid -->
             <div class="w-full lg:w-2/3 grid grid-cols-2 gap-6">
                 @foreach($prods as $product)
-                    <x-frontend.product-card :product="$product" />
+                    @include('partials.product-card', ['product' => $product])
                 @endforeach
             </div>
         </div>

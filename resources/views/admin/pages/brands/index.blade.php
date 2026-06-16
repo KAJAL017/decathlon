@@ -11,9 +11,7 @@
             <p class="text-sm text-gray-600 mt-1">Manage product brands and manufacturers</p>
         </div>
         <button onclick="openAddModal()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-all shadow-sm hover:shadow-md">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
+            <i data-lucide="plus" class="w-5 h-5"></i>
             Add Brand
         </button>
     </div>
@@ -29,9 +27,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                    </svg>
+                    <i data-lucide="tag" class="w-6 h-6 text-blue-600"></i>
                 </div>
             </div>
         </div>
@@ -44,9 +40,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                    <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
                 </div>
             </div>
         </div>
@@ -59,9 +53,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
-                    </svg>
+                    <i data-lucide="x-circle" class="w-6 h-6 text-red-600"></i>
                 </div>
             </div>
         </div>
@@ -74,9 +66,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                    </svg>
+                    <i data-lucide="package" class="w-6 h-6 text-purple-600"></i>
                 </div>
             </div>
         </div>
@@ -98,9 +88,7 @@
                 <span id="selectedCount" class="text-sm text-gray-600 ml-2"></span>
             </div>
             <div class="flex-1 relative">
-                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
                 <input 
                     type="text" 
                     id="searchInput"
@@ -187,15 +175,11 @@
             </div>
             <div class="flex items-center gap-2">
                 <button type="button" onclick="fillDemoData()" class="px-3 py-1.5 text-xs font-medium text-purple-600 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
-                    <svg class="w-3.5 h-3.5 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
+                    <i data-lucide="zap" class="w-3.5 h-3.5 inline-block mr-1"></i>
                     Demo
                 </button>
                 <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
+                    <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
         </div>
@@ -231,9 +215,7 @@
                             <img id="brandLogoPreviewImg" src="" class="w-24 h-24 object-contain mx-auto rounded-lg">
                         </div>
                         <button type="button" onclick="openImagePicker()" class="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-200 transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                            </svg>
+                            <i data-lucide="upload" class="w-4 h-4"></i>
                             Upload Logo
                         </button>
                         <p class="text-xs text-gray-500 mt-2">Recommended: 200x200px</p>
@@ -262,10 +244,7 @@
                 Cancel
             </button>
             <button type="button" id="saveBrandBtn" onclick="saveBrand()" class="px-4 py-2.5 text-sm font-medium text-white bg-[#0082C3] rounded-lg hover:bg-[#006ba3] transition-colors inline-flex items-center gap-2">
-                <svg id="saveBtnLoader" class="hidden animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
+                <i id="saveBtnLoader" data-lucide="loader" class="hidden animate-spin h-4 w-4 text-white"></i>
                 <span id="submitBtnText">Create Brand</span>
             </button>
         </div>
@@ -277,6 +256,7 @@
 let currentPage = 1;
 let searchTimeout;
 let selectedBrands = new Set();
+let isFirstLoad = true;
 
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('searchInput') && document.getElementById('brandsTableBody')) {
@@ -318,10 +298,12 @@ function loadBrands(page = 1) {
             renderPagination(data.pagination);
             updateStats(data.data, data.pagination);
         }
+        if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
     })
     .catch(error => {
         console.error('Error loading brands:', error);
         tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-red-600">Error loading brands. Please refresh the page.</td></tr>`;
+        if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
     });
 }
 
@@ -369,14 +351,10 @@ function renderBrands(brands) {
             <td class="px-6 py-4">
                 <div class="flex items-center justify-end gap-2">
                     <button onclick="editBrand(${brand.id})" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                        </svg>
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
                     </button>
                     <button onclick="deleteBrand(${brand.id})" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                        </svg>
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
             </td>
@@ -441,35 +419,35 @@ function fillDemoData() {
             slug: 'nike',
             description: 'Just Do It - Leading athletic footwear and apparel brand',
             website: 'https://www.nike.com',
-            logo: 'https://ik.imagekit.io/demo/nike-logo.png'
+            logo: '/storage/uploads/brands/demo-nike-logo.png'
         },
         {
             name: 'Adidas',
             slug: 'adidas',
             description: 'Impossible is Nothing - German multinational sports brand',
             website: 'https://www.adidas.com',
-            logo: 'https://ik.imagekit.io/demo/adidas-logo.png'
+            logo: '/storage/uploads/brands/demo-adidas-logo.png'
         },
         {
             name: 'Apple',
             slug: 'apple',
             description: 'Think Different - Premium technology and electronics brand',
             website: 'https://www.apple.com',
-            logo: 'https://ik.imagekit.io/demo/apple-logo.png'
+            logo: '/storage/uploads/brands/demo-apple-logo.png'
         },
         {
             name: 'Samsung',
             slug: 'samsung',
             description: 'Do What You Can\'t - South Korean electronics giant',
             website: 'https://www.samsung.com',
-            logo: 'https://ik.imagekit.io/demo/samsung-logo.png'
+            logo: '/storage/uploads/brands/demo-samsung-logo.png'
         },
         {
             name: 'Sony',
             slug: 'sony',
             description: 'Be Moved - Japanese electronics and entertainment brand',
             website: 'https://www.sony.com',
-            logo: 'https://ik.imagekit.io/demo/sony-logo.png'
+            logo: '/storage/uploads/brands/demo-sony-logo.png'
         }
     ];
     

@@ -20,7 +20,7 @@
                 <div class="pt-4">
                     <a href="{{ $d['button_link'] }}" class="inline-flex items-center gap-3 px-10 py-4 bg-gray-950 text-white text-xs font-black uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-gray-200 hover:bg-[#0082C3] hover:scale-105 active:scale-95 transition-all duration-300 group">
                         {{ $d['button_text'] }}
-                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
             @endif

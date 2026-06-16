@@ -127,7 +127,7 @@ class CartController extends Controller
                     'price'         => number_format($item->variant?->price ?? 0, 2),
                     'quantity'      => $item->quantity,
                     'subtotal'      => number_format($item->subtotal ?? 0, 2),
-                    'image'         => $featuredImage?->image_url ?? 'https://images.unsplash.com/photo-1560362614-890275988ce7?w=400',
+                    'image'         => $featuredImage?->image_url ?? asset('images/placeholder-product.svg'),
                     'slug'          => $item->product->slug
                 ];
             }),

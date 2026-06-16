@@ -19,7 +19,7 @@
                             {{ $d['button_text'] }}
                         </button>
                     </div>
-                    <p class="mt-4 text-[11px] text-white/40 font-medium uppercase tracking-widest">No spam, only pure sports energy.</p>
+                    <p class="mt-4 text-[11px] text-white/40 font-medium uppercase tracking-widest">{{ $d['disclaimer'] ?? 'No spam, only pure sports energy.' }}</p>
                 </form>
             </div>
 

@@ -57,8 +57,8 @@
 
                         <div class="mt-6">
                             <a href="{{ route('shop', ['promotion' => $promotion->slug]) }}" class="inline-flex items-center gap-2 px-6 py-3 bg-gray-950 text-white text-xs font-black uppercase tracking-[0.2em] rounded-xl hover:bg-[#0082C3] transition-all">
-                                Shop Now
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                                {{ $section->settings['cta_text'] ?? 'Shop Now' }}
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
                             </a>
                         </div>
                     </div>

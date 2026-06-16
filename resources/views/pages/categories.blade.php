@@ -14,7 +14,7 @@
             @foreach($categories as $category)
             <a href="{{ route('shop') }}?category={{ $category->slug }}" class="flex-shrink-0 w-24 md:w-28 flex flex-col items-center snap-start group cursor-pointer">
                 <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden relative shadow-md border border-gray-200/50 flex items-center justify-center bg-gray-100">
-                    <img src="{{ $category->image_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($category->name) }}" alt="{{ $category->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    <img src="{{ $category->image_url ?? asset('images/placeholder-category.svg') }}" alt="{{ $category->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black/45 group-hover:bg-black/35 transition-colors flex items-center justify-center">
                         <span class="text-white text-[10px] md:text-xs font-black tracking-widest text-center px-1 uppercase">{{ $category->name }}</span>
                     </div>
@@ -47,13 +47,13 @@
             <div class="relative flex items-end justify-center w-full lg:w-[45%] h-64 lg:h-72 z-10 mt-6 lg:mt-0">
                 <!-- Stacked Backpack cutouts (Unsplash) -->
                 <div class="absolute bottom-0 left-[5%] md:left-[15%] w-24 md:w-32 hover:scale-105 transition-transform duration-300 rotate-[-12deg] z-0 origin-bottom">
-                    <img src="https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=300&auto=format&fit=crop&q=80" alt="Roll mat" class="w-full h-auto drop-shadow-lg rounded-md">
+                    <img src="{{ asset('images/placeholder-product.svg') }}" alt="Roll mat" class="w-full h-auto drop-shadow-lg rounded-md">
                 </div>
                 <div class="absolute bottom-0 left-[35%] md:left-[40%] w-32 md:w-44 hover:scale-105 transition-transform duration-300 translate-y-1 z-20 origin-bottom">
-                    <img src="https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=300&auto=format&fit=crop&q=80" alt="Orange backpack" class="w-full h-auto drop-shadow-xl rounded-md">
+                    <img src="{{ asset('images/placeholder-product.svg') }}" alt="Orange backpack" class="w-full h-auto drop-shadow-xl rounded-md">
                 </div>
                 <div class="absolute bottom-0 right-[5%] md:right-[15%] w-28 md:w-36 hover:scale-105 transition-transform duration-300 rotate-[8deg] z-10 origin-bottom">
-                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&auto=format&fit=crop&q=80" alt="Black backpack" class="w-full h-auto drop-shadow-lg rounded-md">
+                    <img src="{{ asset('images/placeholder-product.svg') }}" alt="Black backpack" class="w-full h-auto drop-shadow-lg rounded-md">
                 </div>
             </div>
             
@@ -75,7 +75,7 @@
                     <span class="text-gray-900 font-extrabold text-sm md:text-base leading-tight">{{ $cat->name }}</span>
                 </div>
                 <div class="w-28 h-28 md:w-40 md:h-40 flex items-center justify-center mb-6">
-                    <img src="{{ $cat->image_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($cat->name) }}" alt="{{ $cat->name }}" class="max-w-full max-h-full object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300">
+                    <img src="{{ $cat->image_url ?? asset('images/placeholder-product.svg') }}" alt="{{ $cat->name }}" class="max-w-full max-h-full object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300">
                 </div>
                 <a href="{{ route('shop') }}?category={{ $cat->slug }}" class="bg-[#1b4cbf] hover:bg-[#123696] text-white text-[9px] md:text-[10px] font-black px-6 py-2 rounded-full uppercase tracking-wider shadow-sm transition-colors mt-auto w-full md:w-auto">
                     Shop Now
@@ -94,9 +94,7 @@
             </div>
             
             <div class="flex items-center gap-2 border border-white/20 rounded-lg px-3 py-1.5 bg-white/5">
-                <svg class="w-6 h-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 2a1 1 0 00-1 1v1.17C7.06 4.65 5.5 6.64 5.5 9v3.83l-1.12 1.11A1 1 0 005 15.67h10a1 1 0 00.62-1.73L14.5 12.83V9c0-2.36-1.56-4.35-3.5-4.83V3a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                </svg>
+                <i data-lucide="bell" class="w-6 h-6 text-yellow-400"></i>
                 <div class="flex flex-col text-left">
                     <span class="text-[11px] font-black leading-none uppercase text-yellow-400">10 YEAR</span>
                     <span class="text-[9px] font-bold leading-none text-white/80 uppercase">WARRANTY</span>

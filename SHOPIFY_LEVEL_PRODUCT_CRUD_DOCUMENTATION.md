@@ -55,7 +55,7 @@ The frontend is separated into 7 distinct tabs to handle the massive scope of th
 *(Note: Physical dimensions like weight/length and deep inventory logic are typically handled here or under variants depending on the `product_type` selection).*
 
 ### TAB 3: MEDIA
-*   **Product Images** -> Connects to the `images()` relationship. Uses ImageKit/Local uploads, tracks `sort_order` and `is_featured` flags.
+*   **Product Images** -> Connects to the `images()` relationship. Uses Laravel local uploads, tracks `sort_order` and `is_featured` flags.
 
 ### TAB 4: VARIANTS
 *   **Variant Builder** -> Only active if `product_type` == 'variable'. Generates matrices (e.g., Size × Color) mapping to the `ProductVariant` model and `ProductAttributeValue`.

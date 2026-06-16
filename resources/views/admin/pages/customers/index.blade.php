@@ -12,9 +12,7 @@
         </div>
         <button onclick="openAdd()"
                 class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-colors shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
+        <i data-lucide="plus" class="w-4 h-4"></i>
             Add Customer
         </button>
     </div>
@@ -22,15 +20,13 @@
     {{-- Stats --}}
     <div class="grid grid-cols-3 gap-4">
         @foreach([
-            ['id'=>'statTotal',    'label'=>'Total Customers', 'color'=>'blue',  'icon'=>'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z'],
-            ['id'=>'statActive',   'label'=>'Active',          'color'=>'green', 'icon'=>'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
-            ['id'=>'statInactive', 'label'=>'Inactive',        'color'=>'red',   'icon'=>'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'],
+            ['id'=>'statTotal',    'label'=>'Total Customers', 'color'=>'blue',  'icon'=>'users'],
+            ['id'=>'statActive',   'label'=>'Active',          'color'=>'green', 'icon'=>'circle-check'],
+            ['id'=>'statInactive', 'label'=>'Inactive',        'color'=>'red',   'icon'=>'x-circle'],
         ] as $s)
         <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-{{ $s['color'] }}-50 flex items-center justify-center flex-shrink-0">
-                <svg class="w-5 h-5 text-{{ $s['color'] }}-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $s['icon'] }}"/>
-                </svg>
+                <i data-lucide="{{ $s['icon'] }}" class="w-5 h-5 text-{{ $s['color'] }}-600"></i>
             </div>
             <div>
                 <p class="text-xs text-gray-500">{{ $s['label'] }}</p>
@@ -43,9 +39,7 @@
     {{-- Filters --}}
     <div class="bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap gap-3 items-center">
         <div class="relative flex-1 min-w-[220px]">
-            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
+            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
             <input id="fSearch" type="text" placeholder="Search by name or email…"
                    class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
                    oninput="debounceLoad()">
@@ -115,9 +109,7 @@
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
             <h3 id="modalTitle" class="text-lg font-semibold text-gray-900">Add Customer</h3>
             <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
 
@@ -159,6 +151,7 @@
 const CSRF = document.querySelector('meta[name="csrf-token"]').content;
 const BASE  = '/admin/customers';
 let searchTimer, checkedIds = new Set();
+let isFirstLoad = true;
 
 async function api(url, method = 'GET', body = null) {
     const opts = { method, credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF } };
@@ -220,6 +213,7 @@ async function loadCustomers(page = 1) {
     renderTable(data.data);
     renderPagination(data.pagination, page);
     renderStats(data.data, data.pagination.total);
+    if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
 }
 
 function renderTable(rows) {
@@ -247,10 +241,10 @@ function renderTable(rows) {
             <td class="px-5 py-3.5">
                 <div class="flex items-center justify-end gap-1">
                     <button onclick="openEdit(${c.id})" class="p-2 rounded-lg text-gray-500 hover:text-[#0082C3] hover:bg-blue-50 transition-colors" title="Edit">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
                     </button>
                     <button onclick="del(${c.id},'${c.name.replace(/'/g,"&#39;")}')" class="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors" title="Delete">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
             </td>

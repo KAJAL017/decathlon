@@ -50,7 +50,7 @@
             {{-- Tracking Timeline --}}
             <div class="bg-gray-50 rounded-2xl p-6 md:p-8">
                 <h3 class="text-sm font-black text-gray-900 uppercase tracking-widest mb-8 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    <i data-lucide="clipboard-list" class="w-5 h-5 text-[#0082C3]"></i>
                     Shipment Journey
                 </h3>
                 
@@ -63,7 +63,7 @@
         {{-- Empty State --}}
         <div id="emptyState" class="p-12 text-center space-y-4">
             <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto">
-                <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <i data-lucide="search" class="w-10 h-10 text-gray-300"></i>
             </div>
             <div>
                 <h3 class="text-lg font-bold text-gray-900">No Tracking Data Requested</h3>
@@ -74,7 +74,7 @@
         {{-- Error State --}}
         <div id="errorState" class="p-12 text-center space-y-4 hidden">
             <div class="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto">
-                <svg class="w-10 h-10 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <i data-lucide="alert-triangle" class="w-10 h-10 text-red-400"></i>
             </div>
             <div>
                 <h3 class="text-lg font-bold text-gray-900" id="errorTitle">Track Failed</h3>
@@ -86,7 +86,7 @@
     {{-- Recent Tracked --}}
     <div class="space-y-4">
         <h3 class="text-sm font-black text-gray-900 uppercase tracking-widest flex items-center gap-2">
-            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <i data-lucide="clock" class="w-4 h-4 text-gray-400"></i>
             Recently Tracked Orders
         </h3>
         <div id="recentTracked" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -100,6 +100,7 @@
 
 @push('scripts')
 <script>
+let isFirstLoad = true;
 function performTrack() {
     const query = document.getElementById('trackInput').value.trim();
     if (query.length < 3) return;
@@ -232,11 +233,12 @@ function loadRecent() {
                         <p class="text-sm font-bold text-gray-900 truncate">${o.customer_name}</p>
                         <div class="mt-2 flex items-center justify-between">
                             <span class="text-[10px] font-mono text-gray-400">${o.tracking_number}</span>
-                            <svg class="w-3 h-3 text-gray-300 group-hover:text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"/></svg>
+                            <i data-lucide="chevron-right" class="w-3 h-3 text-gray-300 group-hover:text-[#0082C3]"></i>
                         </div>
                     </button>
                 `).join('');
             }
+            if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
         });
 }
 

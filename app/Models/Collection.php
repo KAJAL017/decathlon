@@ -46,7 +46,17 @@ class Collection extends Model
     public function getImageUrlAttribute($value)
     {
         if (!$value) return null;
-        if (str_starts_with($value, 'http')) return $value;
+
+        // Reject external URLs
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return null;
+        }
+
+        // Strip /storage/ prefix if present
+        if (str_starts_with($value, 'storage/')) {
+            $value = substr($value, 8);
+        }
+
         return \Illuminate\Support\Facades\Storage::disk('public')->url($value);
     }
     public function setImageUrlAttribute($value)

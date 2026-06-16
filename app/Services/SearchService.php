@@ -68,10 +68,10 @@ class SearchService
         $variants = $product->variants->map(function($v) {
             $attrs = [];
             foreach ($v->variantAttributes as $va) {
-                if ($va->attribute) {
+                if ($va->attribute && $va->attributeValue) {
                     $attrs[$va->attribute->name] = [
-                        'value' => $va->attributeValue?->value,
-                        'color' => $va->attributeValue?->color_code
+                        'value' => $va->attributeValue->value ?? '',
+                        'color' => $va->attributeValue->color_code ?? null
                     ];
                 }
             }
@@ -91,9 +91,11 @@ class SearchService
         $tempOptions = [];
         foreach ($variants as $v) {
             foreach ($v['attributes'] as $name => $data) {
-                $val = $data['value'];
-                $col = $data['color'];
-                $tempOptions[$name][$val] = $col;
+                $val = $data['value'] ?? '';
+                $col = $data['color'] ?? null;
+                if ($val !== '') {
+                    $tempOptions[$name][$val] = $col;
+                }
             }
         }
 

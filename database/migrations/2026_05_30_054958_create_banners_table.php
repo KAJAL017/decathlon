@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('button_text')->nullable();
             $table->string('button_link')->nullable();
             $table->string('image_url');
-            $table->string('image_id')->nullable(); // For ImageKit or other storage IDs
+            $table->string('image_id')->nullable();
             $table->string('background_color')->default('#f5e6d3');
             $table->string('accent_color')->default('#2dd4bf');
             $table->string('price_text')->nullable();

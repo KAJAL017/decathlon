@@ -12,9 +12,7 @@
         </div>
         <button onclick="exportLogs()"
                 class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-            </svg>
+            <i data-lucide="download" class="w-4 h-4"></i>
             Export CSV
         </button>
     </div>
@@ -22,16 +20,14 @@
     {{-- Stats --}}
     <div class="grid grid-cols-4 gap-4">
         @foreach([
-            ['id'=>'statTotal',  'label'=>'Total Logs',    'color'=>'blue',   'icon'=>'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'],
-            ['id'=>'statToday',  'label'=>'Today',         'color'=>'green',  'icon'=>'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'],
-            ['id'=>'statUsers',  'label'=>'Active Admins', 'color'=>'purple', 'icon'=>'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z'],
-            ['id'=>'statModules','label'=>'Modules',       'color'=>'orange', 'icon'=>'M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z'],
+            ['id'=>'statTotal',  'label'=>'Total Logs',    'color'=>'blue',   'icon'=>'file-text'],
+            ['id'=>'statToday',  'label'=>'Today',         'color'=>'green',  'icon'=>'calendar'],
+            ['id'=>'statUsers',  'label'=>'Active Admins', 'color'=>'purple', 'icon'=>'users'],
+            ['id'=>'statModules','label'=>'Modules',       'color'=>'orange', 'icon'=>'layout-grid'],
         ] as $s)
         <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-{{ $s['color'] }}-50 flex items-center justify-center flex-shrink-0">
-                <svg class="w-5 h-5 text-{{ $s['color'] }}-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $s['icon'] }}"/>
-                </svg>
+                <i data-lucide="{{ $s['icon'] }}" class="w-5 h-5 text-{{ $s['color'] }}-600"></i>
             </div>
             <div>
                 <p class="text-xs text-gray-500">{{ $s['label'] }}</p>
@@ -44,9 +40,7 @@
     {{-- Filters --}}
     <div class="bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap gap-3 items-center">
         <div class="relative flex-1 min-w-[200px]">
-            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
+            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
             <input id="fSearch" type="text" placeholder="Search action, module, description…"
                    class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
                    oninput="debounceLoad()">
@@ -110,7 +104,7 @@
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
             <h3 class="text-lg font-semibold text-gray-900">Activity Detail</h3>
             <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
         <div id="modalContent" class="flex-1 overflow-y-auto px-6 py-5">
@@ -127,6 +121,7 @@
 <script>
 const CSRF = document.querySelector('meta[name="csrf-token"]').content;
 let searchTimer;
+let isFirstLoad = true;
 
 // ── Action colors ────────────────────────────────────────────────
 const ACTION_COLORS = {
@@ -141,12 +136,12 @@ const ACTION_COLORS = {
 };
 
 const ACTION_ICONS = {
-    created:        'M12 4v16m8-8H4',
-    updated:        'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
-    deleted:        'M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16',
-    status_changed: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4',
-    bulk_action:    'M4 6h16M4 10h16M4 14h16M4 18h16',
-    default:        'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+    created:        'plus',
+    updated:        'pencil',
+    deleted:        'trash-2',
+    status_changed: 'arrow-right-left',
+    bulk_action:    'list',
+    default:        'info',
 };
 
 // ── Load & Render ────────────────────────────────────────────────
@@ -180,6 +175,7 @@ async function load(page = 1) {
     renderPagination(data.pagination, page);
     loadStats(data.data, data.pagination.total);
     populateModuleFilter(data.data);
+    if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
 }
 
 function renderTable(rows) {
@@ -212,9 +208,7 @@ function renderTable(rows) {
             </td>
             <td class="px-5 py-3.5">
                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${actionColor}">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${actionIcon}"/>
-                    </svg>
+                    <i data-lucide="${actionIcon}" class="w-3 h-3"></i>
                     ${esc(log.action)}
                 </span>
             </td>
@@ -232,10 +226,7 @@ function renderTable(rows) {
             <td class="px-5 py-3.5 text-right">
                 <button onclick="showDetail(${log.id})"
                         class="p-1.5 rounded-lg text-gray-400 hover:text-[#0082C3] hover:bg-blue-50 transition-colors" title="View Details">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                    </svg>
+                    <i data-lucide="eye" class="w-4 h-4"></i>
                 </button>
             </td>
         </tr>`;

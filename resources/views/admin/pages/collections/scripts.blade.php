@@ -3,6 +3,7 @@ let searchTimeout;
 let selectedProducts = [];
 let collectionRules = [];
 let isEditMode = false;
+let isFirstLoad = true;
 
 // ── Ensure all fetch calls send session cookie ──
 const _origFetch = window.fetch.bind(window);
@@ -64,10 +65,12 @@ function loadCollections(page = 1) {
             } else {
                 console.error('Collections load failed:', data);
             }
+            if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
         })
         .catch(err => {
             console.error('loadCollections error:', err);
             showToast('Failed to load collections', 'error');
+            if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
         });
 }
 
@@ -79,9 +82,7 @@ function renderCollections(collections) {
         tbody.innerHTML = `
             <tr>
                 <td colspan="8" class="px-6 py-12 text-center text-gray-500">
-                    <svg class="w-12 h-12 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-                    </svg>
+                    <i data-lucide="inbox" class="w-12 h-12 mx-auto mb-3 text-gray-400"></i>
                     <p class="text-sm font-medium">No collections found</p>
                     <p class="text-xs mt-1">Create your first collection to get started</p>
                 </td>
@@ -100,9 +101,7 @@ function renderCollections(collections) {
                     <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                         ${collection.image_url 
                             ? `<img src="${collection.image_url}" alt="${collection.name}" class="w-full h-full object-cover">`
-                            : `<svg class="w-6 h-6 text-gray-400 m-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                            </svg>`
+                            : `<i data-lucide="layers" class="w-6 h-6 text-gray-400 m-auto"></i>`
                         }
                     </div>
                     <div class="flex-1 min-w-0">
@@ -150,14 +149,10 @@ function renderCollections(collections) {
             <td class="px-6 py-4">
                 <div class="flex items-center justify-end gap-2">
                     <button onclick="editCollection(${collection.id})" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                        </svg>
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
                     </button>
                     <button onclick="deleteCollection(${collection.id}, '${collection.name}')" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                        </svg>
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
             </td>
@@ -380,9 +375,7 @@ function openImagePicker(type) {
 function removeCollectionImage() {
     document.getElementById('collectionImageUrl').value = '';
     document.getElementById('collectionImagePreview').innerHTML = `
-        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-        </svg>
+        <i data-lucide="image" class="w-8 h-8 text-gray-400"></i>
     `;
 }
 
@@ -615,9 +608,7 @@ function renderProductSelector(products) {
                 <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                     ${product.image_url 
                         ? `<img src="${product.image_url}" alt="${product.name}" class="w-full h-full object-cover">`
-                        : `<svg class="w-6 h-6 text-gray-400 m-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                        </svg>`
+                        : `<i data-lucide="package" class="w-6 h-6 text-gray-400 m-auto"></i>`
                     }
                 </div>
                 <div class="flex-1 min-w-0">
@@ -650,9 +641,7 @@ function renderSelectedProducts() {
     if (selectedProducts.length === 0) {
         container.innerHTML = `
             <div class="text-center py-12 text-gray-500">
-                <svg class="w-12 h-12 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                </svg>
+                <i data-lucide="package" class="w-12 h-12 mx-auto mb-3 text-gray-400"></i>
                 <p class="text-sm">No products selected yet</p>
                 <p class="text-xs mt-1">Click "Add Products" to select products for this collection</p>
             </div>
@@ -665,9 +654,7 @@ function renderSelectedProducts() {
             <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                 ${product.image_url 
                     ? `<img src="${product.image_url}" alt="${product.name}" class="w-full h-full object-cover">`
-                    : `<svg class="w-6 h-6 text-gray-400 m-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                    </svg>`
+                    : `<i data-lucide="package" class="w-6 h-6 text-gray-400 m-auto"></i>`
                 }
             </div>
             <div class="flex-1 min-w-0">
@@ -675,9 +662,7 @@ function renderSelectedProducts() {
                 <p class="text-xs text-gray-500">Position: ${index + 1}</p>
             </div>
             <button type="button" onclick="removeProduct(${product.id})" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
+                <i data-lucide="x" class="w-4 h-4"></i>
             </button>
         </div>
     `).join('');
@@ -717,9 +702,7 @@ function renderRules() {
     if (collectionRules.length === 0) {
         container.innerHTML = `
             <div class="text-center py-12 text-gray-500">
-                <svg class="w-12 h-12 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
-                </svg>
+                <i data-lucide="sliders" class="w-12 h-12 mx-auto mb-3 text-gray-400"></i>
                 <p class="text-sm">No rules defined yet</p>
                 <p class="text-xs mt-1">Click "Add Rule" to create automatic product selection rules</p>
             </div>
@@ -752,9 +735,7 @@ function renderRules() {
                 <input type="text" value="${rule.value}" onchange="updateRule(${index}, 'value', this.value)" placeholder="Value" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
             </div>
             <button type="button" onclick="removeRule(${index})" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                </svg>
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
         </div>
     `).join('');

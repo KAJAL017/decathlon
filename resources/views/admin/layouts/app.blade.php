@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dashboard') - Decathlon Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
     <!-- Sortable.js for Drag & Drop -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
@@ -198,19 +199,26 @@
                     skeletonContent.innerHTML = html;
                 })();
 
-                // Hide skeleton and reveal actual content once page finishes loading
-                document.addEventListener('DOMContentLoaded', function() {
+                // Global skeleton dismiss function — pages can call window.dismissSkeleton()
+                // to hide the skeleton when their AJAX data is ready.
+                window.dismissSkeleton = function() {
                     const loader = document.getElementById('global-skeleton-loader');
                     const content = document.getElementById('actual-page-content');
-                    if (loader && content) {
+                    if (loader && content && loader.style.display !== 'none') {
                         loader.classList.add('opacity-0');
                         loader.style.pointerEvents = 'none';
                         content.classList.remove('opacity-0');
                         content.classList.remove('pointer-events-none');
-                        setTimeout(() => {
-                            loader.style.display = 'none';
-                        }, 300);
+                        setTimeout(() => { loader.style.display = 'none'; }, 300);
                     }
+                };
+
+                // Fallback: auto-dismiss on DOMContentLoaded for non-AJAX pages
+                document.addEventListener('DOMContentLoaded', function() {
+                    // If page hasn't called dismissSkeleton within 1.5s, dismiss automatically
+                    setTimeout(function() {
+                        window.dismissSkeleton();
+                    }, 1500);
                 });
             </script>
         </main>
@@ -225,5 +233,11 @@
         }
     </script>
     @stack('scripts')
+<script>
+    window.initLucideIcons = function() {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
+    document.addEventListener('DOMContentLoaded', window.initLucideIcons);
+</script>
 </body>
 </html>

@@ -230,14 +230,25 @@ const Cart = {
     openMiniCart() {
         const miniCart = document.getElementById('mini-cart-dropdown');
         if (miniCart) {
-            miniCart.classList.remove('opacity-0', 'invisible', 'translate-y-2');
-            miniCart.classList.add('opacity-100', 'visible', 'translate-y-0');
-            
-            // Auto close after 3 seconds
-            setTimeout(() => {
-                miniCart.classList.add('opacity-0', 'invisible', 'translate-y-2');
-                miniCart.classList.remove('opacity-100', 'visible', 'translate-y-0');
-            }, 3000);
+            miniCart.classList.remove('opacity-0', 'invisible', 'scale-95', 'pointer-events-none');
+            miniCart.classList.add('opacity-100', 'visible', 'scale-100', 'pointer-events-auto');
+
+            // Close on click outside
+            const closeHandler = (e) => {
+                if (!miniCart.contains(e.target) && !e.target.closest('#cart-nav-item')) {
+                    this.closeMiniCart();
+                    document.removeEventListener('click', closeHandler);
+                }
+            };
+            setTimeout(() => document.addEventListener('click', closeHandler), 0);
+        }
+    },
+
+    closeMiniCart() {
+        const miniCart = document.getElementById('mini-cart-dropdown');
+        if (miniCart) {
+            miniCart.classList.add('opacity-0', 'invisible', 'scale-95', 'pointer-events-none');
+            miniCart.classList.remove('opacity-100', 'visible', 'scale-100', 'pointer-events-auto');
         }
     },
 

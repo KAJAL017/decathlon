@@ -19,7 +19,7 @@
                     
                     @if(!empty($image['link']))
                         <a href="{{ $image['link'] }}" class="absolute inset-0 z-10 flex items-center justify-center bg-gray-950/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span class="px-6 py-2 bg-white text-gray-950 text-[10px] font-black uppercase tracking-[0.2em] rounded-full">View Details</span>
+                            <span class="px-6 py-2 bg-white text-gray-950 text-[10px] font-black uppercase tracking-[0.2em] rounded-full">{{ $section->settings['cta_text'] ?? 'View Details' }}</span>
                         </a>
                     @endif
                 </div>

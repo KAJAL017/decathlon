@@ -5,7 +5,7 @@
         @php
             $featuredImage = $item->product->featuredImage ?? $item->product->images->first();
         @endphp
-        <img src="{{ $featuredImage?->image_url ?? 'https://images.unsplash.com/photo-1560362614-890275988ce7?w=400' }}" 
+        <img src="{{ $featuredImage?->image_url ?? asset('images/placeholder-product.svg') }}" 
              alt="{{ $item->product->name }}" class="w-full h-full object-cover">
     </div>
 
@@ -15,7 +15,7 @@
             <div class="flex justify-between items-start">
                 <p class="text-[10px] md:text-xs font-black text-[#0082C3] uppercase tracking-widest">{{ $item->product->brand?->name ?? 'DECATHLON' }}</p>
                 <button onclick="Cart.remove({{ $item->id }})" class="text-gray-400 hover:text-red-500 transition-colors p-1">
-                    <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                    <i data-lucide="trash-2" class="w-4 h-4 md:w-5 md:h-5"></i>
                 </button>
             </div>
             <h2 class="text-sm md:text-lg font-bold text-gray-900 leading-tight uppercase tracking-tight mt-1">{{ $item->product->name }}</h2>
@@ -44,9 +44,7 @@
 @empty
 <div class="py-20 flex flex-col items-center justify-center text-center space-y-4 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
     <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm">
-        <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h12l1 12H4L5 9z"></path>
-        </svg>
+        <i data-lucide="shopping-cart" class="w-10 h-10 text-gray-300"></i>
     </div>
     <div>
         <h3 class="text-lg font-bold text-gray-900">Your cart is empty</h3>

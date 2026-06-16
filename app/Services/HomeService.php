@@ -165,6 +165,12 @@ class HomeService
                         'best_seller' => Product::active()->bestSeller()->limit(8)->get(),
                         'latest' => Product::active()->new()->limit(8)->get(),
                         'trending' => Product::active()->trending()->limit(8)->get(),
+                    ],
+                    'tab_labels' => [
+                        'featured' => $settings['tab1_label'] ?? 'Popular',
+                        'best_seller' => $settings['tab2_label'] ?? 'Best Sellers',
+                        'latest' => $settings['tab3_label'] ?? 'New Arrivals',
+                        'trending' => $settings['tab4_label'] ?? 'Top Rated',
                     ]
                 ];
 
@@ -182,11 +188,12 @@ class HomeService
                 ];
 
             case 'multi_column_products':
+                $colLimit = $settings['column_limit'] ?? 3;
                 return [
                     'columns' => [
-                        ['title' => 'New Arrivals', 'products' => Product::active()->new()->limit(3)->get()],
-                        ['title' => 'Best Sellers', 'products' => Product::active()->featured()->limit(3)->get()],
-                        ['title' => 'Top Rated', 'products' => Product::active()->orderBy('rating', 'desc')->limit(3)->get()],
+                        ['title' => $settings['col1_title'] ?? 'New Arrivals', 'products' => Product::active()->new()->limit($colLimit)->get()],
+                        ['title' => $settings['col2_title'] ?? 'Best Sellers', 'products' => Product::active()->featured()->limit($colLimit)->get()],
+                        ['title' => $settings['col3_title'] ?? 'Top Rated', 'products' => Product::active()->orderBy('rating', 'desc')->limit($colLimit)->get()],
                     ]
                 ];
 
@@ -222,6 +229,7 @@ class HomeService
                     'subtitle' => $settings['subtitle'] ?? 'Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.',
                     'placeholder' => $settings['placeholder'] ?? 'Enter your email',
                     'button_text' => $settings['button_text'] ?? 'Subscribe',
+                    'disclaimer' => $settings['disclaimer'] ?? 'No spam, only pure sports energy.',
                 ];
 
             case 'service_highlights':
@@ -259,6 +267,7 @@ class HomeService
                     'username' => $settings['username'] ?? '',
                     'images' => $settings['images'] ?? [],
                     'title' => $settings['title'] ?? 'Follow Us @Instagram',
+                    'cta_text' => $settings['cta_text'] ?? 'Follow Our Journey',
                 ];
 
             case 'price_points':

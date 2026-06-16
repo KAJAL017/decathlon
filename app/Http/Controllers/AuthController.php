@@ -42,6 +42,9 @@ class AuthController extends Controller
                 ], 403);
             }
 
+            // Regenerate session to prevent session fixation
+            $request->session()->regenerate();
+
             // Update last login
             $user->last_login = now();
             $user->save();
@@ -103,7 +106,7 @@ class AuthController extends Controller
             );
         }
 
-        session()->forget(['admin_logged_in', 'admin_id', 'admin_email', 'admin_name']);
+        session()->forget(['admin_logged_in', 'admin_id', 'admin_email', 'admin_name', 'admin_role']);
         return redirect()->route('admin.login')->with('message', 'Logged out successfully');
     }
 

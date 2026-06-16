@@ -133,25 +133,25 @@ window.Dialog = {
                 bg: 'bg-red-50',
                 text: 'text-red-600',
                 btn: 'bg-red-600 hover:bg-red-700 shadow-red-200',
-                svg: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>`
+                icon: 'trash-2'
             },
             warning: {
                 bg: 'bg-amber-50',
                 text: 'text-amber-600',
                 btn: 'bg-amber-500 hover:bg-amber-600 shadow-amber-200',
-                svg: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>`
+                icon: 'triangle-alert'
             },
             success: {
                 bg: 'bg-emerald-50',
                 text: 'text-emerald-600',
                 btn: 'bg-emerald-600 hover:bg-emerald-700 shadow-emerald-200',
-                svg: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>`
+                icon: 'check'
             },
             info: {
                 bg: 'bg-blue-50',
                 text: 'text-blue-600',
                 btn: 'bg-blue-600 hover:bg-blue-700 shadow-blue-200',
-                svg: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`
+                icon: 'info'
             }
         };
 
@@ -159,7 +159,8 @@ window.Dialog = {
         
         // Reset and apply
         this.iconContainer.className = `mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-6 ${config.bg} ${config.text}`;
-        this.icon.innerHTML = config.svg;
+        this.icon.innerHTML = `<i data-lucide="${config.icon}" class="w-8 h-8"></i>`;
+        if (typeof lucide !== 'undefined') lucide.createIcons({ nodes: [this.icon] });
         this.confirmBtn.className = `flex-1 px-6 py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest text-white shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] ${config.btn}`;
     },
 

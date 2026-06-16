@@ -15,17 +15,15 @@
     {{-- Stats --}}
     <div class="grid grid-cols-5 gap-4">
         @foreach([
-            ['id'=>'statTotal',    'label'=>'Total',    'color'=>'blue',   'icon'=>'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'],
-            ['id'=>'statPending',  'label'=>'Pending',  'color'=>'yellow', 'icon'=>'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'],
-            ['id'=>'statApproved', 'label'=>'Approved', 'color'=>'green',  'icon'=>'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
-            ['id'=>'statRejected', 'label'=>'Rejected', 'color'=>'red',    'icon'=>'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'],
-            ['id'=>'statAvg',      'label'=>'Avg Rating','color'=>'purple', 'icon'=>'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'],
+            ['id'=>'statTotal',    'label'=>'Total',    'color'=>'blue',   'icon'=>'star'],
+            ['id'=>'statPending',  'label'=>'Pending',  'color'=>'yellow', 'icon'=>'clock'],
+            ['id'=>'statApproved', 'label'=>'Approved', 'color'=>'green',  'icon'=>'circle-check'],
+            ['id'=>'statRejected', 'label'=>'Rejected', 'color'=>'red',    'icon'=>'x-circle'],
+            ['id'=>'statAvg',      'label'=>'Avg Rating','color'=>'purple', 'icon'=>'star'],
         ] as $s)
         <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-{{ $s['color'] }}-50 flex items-center justify-center flex-shrink-0">
-                <svg class="w-5 h-5 text-{{ $s['color'] }}-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $s['icon'] }}"/>
-                </svg>
+                <i data-lucide="{{ $s['icon'] }}" class="w-5 h-5 text-{{ $s['color'] }}-600"></i>
             </div>
             <div>
                 <p class="text-xs text-gray-500">{{ $s['label'] }}</p>
@@ -51,9 +49,7 @@
         {{-- Filters --}}
         <div class="p-4 border-b border-gray-100 flex flex-wrap gap-3 items-center">
             <div class="relative flex-1 min-w-[200px]">
-                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
                 <input id="fSearch" type="text" placeholder="Search reviewer, product…"
                        class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
                        oninput="debounceLoad()">
@@ -190,7 +186,7 @@
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
             <h3 id="modalTitle" class="text-lg font-semibold text-gray-900">Edit Review</h3>
             <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
         <div class="flex-1 overflow-y-auto px-6 py-5 space-y-4">
@@ -250,6 +246,7 @@ const CSRF = document.querySelector('meta[name="csrf-token"]').content;
 const BASE  = '/admin/reviews';
 let searchTimer, checkedIds = new Set();
 let currentSource = 'website'; // ← global, always defined
+let isFirstLoad = true;
 
 // ── API ──────────────────────────────────────────────────────────
 async function api(url, method = 'GET', body = null) {
@@ -330,6 +327,7 @@ async function load(page = 1) {
     renderTable(data.data);
     renderPagination(data.pagination, page);
     if (data.stats) renderStats(data.stats);
+    if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
 }
 
 const STATUS_COLORS = {
@@ -374,13 +372,13 @@ function renderTable(rows) {
             <td class="px-5 py-3.5">
                 <div class="flex items-center justify-end gap-1">
                     <button onclick="toggleFeatured(${r.id})" class="p-2 rounded-lg transition-colors ${r.featured ? 'text-yellow-500 hover:bg-yellow-50' : 'text-gray-400 hover:text-yellow-500 hover:bg-yellow-50'}" title="${r.featured ? 'Unfeature' : 'Feature'}">
-                        <svg class="w-4 h-4" fill="${r.featured ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                        <i data-lucide="star" class="w-4 h-4 ${r.featured ? 'fill-yellow-500' : ''}"></i>
                     </button>
                     <button onclick="openEdit(${r.id})" class="p-2 rounded-lg text-gray-500 hover:text-[#0082C3] hover:bg-blue-50 transition-colors" title="Edit">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
                     </button>
                     <button onclick="del(${r.id},'${esc(r.reviewer_name).replace(/'/g,"&#39;")}')" class="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors" title="Delete">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
             </td>

@@ -11,7 +11,7 @@
         <p class="text-sm text-gray-500 mt-0.5">Create and manage invoices</p>
     </div>
     <button onclick="openCreateModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-xl hover:bg-[#006ba3] transition-colors shadow-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        <i data-lucide="plus" class="w-4 h-4"></i>
         New Invoice
     </button>
 </div>
@@ -52,7 +52,7 @@
 <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
     <div class="flex flex-wrap gap-3 items-center">
         <div class="flex-1 min-w-[200px] relative">
-            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
+            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
             <input type="text" id="searchInput" placeholder="Search invoice #, customer..." onkeyup="debounceLoad()" class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
         </div>
         <select id="statusFilter" onchange="loadInvoices()" class="text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
@@ -114,7 +114,7 @@
         <div class="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between z-10">
             <h2 class="text-lg font-bold text-gray-900">Create Invoice</h2>
             <button onclick="closeCreateModal()" class="text-gray-400 hover:text-gray-600">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <i data-lucide="x" class="w-6 h-6"></i>
             </button>
         </div>
         <form id="createInvoiceForm" onsubmit="submitInvoice(event)" class="p-6 space-y-5">
@@ -221,7 +221,7 @@
             <div class="flex items-center gap-2">
                 <button id="printBtn" onclick="printInvoice()" class="px-3 py-1.5 text-xs bg-gray-800 text-white rounded-lg hover:bg-gray-900 font-semibold">🖨 Print</button>
                 <button onclick="closeDetailModal()" class="text-gray-400 hover:text-gray-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
         </div>
@@ -264,6 +264,7 @@ function showToast(type, msg) {
 
 let currentPage = 1, lastPage = 1, totalInvoices = 0;
 let debounceTimer, currentInvoiceId = null;
+let isFirstLoad = true;
 
 function debounceLoad() {
     clearTimeout(debounceTimer);
@@ -324,12 +325,12 @@ function loadInvoices() {
                     <td class="px-4 py-3 text-center" onclick="event.stopPropagation()">
                         <div class="flex items-center justify-center gap-1">
                             <button onclick="viewInvoice(${inv.id})" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg" title="View">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <i data-lucide="eye" class="w-4 h-4"></i>
                             </button>
-                            ${inv.status==='draft'?`<button onclick="markSent(${inv.id})" class="p-1.5 text-green-600 hover:bg-green-50 rounded-lg" title="Mark Sent"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>`:''}
-                            ${inv.status==='sent'?`<button onclick="markPaid(${inv.id})" class="p-1.5 text-green-600 hover:bg-green-50 rounded-lg" title="Mark Paid"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></button>`:''}
+                            ${inv.status==='draft'?`<button onclick="markSent(${inv.id})" class="p-1.5 text-green-600 hover:bg-green-50 rounded-lg" title="Mark Sent"><i data-lucide="send" class="w-4 h-4"></i></button>`:''}
+                            ${inv.status==='sent'?`<button onclick="markPaid(${inv.id})" class="p-1.5 text-green-600 hover:bg-green-50 rounded-lg" title="Mark Paid"><i data-lucide="circle-check" class="w-4 h-4"></i></button>`:''}
                             <button onclick="deleteInvoice(${inv.id})" class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg" title="Delete">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
                         </div>
                     </td>
@@ -341,9 +342,11 @@ function loadInvoices() {
             document.getElementById('paginationInfo').textContent = `Showing ${invoices.length} of ${totalInvoices} invoices`;
             document.getElementById('prevBtn').disabled = currentPage <= 1;
             document.getElementById('nextBtn').disabled = currentPage >= lastPage;
+            if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
         })
         .catch(err => {
             tbody.innerHTML = `<tr><td colspan="9" class="px-4 py-8 text-center text-red-500 text-sm">Error: ${esc(err.message)}</td></tr>`;
+            if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
         });
 }
 
@@ -518,7 +521,7 @@ function renderLineItems() {
             </div>
             <div class="col-span-1 text-right">
                 <button type="button" onclick="removeLineItem(${idx})" class="text-red-400 hover:text-red-600 p-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
         </div>

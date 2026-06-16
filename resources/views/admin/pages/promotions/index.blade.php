@@ -12,9 +12,7 @@
     </div>
     <button onclick="openAdd()"
             class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-colors shadow-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-        </svg>
+        <i data-lucide="plus" class="w-4 h-4"></i>
         Add Promotion
     </button>
 </div>
@@ -22,17 +20,15 @@
 {{-- Stats --}}
 <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
     @foreach([
-        ['id'=>'sTotal',     'label'=>'Total',     'color'=>'blue',   'icon'=>'M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7'],
-        ['id'=>'sActive',    'label'=>'Active',    'color'=>'green',  'icon'=>'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
-        ['id'=>'sScheduled', 'label'=>'Scheduled', 'color'=>'yellow', 'icon'=>'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'],
-        ['id'=>'sExpired',   'label'=>'Expired',   'color'=>'red',    'icon'=>'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'],
-        ['id'=>'sFlash',     'label'=>'Flash Sales','color'=>'purple','icon'=>'M13 10V3L4 14h7v7l9-11h-7z'],
+        ['id'=>'sTotal',     'label'=>'Total',     'color'=>'blue',   'icon'=>'shopping-bag'],
+        ['id'=>'sActive',    'label'=>'Active',    'color'=>'green',  'icon'=>'circle-check'],
+        ['id'=>'sScheduled', 'label'=>'Scheduled', 'color'=>'yellow', 'icon'=>'calendar'],
+        ['id'=>'sExpired',   'label'=>'Expired',   'color'=>'red',    'icon'=>'clock'],
+        ['id'=>'sFlash',     'label'=>'Flash Sales','color'=>'purple','icon'=>'zap'],
     ] as $s)
     <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-3">
         <div class="w-10 h-10 rounded-lg bg-{{ $s['color'] }}-50 flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5 text-{{ $s['color'] }}-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $s['icon'] }}"/>
-            </svg>
+            <i data-lucide="{{ $s['icon'] }}" class="w-5 h-5 text-{{ $s['color'] }}-600"></i>
         </div>
         <div>
             <p class="text-xs text-gray-500">{{ $s['label'] }}</p>
@@ -45,9 +41,7 @@
 {{-- Filters --}}
 <div class="bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap gap-3 items-center">
     <div class="relative flex-1 min-w-[200px]">
-        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-        </svg>
+        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
         <input id="fSearch" type="text" placeholder="Search promotions…"
                class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
                oninput="debounceLoad()">
@@ -127,9 +121,7 @@
                 <p class="text-xs text-gray-500 mt-0.5" id="mStep">Step 1 of 3 — Basic Info</p>
             </div>
             <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
 
@@ -373,6 +365,7 @@
 const CSRF = document.querySelector('meta[name="csrf-token"]').content;
 const BASE = '/admin/promotions';
 let step = 1, checkedIds = new Set(), searchTimer, currentType = 'percentage';
+let isFirstLoad = true;
 
 // ── API ──────────────────────────────────────────────────────────
 async function api(url, method='GET', body=null) {
@@ -408,13 +401,14 @@ async function load(page=1) {
         `<tr><td colspan="8" class="px-5 py-12 text-center text-gray-400 text-sm">Loading…</td></tr>`;
     try {
         const data = await api(`${BASE}/list?${params}`);
-        if (!data.success) { document.getElementById('tBody').innerHTML=`<tr><td colspan="8" class="px-5 py-12 text-center text-red-500 text-sm">Failed to load</td></tr>`; return; }
+        if (!data.success) { document.getElementById('tBody').innerHTML=`<tr><td colspan="8" class="px-5 py-12 text-center text-red-500 text-sm">Failed to load</td></tr>`; if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); } return; }
         renderTable(data.data);
         renderPagination(data.pagination, page);
         renderStats(data.data, data.pagination.total);
     } catch(e) {
         document.getElementById('tBody').innerHTML=`<tr><td colspan="8" class="px-5 py-12 text-center text-red-500 text-sm">Error: ${e.message}</td></tr>`;
     }
+    if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
 }
 
 const TYPE_COLORS = {
@@ -474,10 +468,10 @@ function renderTable(rows) {
             <td class="px-5 py-3.5">
                 <div class="flex items-center justify-end gap-1">
                     <button onclick="openEdit(${p.id})" class="p-2 rounded-lg text-gray-500 hover:text-[#0082C3] hover:bg-blue-50 transition-colors" title="Edit">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
                     </button>
                     <button onclick="del(${p.id},'${p.name.replace(/'/g,"&#39;")}')" class="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors" title="Delete">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
             </td>
@@ -756,7 +750,7 @@ function showConfirmDialog(title, message, onConfirm) {
         <div class="dlg-box relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6">
             <div class="flex flex-col items-center text-center gap-3 mb-5">
                 <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center">
-                    <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    <i data-lucide="trash-2" class="w-7 h-7 text-red-500"></i>
                 </div>
                 <div><h3 class="text-base font-semibold text-gray-900">${title}</h3><p class="text-sm text-gray-500 mt-1 leading-relaxed">${message}</p></div>
             </div>

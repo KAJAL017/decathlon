@@ -22,8 +22,8 @@
                     <div class="absolute bottom-12 left-12 right-12">
                         <h3 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-6 leading-tight">{{ $collection->name }}</h3>
                         <span class="inline-flex items-center gap-4 px-10 py-4 bg-white text-gray-950 text-[11px] font-black uppercase tracking-[0.3em] rounded-full group-hover:bg-[#0082C3] group-hover:text-white transition-all shadow-xl">
-                            Explore Collection
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            {{ $section->settings['cta_text'] ?? 'Explore Collection' }}
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
                         </span>
                     </div>
                 </a>

@@ -12,9 +12,7 @@
         </div>
         <button onclick="openAdd()"
                 class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-colors shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
+            <i data-lucide="plus" class="w-4 h-4"></i>
             Add Collection
         </button>
     </div>
@@ -22,17 +20,15 @@
     {{-- Stats --}}
     <div class="grid grid-cols-5 gap-4">
         @foreach([
-            ['id'=>'statTotal',    'label'=>'Total',    'color'=>'blue',   'icon'=>'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10'],
-            ['id'=>'statActive',   'label'=>'Active',   'color'=>'green',  'icon'=>'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
-            ['id'=>'statFeatured', 'label'=>'Featured', 'color'=>'purple', 'icon'=>'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'],
-            ['id'=>'statManual',   'label'=>'Manual',   'color'=>'yellow', 'icon'=>'M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4'],
-            ['id'=>'statAuto',     'label'=>'Auto',     'color'=>'pink',   'icon'=>'M13 10V3L4 14h7v7l9-11h-7z'],
+            ['id'=>'statTotal',    'label'=>'Total',    'color'=>'blue',   'icon'=>'layers'],
+            ['id'=>'statActive',   'label'=>'Active',   'color'=>'green',  'icon'=>'check-circle'],
+            ['id'=>'statFeatured', 'label'=>'Featured', 'color'=>'purple', 'icon'=>'star'],
+            ['id'=>'statManual',   'label'=>'Manual',   'color'=>'yellow', 'icon'=>'sliders'],
+            ['id'=>'statAuto',     'label'=>'Auto',     'color'=>'pink',   'icon'=>'zap'],
         ] as $s)
         <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-{{ $s['color'] }}-50 flex items-center justify-center flex-shrink-0">
-                <svg class="w-5 h-5 text-{{ $s['color'] }}-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $s['icon'] }}"/>
-                </svg>
+                <i data-lucide="{{ $s['icon'] }}" class="w-5 h-5 text-{{ $s['color'] }}-600"></i>
             </div>
             <div>
                 <p class="text-xs text-gray-500">{{ $s['label'] }}</p>
@@ -45,9 +41,7 @@
     {{-- Filters --}}
     <div class="bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap gap-3 items-center">
         <div class="relative flex-1 min-w-[220px]">
-            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
             <input id="fSearch" type="text" placeholder="Search collections…"
                    class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
                    oninput="debounceLoad()">
@@ -136,9 +130,7 @@
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
             <h3 id="modalTitle" class="text-lg font-semibold text-gray-900">Add Collection</h3>
             <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
 
@@ -165,21 +157,16 @@
                             <div id="imagePlaceholder" class="aspect-[3/1] w-full border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center bg-gray-50 hover:border-[#0082C3] hover:bg-blue-50/30 transition-all cursor-pointer overflow-hidden" onclick="document.getElementById('cImageInput').click()">
                                 <div id="uploadUI" class="flex flex-col items-center">
                                     <div class="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                                        </svg>
+                <i data-lucide="upload" class="w-5 h-5 text-gray-400 group-hover:text-[#0082C3]"></i>
                                     </div>
                                     <p class="text-sm font-medium text-gray-700">Click to upload image</p>
-                                    <p class="text-xs text-gray-500 mt-1">PNG, JPG, WEBP (Max {{ \App\Models\Setting::group('media')['max_upload_size'] ?? 500 }}KB)</p>
+                                    <p class="text-xs text-gray-500 mt-1">PNG, JPG, WEBP. Images are optimized automatically.</p>
                                 </div>
                                 <img id="imagePreview" src="" class="hidden absolute inset-0 w-full h-full object-cover">
                                 
                                 <div id="uploadLoader" class="hidden absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
                                     <div class="flex flex-col items-center">
-                                        <svg class="animate-spin h-6 w-6 text-[#0082C3] mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
+                                    <i data-lucide="loader" class="animate-spin h-6 w-6 text-[#0082C3] mb-2"></i>
                                         <p class="text-xs font-medium text-gray-600">Uploading...</p>
                                     </div>
                                 </div>
@@ -188,9 +175,7 @@
                             <input type="hidden" id="cImageUrl">
                             
                             <button type="button" id="removeImageBtn" onclick="removeImage(event)" class="hidden absolute top-2 right-2 p-1.5 bg-red-600 text-white rounded-lg shadow-lg hover:bg-red-700 transition-colors z-10">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
+                                <i data-lucide="x" class="w-4 h-4"></i>
                             </button>
                         </div>
                     </div>
@@ -293,6 +278,7 @@
 const CSRF = document.querySelector('meta[name="csrf-token"]').content;
 const BASE = '/admin/collections';
 let searchTimer, checkedIds = new Set(), allRows = [];
+let isFirstLoad = true;
 
 // ── API helper ──────────────────────────────────────────────────
 async function api(url, method = 'GET', body = null) {
@@ -364,6 +350,7 @@ async function loadCollections(page = 1) {
         document.getElementById('tBody').innerHTML =
             `<tr><td colspan="8" class="px-5 py-12 text-center text-red-500 text-sm">Network error: ${err.message}</td></tr>`;
     }
+    if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
 }
 
 function renderTable(rows) {
@@ -385,7 +372,7 @@ function renderTable(rows) {
                     <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
                         ${(c.thumbnail_url || c.image_url)
                             ? `<img src="${c.thumbnail_url || c.image_url}" class="w-full h-full object-cover">`
-                            : `<svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>`}
+                            : `<i data-lucide="layers" class="w-5 h-5 text-gray-400"></i>`}
                     </div>
                     <div>
                         <p class="text-sm font-semibold text-gray-900">${c.name}</p>
@@ -415,15 +402,11 @@ function renderTable(rows) {
                 <div class="flex items-center justify-end gap-1">
                     <button onclick="openEdit(${c.id})"
                             class="p-2 rounded-lg text-gray-500 hover:text-[#0082C3] hover:bg-blue-50 transition-colors" title="Edit">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                        </svg>
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
                     </button>
                     <button onclick="del(${c.id}, '${c.name.replace(/'/g,"&#39;")}')"
                             class="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors" title="Delete">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                        </svg>
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
             </td>
@@ -553,12 +536,6 @@ async function handleImageUpload(event) {
 
     if (!file.type.startsWith('image/')) {
         Dialog.alert({ title: 'Invalid File', message: 'Please select an image file (PNG, JPG, WEBP).', type: 'danger' });
-        return;
-    }
-
-    const maxSizeKB = {{ \App\Models\Setting::group('media')['max_upload_size'] ?? 500 }};
-    if (file.size > maxSizeKB * 1024) {
-        Dialog.alert({ title: 'File Too Large', message: `Image size should not exceed ${maxSizeKB}KB.`, type: 'danger' });
         return;
     }
 

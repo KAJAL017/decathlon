@@ -14,7 +14,7 @@ return new class extends Migration
             $table->foreignId('variant_id')->nullable()->constrained('product_variants')->cascadeOnDelete();
             
             $table->string('image_url');
-            $table->string('image_id')->nullable()->comment('ImageKit file ID');
+            $table->string('image_id')->nullable();
             $table->string('alt_text')->nullable();
             
             $table->integer('sort_order')->default(0);

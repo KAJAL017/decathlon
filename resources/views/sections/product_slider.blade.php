@@ -4,10 +4,10 @@
             <h2 class="text-lg font-bold text-gray-900">{{ $section->title }}</h2>
             <div class="flex items-center gap-2">
                 <button id="prev-{{ $section->id }}" class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
                 </button>
                 <button id="next-{{ $section->id }}" class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
                 </button>
             </div>
         </div>

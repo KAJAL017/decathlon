@@ -29,12 +29,14 @@ Route::get('/register', [CustomerAuthController::class, 'showRegister'])->name('
 Route::post('/register', [CustomerAuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('logout');
 
-// Checkout Routes
-Route::middleware(['auth:customer'])->group(function() {
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-    Route::get('/checkout/success/{orderNumber}', [CheckoutController::class, 'success'])->name('checkout.success');
-});
+// Checkout Routes (Guest + Auth)
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('/checkout/success/{orderNumber}', [CheckoutController::class, 'success'])->name('checkout.success');
+
+// Guest Order Tracking
+Route::get('/order/track', [CheckoutController::class, 'track'])->name('order.track');
+Route::post('/order/track', [CheckoutController::class, 'trackLookup'])->name('order.track.lookup');
 
 // Cart AJAX Routes
 Route::prefix('cart')->name('cart.')->group(function() {

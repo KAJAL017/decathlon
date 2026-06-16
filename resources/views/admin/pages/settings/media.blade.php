@@ -15,7 +15,7 @@
         <div class="px-8 py-5 border-b border-gray-100 bg-gray-50 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-[#0082C3]">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                    <i data-lucide="globe" class="w-6 h-6"></i>
                 </div>
                 <h2 class="text-lg font-bold text-gray-900 uppercase tracking-tight">Global Media Configuration</h2>
             </div>
@@ -25,9 +25,9 @@
         <form id="globalSettingsForm" onsubmit="saveGlobalSettings(event)" class="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @csrf
             <div>
-                <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Maximum Upload Size (KB)</label>
+                <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Target Optimized Size (KB)</label>
                 <input type="number" name="max_upload_size" value="{{ $globalSettings['max_upload_size'] }}" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold focus:ring-2 focus:ring-[#0082C3] transition-all">
-                <p class="text-[10px] text-gray-400 mt-2 font-medium">Files larger than this will be rejected.</p>
+                <p class="text-[10px] text-gray-400 mt-2 font-medium">Uploads are optimized automatically using the type settings below.</p>
             </div>
 
             <div>

@@ -18,21 +18,21 @@
             <nav class="bg-white rounded-xl border border-gray-200 overflow-hidden sticky top-4">
                 @php
                 $intIcons = [
-                    'analytics' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>',
-                    'payments'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>',
-                    'shipping'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/>',
-                    'marketing' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>',
-                    'imagekit'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
-                    'webhooks'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>',
-                    'apps'      => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>',
+                    'analytics' => 'bar-chart-2',
+                    'payments'  => 'credit-card',
+                    'shipping'  => 'truck',
+                    'marketing' => 'megaphone',
+                    'media'     => 'image',
+                    'webhooks'  => 'link',
+                    'apps'      => 'layout-grid',
                 ];
-                $intLabels = ['analytics'=>'Analytics','payments'=>'Payments','shipping'=>'Shipping','marketing'=>'Marketing','webhooks'=>'Webhooks','apps'=>'Third Party Apps'];
+                $intLabels = ['analytics'=>'Analytics','payments'=>'Payments','shipping'=>'Shipping','marketing'=>'Marketing','media'=>'Media Storage','webhooks'=>'Webhooks','apps'=>'Third Party Apps'];
                 @endphp
                 @foreach($intLabels as $key=>$label)
                 <button onclick="switchTab('{{$key}}')" id="nav-{{$key}}"
                         class="int-nav w-full flex items-center gap-2 px-4 py-3 text-sm font-medium text-left transition-colors border-b border-gray-100 last:border-0
                                {{ $key === 'analytics' ? 'bg-blue-50 text-[#0082C3] border-l-2 border-l-[#0082C3]' : 'text-gray-700 hover:bg-gray-50' }}">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">{!! $intIcons[$key] !!}</svg>
+                    <i data-lucide="{{ $intIcons[$key] }}" class="w-4 h-4 flex-shrink-0"></i>
                     <span>{{$label}}</span>
                 </button>
                 @endforeach
@@ -114,9 +114,7 @@
                     <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                                </svg>
+                                <i data-lucide="tag" class="w-6 h-6 text-blue-600"></i>
                             </div>
                             <div>
                                 <h3 class="text-sm font-semibold text-gray-900">Google Tag Manager</h3>
@@ -203,9 +201,7 @@
                                 {{ \App\Models\Setting::get('razorpay_key_id') ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500' }}">
                                 {{ \App\Models\Setting::get('razorpay_key_id') ? '✓ Connected' : 'Not Connected' }}
                             </span>
-                            <svg id="card-icon-razorpay" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
+                            <i data-lucide="arrow-down" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1"></i>
                         </div>
                     </div>
                     <div id="card-body-razorpay" class="int-card-body" data-card-id="razorpay">
@@ -241,7 +237,7 @@
                                            placeholder="rzp_test_XXXXXXXXXXXXXXXX"
                                            class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3] pr-10">
                                     <button onclick="toggleVisibility('razorpay_key_id')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
@@ -257,7 +253,7 @@
                                            placeholder="••••••••••••••••••••"
                                            class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3] pr-10">
                                     <button onclick="toggleVisibility('razorpay_key_secret')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
@@ -273,7 +269,7 @@
                                            placeholder="Your webhook secret"
                                            class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3] pr-10">
                                     <button onclick="toggleVisibility('razorpay_webhook_secret')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
@@ -288,7 +284,7 @@
                                 </code>
                                 <button onclick="navigator.clipboard.writeText('{{ url('/api/razorpay/webhook') }}').then(()=>toast('Webhook URL copied'))"
                                         class="p-2 text-gray-400 hover:text-[#0082C3] hover:bg-blue-50 rounded-lg transition-colors flex-shrink-0">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                    <i data-lucide="copy" class="w-4 h-4"></i>
                                 </button>
                             </div>
                         </div>
@@ -336,9 +332,7 @@
                             {{ \App\Models\Setting::get('shiprocket_email') ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500' }}">
                             {{ \App\Models\Setting::get('shiprocket_email') ? '✓ Connected' : 'Not Connected' }}
                         </span>
-                        <svg id="card-icon-shiprocket" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
+                        <i data-lucide="arrow-down" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1"></i>
                         </div>
                     </div>
                     <div id="card-body-shiprocket" class="int-card-body" data-card-id="shiprocket">
@@ -362,7 +356,7 @@
                                            placeholder="••••••••"
                                            class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3] pr-10">
                                     <button onclick="toggleVisibility('shiprocket_password')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
@@ -379,9 +373,7 @@
                                     </select>
                                     <button type="button" onclick="fetchPickupLocations()" id="fetchLocBtn"
                                         class="px-3 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg border border-gray-300 transition-colors flex items-center gap-1.5 whitespace-nowrap">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                                        </svg>
+                                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                                         Fetch
                                     </button>
                                 </div>
@@ -414,9 +406,7 @@
                         {{-- Token status --}}
                         @if(\App\Models\Setting::get('shiprocket_email'))
                         <div class="bg-green-50 border border-green-200 rounded-xl p-3 flex items-center gap-3">
-                            <svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
+                            <i data-lucide="circle-check" class="w-5 h-5 text-green-600 flex-shrink-0"></i>
                             <div>
                                 <p class="text-sm font-semibold text-green-700">Shiprocket Connected</p>
                                 <p class="text-xs text-green-600">Account: {{ \App\Models\Setting::get('shiprocket_email') }}</p>
@@ -463,9 +453,7 @@
                                    class="sr-only peer" onchange="saveCOD(this.checked)">
                             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0082C3]"></div>
                         </label>
-                        <svg id="card-icon-cod" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
+                        <i data-lucide="arrow-down" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1"></i>
                         </div>
                     </div>
                     <div id="card-body-cod" class="int-card-body" data-card-id="cod">
@@ -513,9 +501,7 @@
                             {{ \App\Models\Setting::get('mailchimp_api_key') ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500' }}">
                             {{ \App\Models\Setting::get('mailchimp_api_key') ? '✓ Connected' : 'Not Connected' }}
                         </span>
-                        <svg id="card-icon-mailchimp" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
+                        <i data-lucide="arrow-down" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1"></i>
                         </div>
                     </div>
                     <div id="card-body-mailchimp" class="int-card-body" data-card-id="mailchimp">
@@ -534,7 +520,7 @@
                                            placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-us1"
                                            class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3] pr-10">
                                     <button onclick="toggleVisibility('mailchimp_api_key')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
@@ -581,9 +567,7 @@
 
                         @if(\App\Models\Setting::get('mailchimp_api_key'))
                         <div class="bg-green-50 border border-green-200 rounded-xl p-3 flex items-center gap-3">
-                            <svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
+                            <i data-lucide="circle-check" class="w-5 h-5 text-green-600 flex-shrink-0"></i>
                             <div>
                                 <p class="text-sm font-semibold text-green-700">Mailchimp Connected</p>
                                 <p class="text-xs text-green-600">List ID: {{ \App\Models\Setting::get('mailchimp_list_id', '—') }} · Server: {{ \App\Models\Setting::get('mailchimp_server', '—') }}</p>
@@ -628,9 +612,7 @@
                             {{ \App\Models\Setting::get('msg91_auth_key') ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500' }}">
                             {{ \App\Models\Setting::get('msg91_auth_key') ? '✓ Connected' : 'Not Connected' }}
                         </span>
-                        <svg id="card-icon-msg91" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
+                        <i data-lucide="arrow-down" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1"></i>
                         </div>
                     </div>
                     <div id="card-body-msg91" class="int-card-body" data-card-id="msg91">
@@ -646,7 +628,7 @@
                                            placeholder="Your MSG91 Auth Key"
                                            class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3] pr-10">
                                     <button onclick="toggleVisibility('msg91_auth_key')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
@@ -738,9 +720,7 @@
 
                         @if(\App\Models\Setting::get('msg91_auth_key'))
                         <div class="bg-green-50 border border-green-200 rounded-xl p-3 flex items-center gap-3">
-                            <svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
+                            <i data-lucide="circle-check" class="w-5 h-5 text-green-600 flex-shrink-0"></i>
                             <div>
                                 <p class="text-sm font-semibold text-green-700">MSG91 Connected</p>
                                 <p class="text-xs text-green-600">Sender: {{ \App\Models\Setting::get('msg91_sender_id', '—') }} · Route: {{ \App\Models\Setting::get('msg91_route', '4') }}</p>
@@ -785,9 +765,7 @@
                             {{ \App\Models\Setting::get('twilio_account_sid') ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500' }}">
                             {{ \App\Models\Setting::get('twilio_account_sid') ? '✓ Connected' : 'Not Connected' }}
                         </span>
-                        <svg id="card-icon-twilio" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
+                        <i data-lucide="arrow-down" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1"></i>
                         </div>
                     </div>
                     <div id="card-body-twilio" class="int-card-body" data-card-id="twilio">
@@ -812,7 +790,7 @@
                                            placeholder="••••••••••••••••••••••••••••••••"
                                            class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3] pr-10">
                                     <button onclick="toggleVisibility('twilio_auth_token')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
@@ -923,9 +901,7 @@
 
                         @if(\App\Models\Setting::get('twilio_account_sid'))
                         <div class="bg-green-50 border border-green-200 rounded-xl p-3 flex items-center gap-3">
-                            <svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
+                            <i data-lucide="circle-check" class="w-5 h-5 text-green-600 flex-shrink-0"></i>
                             <div>
                                 <p class="text-sm font-semibold text-green-700">Twilio Connected</p>
                                 <p class="text-xs text-green-600">
@@ -961,9 +937,7 @@
                     <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 cursor-pointer select-none" onclick="toggleCard('smtp')">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                </svg>
+                                <i data-lucide="mail" class="w-5 h-5 text-blue-600"></i>
                             </div>
                             <div>
                                 <h3 class="text-sm font-semibold text-gray-900">SMTP Email</h3>
@@ -975,9 +949,7 @@
                                 {{ \App\Models\Setting::get('smtp_host') ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500' }}">
                                 {{ \App\Models\Setting::get('smtp_host') ? '✓ Configured' : 'Not Configured' }}
                             </span>
-                            <svg id="card-icon-smtp" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
+                            <i data-lucide="arrow-down" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1"></i>
                         </div>
                     </div>
                     <div id="card-body-smtp" class="int-card-body" data-card-id="smtp">
@@ -1041,7 +1013,7 @@
                                         placeholder="••••••••••••••••"
                                         class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3] pr-10">
                                     <button onclick="toggleVisibility('smtp_password')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
@@ -1071,9 +1043,7 @@
                         {{-- Connected status --}}
                         @if(\App\Models\Setting::get('smtp_host'))
                         <div class="bg-green-50 border border-green-200 rounded-xl p-3 flex items-center gap-3">
-                            <svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
+                            <i data-lucide="circle-check" class="w-5 h-5 text-green-600 flex-shrink-0"></i>
                             <div>
                                 <p class="text-sm font-semibold text-green-700">SMTP Configured</p>
                                 <p class="text-xs text-green-600">
@@ -1133,9 +1103,7 @@
                                 {{ \App\Models\Setting::get('brevo_api_key') ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500' }}">
                                 {{ \App\Models\Setting::get('brevo_api_key') ? '✓ Connected' : 'Not Connected' }}
                             </span>
-                            <svg id="card-icon-brevo" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
+                            <i data-lucide="arrow-down" class="w-4 h-4 text-gray-400 transition-transform duration-200 ml-1"></i>
                         </div>
                     </div>
                     <div id="card-body-brevo" class="int-card-body" data-card-id="brevo">
@@ -1153,7 +1121,7 @@
                                         placeholder="xkeysib-..."
                                         class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3] pr-10">
                                     <button onclick="toggleVisibility('brevo_api_key')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
@@ -1183,7 +1151,7 @@
                                         class="flex-1 px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3]">
                                     <button onclick="loadBrevoLists()" id="brevoListsBtn"
                                         class="px-3 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg border border-gray-300 transition-colors flex items-center gap-1.5 whitespace-nowrap">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                                         Fetch Lists
                                     </button>
                                 </div>
@@ -1196,20 +1164,18 @@
                         <div class="border border-gray-200 rounded-xl overflow-hidden">
                             <div class="flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-100">
                                 <h4 class="text-sm font-bold text-gray-800 flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                    </svg>
+                                    <i data-lucide="mail" class="w-4 h-4 text-[#0082C3]"></i>
                                     Verified Senders
                                 </h4>
                                 <div class="flex items-center gap-2">
                                     <button onclick="loadBrevoSenders()" id="brevoSendersRefreshBtn"
                                         class="text-xs text-gray-400 hover:text-[#0082C3] transition-colors flex items-center gap-1">
-                                        <svg id="brevoSendersRefreshIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                                         Refresh
                                     </button>
                                     <button onclick="openAddSender()"
                                         class="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white bg-[#0082C3] rounded-lg hover:bg-[#006ba3] transition-colors">
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                        <i data-lucide="plus" class="w-3 h-3"></i>
                                         Add Sender
                                     </button>
                                 </div>
@@ -1267,25 +1233,23 @@
                         <div class="border border-gray-200 rounded-xl overflow-hidden">
                             <div class="flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-100">
                                 <h4 class="text-sm font-bold text-gray-800 flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                    </svg>
+                                    <i data-lucide="file-text" class="w-4 h-4 text-[#0082C3]"></i>
                                     Email Templates
                                 </h4>
                                 <div class="flex items-center gap-2">
                                     <button onclick="loadBrevoTemplates()" id="brevoTplRefreshBtn"
                                         class="text-xs text-gray-400 hover:text-[#0082C3] transition-colors flex items-center gap-1">
-                                        <svg id="brevoTplRefreshIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                                         Refresh
                                     </button>
                                     <button onclick="openCreateTemplate()"
                                         class="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white bg-[#0082C3] rounded-lg hover:bg-[#006ba3] transition-colors">
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                        <i data-lucide="plus" class="w-3 h-3"></i>
                                         New Template
                                     </button>
                                     <button onclick="seedBrevoTemplates()" id="brevoSeedBtn"
                                         class="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors" title="Create 19 enterprise templates">
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                                        <i data-lucide="upload" class="w-3 h-3"></i>
                                         Seed All (19)
                                     </button>
                                 </div>
@@ -1301,9 +1265,7 @@
                             <button type="button" onclick="toggleBrevoUseCases()" id="brevoUseCasesToggleBtn"
                                 class="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left">
                                 <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                    </svg>
+                                    <i data-lucide="mail" class="w-4 h-4 text-[#0082C3]"></i>
                                     <h4 class="text-sm font-bold text-gray-800">Where to use Brevo</h4>
                                     @php
                                         $enabledCount = collect(['brevo_use_order_confirm','brevo_use_order_shipped','brevo_use_order_delivered','brevo_use_order_cancelled','brevo_use_invoice','brevo_use_return_update','brevo_use_welcome','brevo_use_password_reset','brevo_use_email_otp','brevo_use_new_order_admin','brevo_use_low_stock','brevo_use_campaigns'])->filter(fn($k) => \App\Models\Setting::get($k) === '1')->count();
@@ -1312,9 +1274,7 @@
                                     <span class="px-2 py-0.5 bg-[#0082C3] text-white text-[10px] font-bold rounded-full">{{ $enabledCount }} active</span>
                                     @endif
                                 </div>
-                                <svg id="brevoUseCasesChevron" class="w-4 h-4 text-gray-400 transition-transform duration-200 rotate-[-90deg]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
+                                <i data-lucide="arrow-down" class="w-4 h-4 text-gray-400 transition-transform duration-200 rotate-[-90deg]"></i>
                             </button>
 
                             <div id="brevoUseCasesBody" class="hidden p-4 space-y-4 border-t border-gray-100">
@@ -1435,19 +1395,19 @@
                 <div class="grid grid-cols-3 gap-4">
                     <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-3">
                         <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                            <i data-lucide="link" class="w-5 h-5 text-blue-600"></i>
                         </div>
                         <div><p class="text-xs text-gray-500">Total</p><p id="whTotal" class="text-xl font-bold text-gray-900">—</p></div>
                     </div>
                     <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-3">
                         <div class="w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <i data-lucide="circle-check" class="w-5 h-5 text-green-600"></i>
                         </div>
                         <div><p class="text-xs text-gray-500">Active</p><p id="whActive" class="text-xl font-bold text-gray-900">—</p></div>
                     </div>
                     <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-3">
                         <div class="w-9 h-9 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <i data-lucide="info" class="w-5 h-5 text-red-600"></i>
                         </div>
                         <div><p class="text-xs text-gray-500">Failed Last</p><p id="whFailed" class="text-xl font-bold text-gray-900">—</p></div>
                     </div>
@@ -1456,7 +1416,7 @@
                 {{-- Filters + Add --}}
                 <div class="bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap gap-3 items-center">
                     <div class="relative flex-1 min-w-[200px]">
-                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
                         <input id="whSearch" type="text" placeholder="Search webhooks…"
                                class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
                                oninput="whDebounce()">
@@ -1468,7 +1428,7 @@
                     </select>
                     <button onclick="openAddWebhook()"
                             class="inline-flex items-center gap-2 px-4 py-2 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        <i data-lucide="plus" class="w-4 h-4"></i>
                         Add Webhook
                     </button>
                 </div>
@@ -1649,7 +1609,7 @@
                     </div>
                 </div>
 
-                {{-- ── ImageKit section moved to its own tab ── --}}
+                {{-- ── Media storage section moved to its own tab ── --}}
 
             </div>
 
@@ -1665,9 +1625,7 @@
     <div class="absolute inset-y-0 right-0 w-full max-w-3xl bg-white shadow-2xl flex flex-col">
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50 flex-shrink-0">
             <div class="flex items-center gap-3">
-                <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                </svg>
+                <i data-lucide="eye" class="w-4 h-4 text-purple-600"></i>
                 <h3 id="tplPreviewTitle" class="text-base font-bold text-gray-900">Template Preview</h3>
             </div>
             <div class="flex items-center gap-2">
@@ -1676,7 +1634,7 @@
                     📄 HTML Source
                 </button>
                 <button onclick="closeTplPreview()" class="text-gray-400 hover:text-gray-600 p-1">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
         </div>
@@ -1705,7 +1663,7 @@
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50 flex-shrink-0">
             <h3 id="tplModalTitle" class="text-lg font-bold text-gray-900">New Template</h3>
             <button onclick="closeTplModal()" class="text-gray-400 hover:text-gray-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
         <div class="flex-1 overflow-y-auto p-6 space-y-4">
@@ -1789,7 +1747,7 @@
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
             <h3 id="whModalTitle" class="text-lg font-semibold text-gray-900">Add Webhook</h3>
             <button onclick="closeWhModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
         <div class="flex-1 overflow-y-auto px-6 py-5 space-y-4">
@@ -1861,6 +1819,7 @@
 @push('scripts')
 <script>
 const CSRF = document.querySelector('meta[name="csrf-token"]').content;
+let isFirstLoad = true;
 
 // switchTab defined early so onclick handlers work
 function switchTab(name) {
@@ -1874,12 +1833,12 @@ function switchTab(name) {
     if (nav) nav.className = 'int-nav w-full flex items-center gap-2 px-4 py-3 text-sm font-medium text-left transition-colors border-b border-gray-100 last:border-0 bg-blue-50 text-[#0082C3] border-l-2 border-l-[#0082C3]';
     history.replaceState(null, '', '#' + name);
     if (name === 'webhooks') loadWebhooks();
-    if (name === 'imagekit' && document.getElementById('fmContent')) fmInit();
+    if (name === 'media' && document.getElementById('fmContent')) fmInit();
 }
 
 // Restore tab from URL hash on page load
 document.addEventListener('DOMContentLoaded', () => {
-    const validTabs = ['analytics','payments','shipping','marketing','imagekit','webhooks','apps'];
+    const validTabs = ['analytics','payments','shipping','marketing','media','webhooks','apps'];
     const hash = window.location.hash.replace('#', '');
     switchTab(validTabs.includes(hash) ? hash : 'analytics');
 
@@ -2111,7 +2070,7 @@ async function fetchPickupLocations() {
     const select   = document.getElementById('shiprocket_pickup_location');
 
     btn.disabled = true;
-    btn.innerHTML = '<svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Fetching...';
+    btn.innerHTML = '<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i> Fetching...';
     status.textContent = 'Connecting to Shiprocket...';
     status.className = 'text-xs text-blue-500 mt-1';
 
@@ -2154,7 +2113,7 @@ async function fetchPickupLocations() {
         status.className = 'text-xs text-red-500 mt-1';
     } finally {
         btn.disabled = false;
-        btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Fetch';
+        btn.innerHTML = '<i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Fetch';
     }
 }
 
@@ -2398,13 +2357,13 @@ async function seedBrevoTemplates() {
     const btn = document.getElementById('brevoSeedBtn');
 
     btn.disabled = true;
-    btn.innerHTML = '<svg class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Creating...';
+    btn.innerHTML = '<i data-lucide="loader" class="w-3 h-3 animate-spin"></i> Creating...';
 
     try {
         const r    = await fetch('/admin/brevo/seed-templates', { credentials: 'same-origin', headers: { 'Accept': 'application/json' } });
         const data = await r.json();
         btn.disabled = false;
-        btn.innerHTML = '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg> Seed All (19)';
+        btn.innerHTML = '<i data-lucide="upload" class="w-3 h-3"></i> Seed All (19)';
         if (data.success) {
             toast('✓ ' + data.message);
             loadBrevoTemplates();
@@ -2442,9 +2401,7 @@ async function loadBrevoTemplates() {
             <div class="flex items-start justify-between px-4 py-3 hover:bg-gray-50 transition-colors">
                 <div class="flex items-start gap-3 min-w-0">
                     <div class="w-8 h-8 rounded-lg ${t.is_active ? 'bg-green-100' : 'bg-gray-100'} flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg class="w-4 h-4 ${t.is_active ? 'text-green-600' : 'text-gray-400'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
+                        <i data-lucide="file-text" class="w-4 h-4 ${t.is_active ? 'text-green-600' : 'text-gray-400'}"></i>
                     </div>
                     <div class="min-w-0">
                         <div class="flex items-center gap-2 flex-wrap">
@@ -2461,19 +2418,19 @@ async function loadBrevoTemplates() {
                 <div class="flex items-center gap-1 flex-shrink-0 ml-2">
                     <button onclick="editBrevoTemplate(${t.id})" title="Edit"
                         class="p-1.5 text-gray-400 hover:text-[#0082C3] hover:bg-blue-50 rounded-lg transition-colors">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                     </button>
                     <button onclick="viewBrevoTemplate(${t.id},'${esc(t.name)}')" title="Preview"
                         class="p-1.5 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        <i data-lucide="eye" class="w-3.5 h-3.5"></i>
                     </button>
                     <button onclick="openSendTestTemplate(${t.id},'${esc(t.name)}')" title="Send Test"
                         class="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                        <i data-lucide="send" class="w-3.5 h-3.5"></i>
                     </button>
                     <button onclick="deleteBrevoTemplate(${t.id},'${esc(t.name)}')" title="Delete"
                         class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
             </div>
@@ -2749,11 +2706,11 @@ async function loadBrevoSenders() {
                     </div>` : ''}
                     <button onclick="useAsSender('${esc(s.email)}','${esc(s.name)}')" title="Use as From"
                         class="p-1.5 text-gray-400 hover:text-[#0082C3] hover:bg-blue-50 rounded-lg transition-colors" title="Set as From Email">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <i data-lucide="check" class="w-3.5 h-3.5"></i>
                     </button>
                     <button onclick="deleteBrevoSender(${s.id},'${esc(s.email)}')" title="Delete"
                         class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
             </div>
@@ -3038,7 +2995,7 @@ async function loadBrevoLists() {
     try {
         const r    = await fetch('/admin/brevo/lists', { credentials: 'same-origin', headers: { 'Accept': 'application/json' } });
         const data = await r.json();
-        btn.disabled = false; btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Fetch Lists';
+        btn.disabled = false; btn.innerHTML = '<i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Fetch Lists';
 
         if (!data.success || !data.data.length) {
             toast('No lists found', 'error'); return;
@@ -3236,7 +3193,7 @@ async function disconnectSMTP() {
     else toast(data.message || 'Error', 'error');
 }
 
-// ── ImageKit Storage Stats ────────────────────────────────────────
+// ── Media Storage Stats ───────────────────────────────────────────
 async function loadIkStats() {
     const icon = document.getElementById('ikStatsRefreshIcon');
     if (icon) icon.classList.add('animate-spin');
@@ -3251,7 +3208,7 @@ async function loadIkStats() {
         const sizeMB    = (sizeBytes / 1024 / 1024).toFixed(1);
         const sizeGB    = (sizeBytes / 1024 / 1024 / 1024).toFixed(3);
         const pct       = Math.min(100, ((sizeBytes / 1024 / 1024 / 1024) / 20) * 100).toFixed(1);
-        const endpoint  = (d.url_endpoint || '').replace('https://ik.imagekit.io/', '');
+        const endpoint  = d.url_endpoint || '';
 
         const grid = document.getElementById('ikStatsGrid');
         if (grid) {
@@ -3269,7 +3226,7 @@ async function loadIkStats() {
                 <div class="bg-green-50 rounded-xl p-4 border border-green-100">
                     <p class="text-xs font-semibold text-green-600 uppercase tracking-wider mb-1">Account ID</p>
                     <p class="text-sm font-black text-green-800 truncate font-mono">${esc(endpoint || '—')}</p>
-                    <p class="text-[10px] text-green-400 mt-0.5">ImageKit ID</p>
+                    <p class="text-[10px] text-green-400 mt-0.5">Storage URL</p>
                 </div>
             `;
         }
@@ -3303,7 +3260,7 @@ async function fmNavigate(path) {
 
     const content = document.getElementById('fmContent');
     content.innerHTML = `<div class="flex items-center justify-center h-48 text-gray-400">
-        <svg class="w-5 h-5 animate-spin mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+        <i data-lucide="loader" class="w-5 h-5 animate-spin mr-2"></i>
         Loading...
     </div>`;
 
@@ -3325,7 +3282,7 @@ async function fmNavigate(path) {
         fmSetStatus(`${(data.data.folders||[]).length} folders, ${(data.data.files||[]).length} files`);
     } catch (err) {
         content.innerHTML = `<div class="flex flex-col items-center justify-center h-48 text-gray-400 gap-2">
-            <svg class="w-8 h-8 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <i data-lucide="info" class="w-8 h-8 text-red-300"></i>
             <p class="text-sm text-red-500">${esc(err.message)}</p>
         </div>`;
         fmSetStatus('Error loading');
@@ -3336,7 +3293,7 @@ function fmRender() {
     const content = document.getElementById('fmContent');
     if (!fmItems.length) {
         content.innerHTML = `<div class="flex flex-col items-center justify-center h-48 text-gray-300 gap-3">
-            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+            <i data-lucide="folder" class="w-12 h-12"></i>
             <p class="text-sm">This folder is empty</p>
             <p class="text-xs">Upload images or create a folder</p>
         </div>`;
@@ -3389,7 +3346,7 @@ function fmRenderGridItem(item) {
         {{-- Thumbnail --}}
         <div class="aspect-square flex items-center justify-center rounded-t-xl overflow-hidden bg-gray-100">
             ${isFolder
-                ? `<svg class="w-10 h-10 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/></svg>`
+                ? `<i data-lucide="folder" class="w-10 h-10 text-yellow-400"></i>`
                 : `<img src="${esc(thumb || '')}" alt="${esc(name)}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<svg class=\\'w-8 h-8 text-gray-300\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'1.5\\' d=\\'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z\\'/></svg>'">`
             }
         </div>
@@ -3404,11 +3361,11 @@ function fmRenderGridItem(item) {
         ${!isFolder ? `<div class="absolute top-1.5 right-1.5 hidden group-hover:flex gap-1">
             <button onclick="event.stopPropagation();fmCopyUrl('${esc(item.url || '')}')" title="Copy URL"
                 class="w-6 h-6 bg-white rounded-lg shadow flex items-center justify-center text-gray-500 hover:text-[#0082C3]">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <i data-lucide="copy" class="w-3 h-3"></i>
             </button>
             <button onclick="event.stopPropagation();fmDeleteFile('${esc(item.fileId)}','${esc(name)}')" title="Delete"
                 class="w-6 h-6 bg-white rounded-lg shadow flex items-center justify-center text-gray-500 hover:text-red-600">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                <i data-lucide="trash-2" class="w-3 h-3"></i>
             </button>
         </div>` : ''}
     </div>`;
@@ -3432,7 +3389,7 @@ function fmRenderListItem(item) {
         <td class="px-3 py-2">
             <div class="flex items-center gap-2.5">
                 ${isFolder
-                    ? `<svg class="w-5 h-5 text-yellow-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/></svg>`
+                    ? `<i data-lucide="folder" class="w-5 h-5 text-yellow-400 flex-shrink-0"></i>`
                     : `<div class="w-8 h-8 rounded bg-gray-100 overflow-hidden flex-shrink-0"><img src="${esc(thumb||'')}" class="w-full h-full object-cover" onerror="this.style.display='none'"></div>`
                 }
                 <span class="text-sm font-medium text-gray-800 truncate max-w-[200px]">${esc(name)}</span>
@@ -3445,13 +3402,13 @@ function fmRenderListItem(item) {
             <div class="flex items-center justify-center gap-1">
                 ${!isFolder ? `
                 <button onclick="fmCopyUrl('${esc(item.url||'')}')" title="Copy URL" class="p-1 text-gray-400 hover:text-[#0082C3] rounded">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                 </button>
                 <button onclick="fmDeleteFile('${esc(item.fileId)}','${esc(name)}')" title="Delete" class="p-1 text-gray-400 hover:text-red-600 rounded">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                 </button>` : `
                 <button onclick="fmDeleteFolder('${esc(item.folderPath||item.name)}','${esc(name)}')" title="Delete folder" class="p-1 text-gray-400 hover:text-red-600 rounded">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                 </button>`}
             </div>
         </td>
@@ -3658,7 +3615,7 @@ function fmPreview(url, name) {
                 <div class="flex items-center gap-2">
                     <button onclick="fmCopyUrl('${esc(url)}')" class="px-3 py-1.5 text-xs bg-[#0082C3] text-white rounded-lg hover:bg-[#006ba3] font-semibold">Copy URL</button>
                     <button onclick="document.getElementById('fmPreviewModal').remove()" class="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <i data-lucide="x" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
@@ -3705,7 +3662,7 @@ async function loadWebhooks() {
             <div class="flex items-start justify-between mb-3">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                        <i data-lucide="link" class="w-4 h-4 text-blue-600"></i>
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
@@ -3720,15 +3677,15 @@ async function loadWebhooks() {
                     <button onclick="testWebhook(${wh.id},'${esc(wh.name)}')" class="px-2.5 py-1.5 text-xs font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">Test</button>
                     <button onclick="toggleWebhook(${wh.id})" class="p-1.5 rounded-lg text-gray-500 hover:text-[#0082C3] hover:bg-blue-50 transition-colors" title="${wh.is_active ? 'Disable' : 'Enable'}">
                         ${wh.is_active
-                            ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>'
-                            : '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+                            ? '<i data-lucide="ban" class="w-4 h-4"></i>'
+                            : '<i data-lucide="circle-check" class="w-4 h-4"></i>'
                         }
                     </button>
                     <button onclick="editWebhook(${wh.id})" class="p-1.5 rounded-lg text-gray-500 hover:text-[#0082C3] hover:bg-blue-50 transition-colors" title="Edit">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
                     </button>
                     <button onclick="deleteWebhook(${wh.id},'${esc(wh.name)}')" class="p-1.5 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors" title="Delete">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
@@ -3743,6 +3700,7 @@ async function loadWebhooks() {
             </div>
         </div>
     `).join('');
+    if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
 }
 
 function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }

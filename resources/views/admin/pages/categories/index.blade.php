@@ -11,9 +11,7 @@
             <p class="text-sm text-gray-600 mt-1">Manage product categories, subcategories and hierarchy</p>
         </div>
         <button onclick="openAddModal()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-all shadow-sm hover:shadow-md">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
+            <i data-lucide="plus" class="w-5 h-5"></i>
             Add Category
         </button>
     </div>
@@ -29,9 +27,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                    </svg>
+                    <i data-lucide="layout-grid" class="w-6 h-6 text-blue-600"></i>
                 </div>
             </div>
         </div>
@@ -44,9 +40,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                    <i data-lucide="circle-check" class="w-6 h-6 text-green-600"></i>
                 </div>
             </div>
         </div>
@@ -59,9 +53,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
-                    </svg>
+                    <i data-lucide="ban" class="w-6 h-6 text-red-600"></i>
                 </div>
             </div>
         </div>
@@ -74,9 +66,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-yellow-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
-                    </svg>
+                    <i data-lucide="star" class="w-6 h-6 text-yellow-600"></i>
                 </div>
             </div>
         </div>
@@ -89,9 +79,7 @@
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
-                    </svg>
+                    <i data-lucide="folder" class="w-6 h-6 text-purple-600"></i>
                 </div>
             </div>
         </div>
@@ -115,9 +103,7 @@
                 <span id="selectedCount" class="text-sm text-gray-600 ml-2"></span>
             </div>
             <div class="flex-1 relative">
-                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
                 <input 
                     type="text" 
                     id="searchInput"
@@ -285,15 +271,11 @@
             </div>
             <div class="flex items-center gap-2">
                 <button type="button" onclick="fillDemoData()" class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition-all shadow-sm hover:shadow-md">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
+                    <i data-lucide="zap" class="w-4 h-4"></i>
                     Demo
                 </button>
                 <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
+                    <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
         </div>
@@ -306,9 +288,7 @@
                 <!-- Basic Information -->
                 <div class="space-y-4">
                     <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+                        <i data-lucide="info" class="w-4 h-4"></i>
                         Basic Information
                     </h4>
                     
@@ -344,9 +324,7 @@
                                     >
                                     <input type="hidden" id="categoryParent">
                                     <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                        </svg>
+                                        <i data-lucide="arrow-down" class="w-4 h-4 text-gray-400"></i>
                                     </div>
                                 </div>
                                 <div id="categoryParentDropdown" class="hidden absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
@@ -371,9 +349,7 @@
                 <!-- Display Settings -->
                 <div class="space-y-4 border-t pt-6 mt-6">
                     <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
-                        </svg>
+                        <i data-lucide="settings" class="w-4 h-4"></i>
                         Display Settings
                     </h4>
                     
@@ -408,9 +384,7 @@
                 <!-- Images Section -->
                 <div class="space-y-4 border-t pt-6 mt-6">
                     <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
+                        <i data-lucide="image" class="w-4 h-4"></i>
                         Category Image
                     </h4>
 
@@ -434,13 +408,9 @@
                                 </p>
                             </div>
                             <div id="categoryImageUploadArea">
-                                <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
+                                <i data-lucide="image" class="w-16 h-16 mx-auto text-gray-400 mb-4"></i>
                                 <button type="button" onclick="openImagePicker('image')" class="inline-flex items-center gap-2 px-6 py-3 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-all shadow-sm hover:shadow-md">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                                    </svg>
+                                    <i data-lucide="upload" class="w-5 h-5"></i>
                                     Upload Image
                                 </button>
                                 <p class="text-sm text-gray-500 mt-4">
@@ -461,15 +431,11 @@
                 <div class="space-y-4 border-t pt-6 mt-6">
                     <div class="flex items-center justify-between">
                         <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
+                            <i data-lucide="search" class="w-4 h-4"></i>
                             SEO Settings
                         </h4>
                         <button type="button" onclick="autoGenerateSEO()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 text-purple-700 text-xs font-medium rounded-lg hover:bg-purple-100 transition-colors">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
+                            <i data-lucide="zap" class="w-3.5 h-3.5"></i>
                             Auto Generate
                         </button>
                     </div>
@@ -502,10 +468,7 @@
             <button type="submit" form="categoryForm" id="submitBtn" class="px-5 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-all shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
                 <span id="submitBtnText">Create Category</span>
                 <span id="submitBtnLoading" class="hidden flex items-center gap-2">
-                    <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
+                    <i data-lucide="loader" class="animate-spin h-4 w-4"></i>
                     Processing...
                 </span>
             </button>
@@ -611,6 +574,7 @@ let searchTimeout;
 let currentImageType = null;
 let selectedCategories = new Set();
 let allParentCategories = [];
+let isFirstLoad = true;
 
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('searchInput') && document.getElementById('categoriesTableBody')) {
@@ -727,6 +691,7 @@ function loadCategories(page = 1) {
             renderPagination(data.pagination);
             updateStats(data.data, data.pagination);
         }
+        if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
     })
     .catch(error => {
         console.error('Error loading categories:', error);
@@ -739,6 +704,7 @@ function loadCategories(page = 1) {
                 </tr>
             `;
         }
+        if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
     });
 }
 
@@ -788,9 +754,7 @@ function renderCategories(categories) {
             <tr>
                 <td colspan="7" class="px-6 py-16 text-center">
                     <div class="flex flex-col items-center gap-3">
-                        <svg class="w-16 h-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                        </svg>
+                        <i data-lucide="layout-grid" class="w-16 h-16 text-gray-300"></i>
                         <div>
                             <p class="text-sm font-medium text-gray-900">No categories found</p>
                             <p class="text-sm text-gray-500 mt-1">Try adjusting your search or filters</p>
@@ -845,20 +809,13 @@ function renderCategories(categories) {
             <td class="px-6 py-4">
                 <div class="flex items-center justify-end gap-2">
                     <button onclick="viewCategory(${category.id})" class="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="View category">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                        </svg>
+                        <i data-lucide="eye" class="w-4 h-4"></i>
                     </button>
                     <button onclick="editCategory(${category.id})" class="p-2 text-gray-600 hover:text-[#0082C3] hover:bg-blue-50 rounded-lg transition-colors" title="Edit category">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                        </svg>
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
                     </button>
                     <button onclick="deleteCategory(${category.id})" class="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete category">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                        </svg>
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
             </td>
@@ -1225,9 +1182,7 @@ function showViewModal(category) {
                                 <div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-lg">
                                     ${category.image_url 
                                         ? `<img src="${category.image_url}" class="w-full h-full object-cover rounded-xl" alt="${category.name}">`
-                                        : `<svg class="w-8 h-8 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                                        </svg>`
+                                        : `<i data-lucide="layout-grid" class="w-8 h-8 text-[#0082C3]"></i>`
                                     }
                                 </div>
                                 <div>
@@ -1236,9 +1191,7 @@ function showViewModal(category) {
                                 </div>
                             </div>
                             <button onclick="document.getElementById('${modalId}').querySelector('.view-modal-close-btn').click()" class="text-white hover:text-gray-200 transition-colors">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
+                                <i data-lucide="x" class="w-6 h-6"></i>
                             </button>
                         </div>
                     </div>
@@ -1302,9 +1255,7 @@ function showViewModal(category) {
                                     
                                     <div class="bg-gray-50 rounded-lg p-3 space-y-2">
                                         <div class="flex items-center gap-2">
-                                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
+                                            <i data-lucide="clock" class="w-4 h-4 text-gray-400"></i>
                                             <label class="text-xs font-medium text-gray-500">Created</label>
                                         </div>
                                         <p class="text-sm text-gray-700 font-medium">${formatDateTime(category.created_at)}</p>
@@ -1313,9 +1264,7 @@ function showViewModal(category) {
                                     ${category.updated_at ? `
                                     <div class="bg-gray-50 rounded-lg p-3 space-y-2">
                                         <div class="flex items-center gap-2">
-                                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                                            </svg>
+                                            <i data-lucide="refresh-cw" class="w-4 h-4 text-gray-400"></i>
                                             <label class="text-xs font-medium text-gray-500">Last Updated</label>
                                         </div>
                                         <p class="text-sm text-gray-700 font-medium">${formatDateTime(category.updated_at)}</p>
@@ -1383,9 +1332,7 @@ function showViewModal(category) {
                     <!-- Footer -->
                     <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
                         <button type="button" onclick="editCategory(${category.id}); document.getElementById('${modalId}').querySelector('.view-modal-close-btn').click();" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-all shadow-sm hover:shadow-md">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                            </svg>
+                            <i data-lucide="pencil" class="w-4 h-4"></i>
                             Edit Category
                         </button>
                         <button type="button" class="view-modal-close-btn inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-all">

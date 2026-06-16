@@ -11,10 +11,10 @@
             </div>
             <div class="flex items-center gap-3 mt-4">
                 <button id="prev-{{ $section->id }}" class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:border-gray-900 transition-all shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
                 </button>
                 <button id="next-{{ $section->id }}" class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:border-gray-900 transition-all shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
                 </button>
             </div>
         </div>

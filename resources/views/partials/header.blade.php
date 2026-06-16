@@ -21,9 +21,7 @@
 
         {{-- Search (click opens overlay) --}}
         <div class="flex-1 relative mx-4">
-            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
+            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-400 pointer-events-none"></i>
             <input id="header-search-input"
                    type="text"
                    placeholder='Search for 60+ sports and 6,000+ products'
@@ -38,9 +36,7 @@
             @if(Auth::guard('customer')->check())
                 <div class="relative group" id="customer-nav-item">
                     <a href="#" class="flex flex-col items-center gap-[4px] group">
-                        <svg class="w-[24px] h-[24px] text-[#0082C3]" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12c0 2.694 1.087 5.13 2.85 6.903a.75.75 0 001.121-1.004 8.225 8.225 0 01-2.421-5.899 8.25 8.25 0 1116.5 0 8.225 8.225 0 01-2.421 5.899.75.75 0 001.121 1.004zM12 7a2.5 2.5 0 100 5 2.5 2.5 0 000-5z" clip-rule="evenodd" />
-                        </svg>
+                        <i data-lucide="user" class="w-[24px] h-[24px] text-[#0082C3]"></i>
                         <span class="text-[11px] font-black text-gray-900 group-hover:text-[#0082C3] leading-none transition-colors uppercase tracking-tight">Hi, {{ Auth::guard('customer')->user()->first_name }}</span>
                     </a>
                     
@@ -64,17 +60,13 @@
                 </div>
             @else
                 <a href="{{ route('login') }}" class="flex flex-col items-center gap-[4px] group">
-                    <svg class="w-[24px] h-[24px] text-gray-700 group-hover:text-[#0082C3] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
-                    </svg>
+                    <i data-lucide="user" class="w-[24px] h-[24px] text-gray-700 group-hover:text-[#0082C3] transition-colors"></i>
                     <span class="text-[11px] font-medium text-gray-600 group-hover:text-[#0082C3] leading-none transition-colors">Sign In</span>
                 </a>
             @endif
 
             <a href="#" class="flex flex-col items-center gap-[4px] group">
-                <svg class="w-[24px] h-[24px] text-gray-700 group-hover:text-[#0082C3] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
-                </svg>
+                <i data-lucide="heart" class="w-[24px] h-[24px] text-gray-700 group-hover:text-[#0082C3] transition-colors"></i>
                 <span class="text-[11px] font-medium text-gray-600 group-hover:text-[#0082C3] leading-none transition-colors">Wishlist</span>
             </a>
 
@@ -82,14 +74,12 @@
             <div class="relative group" id="cart-nav-item">
                 <a href="{{ route('cart') }}" class="flex flex-col items-center gap-[4px] group relative py-2">
                     <span class="cart-count absolute -top-0 -right-1.5 bg-[#F7C844] text-gray-900 text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white hidden">0</span>
-                    <svg class="w-[24px] h-[24px] text-gray-700 group-hover:text-[#0082C3] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
-                    </svg>
+                    <i data-lucide="shopping-cart" class="w-[24px] h-[24px] text-gray-700 group-hover:text-[#0082C3] transition-colors"></i>
                     <span class="text-[11px] font-medium text-gray-600 group-hover:text-[#0082C3] leading-none transition-colors">Cart</span>
                 </a>
 
                 {{-- Mini Cart Dropdown --}}
-                <div id="mini-cart-dropdown" class="absolute top-full right-0 mt-1 w-[320px] bg-white border border-gray-200 rounded-xl shadow-2xl z-[9999] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right group-hover:translate-y-0 translate-y-2 cart-dropdown-panel">
+                <div id="mini-cart-dropdown" class="absolute top-full right-0 mt-1 w-[320px] bg-white border border-gray-200 rounded-xl shadow-2xl z-[9999] opacity-0 invisible scale-95 pointer-events-none will-change-transform transition duration-150 ease-out origin-top-right cart-dropdown-panel">
                     <div class="p-4 border-b border-gray-100 flex items-center justify-between">
                         <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest">My Cart (<span class="cart-count">0</span>)</h3>
                         <a href="{{ route('cart') }}" class="text-[10px] font-bold text-[#0082C3] hover:underline uppercase">View Full Cart</a>
@@ -143,9 +133,7 @@
                                     class="nav-trigger flex items-center gap-[3px] text-[13px] font-semibold text-gray-800 whitespace-nowrap px-3 py-[11px] border-b-2 border-transparent transition-colors bg-transparent cursor-pointer">
                                 {{ $category->name }}
                                 @if($category->children && $category->children->count() > 0)
-                                    <svg class="nav-chevron w-[11px] h-[11px] flex-shrink-0 mt-px transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                                    </svg>
+                                    <i data-lucide="chevron-down" class="nav-chevron w-[11px] h-[11px] flex-shrink-0 mt-px transition-transform duration-200"></i>
                                 @endif
                             </button>
 
@@ -165,9 +153,7 @@
                                                 <a href="{{ route('shop') }}?category={{ $category->slug }}"
                                                    class="flex items-center gap-1 text-[12px] font-semibold text-[#0082C3] hover:underline">
                                                     View all {{ $category->name }}
-                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                                                    </svg>
+                                                    <i data-lucide="chevron-right" class="w-3 h-3"></i>
                                                 </a>
                                             </div>
 
@@ -242,15 +228,11 @@
         </div>
         <div class="flex items-center gap-4">
             <button onclick="openSearchOverlay()">
-                <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
+                <i data-lucide="search" class="w-6 h-6 text-gray-800"></i>
             </button>
             <a href="{{ route('cart') }}" class="relative group">
                 <span class="cart-count absolute -top-1.5 -right-1.5 bg-[#F7C844] text-gray-900 text-[9px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-white hidden">0</span>
-                <svg class="w-7 h-7 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
-                </svg>
+                <i data-lucide="shopping-cart" class="w-7 h-7 text-gray-800"></i>
             </a>
         </div>
     </div>
@@ -274,18 +256,14 @@
 
         {{-- Search Input Row --}}
         <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100">
-            <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
+            <i data-lucide="search" class="w-5 h-5 text-gray-400 flex-shrink-0"></i>
             <input id="overlay-search-input"
                    type="text"
                    placeholder="Search for 60+ sports and 6,000+ products"
                    autocomplete="off"
                    class="flex-1 text-[15px] text-gray-900 bg-transparent outline-none placeholder-gray-400">
             <button onclick="closeSearchOverlay()" class="text-gray-400 hover:text-gray-700 transition-colors flex-shrink-0">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
 

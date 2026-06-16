@@ -11,7 +11,7 @@
                     
                     @if($p->on_sale)
                         <div class="absolute top-6 left-6">
-                            <span class="px-6 py-2 bg-red-500 text-white text-xs font-black uppercase tracking-[0.2em] rounded-full shadow-lg shadow-red-200 animate-bounce">Limited Offer</span>
+                            <span class="px-6 py-2 bg-red-500 text-white text-xs font-black uppercase tracking-[0.2em] rounded-full shadow-lg shadow-red-200 animate-bounce">{{ $section->settings['sale_badge_text'] ?? 'Limited Offer' }}</span>
                         </div>
                     @endif
                 </div>
@@ -21,7 +21,7 @@
             <div class="w-full lg:w-1/2 space-y-8">
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
-                        <span class="text-[10px] font-black uppercase tracking-[0.3em] px-3 py-1 bg-white border border-gray-200 rounded-full text-gray-400">Featured Item</span>
+                        <span class="text-[10px] font-black uppercase tracking-[0.3em] px-3 py-1 bg-white border border-gray-200 rounded-full text-gray-400">{{ $section->settings['badge_text'] ?? 'Featured Item' }}</span>
                         @if($p->brand)
                             <span class="text-[10px] font-black uppercase tracking-[0.3em] text-[#0082C3]">{{ $p->brand->name }}</span>
                         @endif
@@ -42,27 +42,39 @@
 
                 <div class="pt-6 flex flex-col sm:flex-row items-center gap-4">
                     <a href="{{ route('product.show', $p->slug) }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-12 py-5 bg-gray-950 text-white text-xs font-black uppercase tracking-[0.2em] rounded-2xl shadow-2xl shadow-gray-300 hover:bg-[#0082C3] hover:-translate-y-1 transition-all duration-300">
-                        View Product
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        {{ $section->settings['cta_text'] ?? 'View Product' }}
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
                     </a>
                     
-                    <button onclick="addToCart({{ $p->id }}, 1)" class="w-full sm:w-auto px-12 py-5 border-2 border-gray-200 text-gray-950 text-xs font-black uppercase tracking-[0.2em] rounded-2xl hover:border-gray-950 transition-all">
-                        Quick Add
-                    </button>
+                    @if($p->variants->count() > 1)
+                        <button onclick="window.QuickView.open('{{ $p->slug }}')" class="w-full sm:w-auto px-12 py-5 border-2 border-gray-200 text-gray-950 text-xs font-black uppercase tracking-[0.2em] rounded-2xl hover:border-gray-950 transition-all">
+                            {{ $section->settings['secondary_cta_text'] ?? 'Quick Add' }}
+                        </button>
+                    @else
+                        <button onclick="window.Cart.add({{ $p->id }}, {{ $p->variants->first()->id }}, 1)" class="w-full sm:w-auto px-12 py-5 border-2 border-gray-200 text-gray-950 text-xs font-black uppercase tracking-[0.2em] rounded-2xl hover:border-gray-950 transition-all">
+                            {{ $section->settings['secondary_cta_text'] ?? 'Quick Add' }}
+                        </button>
+                    @endif
                 </div>
 
                 <div class="flex items-center gap-8 pt-4 border-t border-gray-200">
+                    @php
+                        $feature1Label = $section->settings['feature1_label'] ?? 'Free Delivery';
+                        $feature1Icon = $section->settings['feature1_icon'] ?? 'check';
+                        $feature2Label = $section->settings['feature2_label'] ?? '2 Year Warranty';
+                        $feature2Icon = $section->settings['feature2_icon'] ?? 'shield';
+                    @endphp
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-[#0082C3]">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                            <i data-lucide="check" class="w-5 h-5"></i>
                         </div>
-                        <span class="text-[10px] font-black uppercase tracking-widest text-gray-500">Free Delivery</span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-gray-500">{{ $feature1Label }}</span>
                     </div>
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-green-600">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            <i data-lucide="shield-check" class="w-5 h-5"></i>
                         </div>
-                        <span class="text-[10px] font-black uppercase tracking-widest text-gray-500">2 Year Warranty</span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-gray-500">{{ $feature2Label }}</span>
                     </div>
                 </div>
             </div>

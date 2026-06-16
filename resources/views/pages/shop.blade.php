@@ -182,7 +182,7 @@
                                     @default Newest Arrivals
                                 @endswitch
                             </span>
-                            <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500"></i>
                         </div>
                         <!-- Sort Dropdown -->
                         <div class="absolute top-full right-0 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg hidden group-hover:block z-50 overflow-hidden">

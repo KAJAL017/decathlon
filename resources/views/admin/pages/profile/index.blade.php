@@ -47,9 +47,7 @@
     {{-- Account Details --}}
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
         <h3 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
+            <i data-lucide="info" class="w-4 h-4 text-gray-400"></i>
             Account Details
         </h3>
         <div class="space-y-0">
@@ -76,9 +74,7 @@
     {{-- Account Information --}}
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex items-center gap-2">
-            <svg class="w-4 h-4 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-            </svg>
+            <i data-lucide="user" class="w-4 h-4 text-[#0082C3]"></i>
             <h3 class="text-sm font-bold text-gray-900">Account Information</h3>
         </div>
         <form id="profileForm" onsubmit="saveProfile(event)" class="p-6 space-y-5">
@@ -99,9 +95,7 @@
             <div class="flex justify-end">
                 <button type="submit" id="saveInfoBtn"
                     class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-xl hover:bg-[#006ba3] transition-colors shadow-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
+                    <i data-lucide="check" class="w-4 h-4"></i>
                     Save Changes
                 </button>
             </div>
@@ -111,9 +105,7 @@
     {{-- Change Password --}}
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex items-center gap-2">
-            <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-            </svg>
+            <i data-lucide="lock" class="w-4 h-4 text-orange-500"></i>
             <h3 class="text-sm font-bold text-gray-900">Change Password</h3>
         </div>
         <form id="passwordForm" onsubmit="savePassword(event)" class="p-6 space-y-5">
@@ -124,7 +116,7 @@
                         class="w-full px-3.5 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent pr-10 transition-all"
                         placeholder="Enter your current password">
                     <button type="button" onclick="togglePwd('currentPwd')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        <i data-lucide="eye" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
@@ -136,7 +128,7 @@
                             class="w-full px-3.5 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent pr-10 transition-all"
                             placeholder="Min. 6 characters" oninput="checkStrength(this.value)">
                         <button type="button" onclick="togglePwd('newPwd')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <i data-lucide="eye" class="w-4 h-4"></i>
                         </button>
                     </div>
                     <div class="mt-2 flex gap-1">
@@ -154,7 +146,7 @@
                             class="w-full px-3.5 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0082C3] focus:border-transparent pr-10 transition-all"
                             placeholder="Repeat new password" oninput="checkMatch()">
                         <button type="button" onclick="togglePwd('confirmPwd')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <i data-lucide="eye" class="w-4 h-4"></i>
                         </button>
                     </div>
                     <p id="matchLabel" class="text-[10px] mt-1"></p>
@@ -163,9 +155,7 @@
             <div class="flex justify-end">
                 <button type="submit" id="savePwdBtn"
                     class="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 transition-colors shadow-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                    </svg>
+                    <i data-lucide="lock" class="w-4 h-4"></i>
                     Update Password
                 </button>
             </div>
@@ -216,7 +206,7 @@ function saveProfile(e) {
     .then(r => r.json())
     .then(res => {
         btn.disabled = false;
-        btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Save Changes';
+        btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Save Changes';
         if (res.success) {
             showToast('success', 'Profile updated!');
             document.getElementById('avatarInitial').textContent = (res.data.name || 'A').charAt(0).toUpperCase();
@@ -252,7 +242,7 @@ function savePassword(e) {
     .then(r => r.json())
     .then(res => {
         btn.disabled = false;
-        btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> Update Password';
+        btn.innerHTML = '<i data-lucide="lock" class="w-4 h-4"></i> Update Password';
         if (res.success) {
             showToast('success', 'Password updated!');
             document.getElementById('passwordForm').reset();

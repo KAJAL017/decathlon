@@ -27,56 +27,64 @@ export default class QuickView {
         window.QuickView = this;
     }
 
-    async open(slug) {
+    open(slug) {
         if (this.isOpen) return;
 
         this.isOpen = true;
         this.selectedAttributes = {};
         
-        // Immediate UI feedback: Show modal with skeleton
+        // Show modal instantly (no animation yet)
         this.elements.modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
         this.renderSkeleton();
 
-        // Hardware-accelerated animation
+        // Double rAF ensures browser has painted the hidden state before animating
         requestAnimationFrame(() => {
-            this.elements.panel.classList.remove('translate-y-4', 'opacity-0', 'scale-95');
-            this.elements.panel.classList.add('translate-y-0', 'opacity-100', 'scale-100');
+            requestAnimationFrame(() => {
+                this.elements.panel.classList.remove('translate-y-4', 'opacity-0', 'scale-95');
+                this.elements.panel.classList.add('translate-y-0', 'opacity-100', 'scale-100');
+            });
         });
 
-        try {
-            const response = await fetch(`${this.baseUrl}/${slug}`);
-            if (!response.ok) throw new Error('Failed to fetch');
-            const product = await response.json();
-            
-            this.currentProduct = product;
-            
-            // Auto-select first variant's attributes
-            if (product.variants && product.variants.length) {
-                this.selectedAttributes = { ...product.variants[0].attributes };
-                this.selectedVariantId = product.variants[0].id;
-            }
+        fetch(`${this.baseUrl}/${slug}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch');
+                return response.json();
+            })
+            .then(product => {
+                this.currentProduct = product;
+                
+                if (product.variants && product.variants.length) {
+                    const firstAttrs = product.variants[0].attributes || {};
+                    this.selectedAttributes = {};
+                    for (const [key, val] of Object.entries(firstAttrs)) {
+                        this.selectedAttributes[key] = (val && typeof val === 'object' && val.value !== undefined) ? val.value : val;
+                    }
+                    this.selectedVariantId = product.variants[0].id;
+                }
 
-            // Minimal delay to ensure smooth transition from skeleton to content
-            setTimeout(() => this.render(product), 50);
-        } catch (error) {
-            this.elements.content.innerHTML = `
-                <div class="p-20 text-center col-span-2">
-                    <p class="text-red-500 font-bold uppercase tracking-widest text-[13px]">Product could not be loaded</p>
-                    <button onclick="window.QuickView.close()" class="mt-4 bg-gray-100 px-6 py-2 rounded-lg text-[11px] font-black uppercase tracking-wider hover:bg-gray-200 transition-colors">Close</button>
-                </div>`;
-        }
+                this.render(product);
+            })
+            .catch(error => {
+                this.elements.content.innerHTML = `
+                    <div class="p-20 text-center col-span-2">
+                        <p class="text-red-500 font-bold uppercase tracking-widest text-[13px]">Product could not be loaded</p>
+                        <button onclick="window.QuickView.close()" class="mt-4 bg-gray-100 px-6 py-2 rounded-lg text-[11px] font-black uppercase tracking-wider hover:bg-gray-200 transition-colors">Close</button>
+                    </div>`;
+            });
     }
 
     close() {
         this.isOpen = false;
+        // Animate out
         this.elements.panel.classList.add('translate-y-4', 'opacity-0', 'scale-95');
         this.elements.panel.classList.remove('translate-y-0', 'opacity-100', 'scale-100');
 
+        // Hide after transition (150ms)
         setTimeout(() => {
             this.elements.modal.classList.add('hidden');
             document.body.style.overflow = '';
-        }, 300);
+        }, 150);
     }
 
     renderSkeleton() {
@@ -118,6 +126,15 @@ export default class QuickView {
         const mainImage = p.images[0] || 'https://placehold.co/600x600/f3f4f6/999?text=No+Image';
         const currentVariant = p.variants.find(v => v.id === this.selectedVariantId) || p.variants[0];
 
+        // Normalize options: ensure each value has a string label
+        const safeOptions = (p.options || []).map(opt => ({
+            name: opt.name,
+            values: (opt.values || []).map(v => ({
+                label: (v && typeof v === 'object') ? (v.label || v.value || String(Object.values(v)[0] || '')) : String(v || ''),
+                color: (v && typeof v === 'object') ? (v.color || null) : null
+            }))
+        }));
+
         this.elements.content.innerHTML = `
             <!-- Left: Gallery -->
             <div class="bg-gray-50 p-6 flex flex-col gap-4">
@@ -150,7 +167,9 @@ export default class QuickView {
 
                     <!-- Dynamic Options Rows -->
                     <div id="qv-options-container" class="space-y-6 mb-8">
-                        ${p.options.map(opt => `
+                        ${safeOptions.map(opt => {
+                            const isColorOption = /color/i.test(opt.name);
+                            return `
                             <div>
                                 <div class="flex justify-between items-center mb-2">
                                     <span class="text-[11px] font-black text-gray-500 uppercase tracking-widest">${opt.name}</span>
@@ -158,17 +177,31 @@ export default class QuickView {
                                 </div>
                                 <div class="flex flex-wrap gap-2">
                                     ${opt.values.map(val => {
-                                        const isSelected = this.selectedAttributes[opt.name] === val.label;
-                                        return `
-                                            <button onclick="window.QuickView.selectAttribute('${opt.name}', '${val.label}')" 
-                                                    class="px-4 py-2 rounded-lg border-2 ${isSelected ? 'border-gray-900 bg-gray-900 text-white' : 'border-gray-100 hover:border-gray-300 text-gray-700'} text-[12px] font-bold transition-all">
-                                                ${val.label}
-                                            </button>
-                                        `;
+                                        const isSelected = String(this.selectedAttributes[opt.name] || '') === String(val.label);
+                                        if (isColorOption) {
+                                            const swatchBg = val.color || val.label;
+                                            const borderColor = isSelected ? 'border-gray-900 ring-2 ring-gray-200' : 'border-gray-200 hover:border-gray-400';
+                                            return `
+                                                <button onclick="window.QuickView.selectAttribute('${opt.name.replace(/'/g, "\\'")}', '${val.label.replace(/'/g, "\\'")}')"
+                                                        class="w-10 h-10 rounded-lg border-2 ${borderColor} overflow-hidden flex items-center justify-center p-0.5 transition-all duration-200"
+                                                        title="${val.label}">
+                                                    <span class="w-full h-full rounded-md block" style="background-color: ${swatchBg};"></span>
+                                                </button>
+                                            `;
+                                        } else {
+                                            const btnClass = isSelected ? 'border-gray-900 bg-gray-900 text-white' : 'border-gray-100 hover:border-gray-300 text-gray-700';
+                                            return `
+                                                <button onclick="window.QuickView.selectAttribute('${opt.name.replace(/'/g, "\\'")}', '${val.label.replace(/'/g, "\\'")}')"
+                                                        class="px-4 py-2 rounded-lg border-2 ${btnClass} text-[12px] font-bold transition-all">
+                                                    ${val.label}
+                                                </button>
+                                            `;
+                                        }
                                     }).join('')}
                                 </div>
                             </div>
-                        `).join('')}
+                            `;
+                        }).join('')}
                     </div>
                 </div>
 
@@ -185,28 +218,49 @@ export default class QuickView {
     }
 
     selectAttribute(name, value) {
-        this.selectedAttributes[name] = value;
+        this.selectedAttributes[name] = String(value);
         this.resolveVariant();
         this.render(this.currentProduct);
     }
 
     resolveVariant() {
+        if (!this.currentProduct || !this.currentProduct.variants) return;
+        
         const variant = this.currentProduct.variants.find(v => {
-            return Object.entries(this.selectedAttributes).every(([name, value]) => v.attributes[name] === value);
+            return Object.entries(this.selectedAttributes).every(([name, value]) => {
+                const attrVal = v.attributes[name];
+                // Normalize: handle both flat strings and nested objects
+                const normalized = (attrVal && typeof attrVal === 'object' && attrVal.value !== undefined) ? attrVal.value : attrVal;
+                return String(normalized) === String(value);
+            });
         });
 
         this.selectedVariantId = variant ? variant.id : null;
     }
 
-    addToCart() {
+    async addToCart() {
         if (!this.selectedVariantId || !this.currentProduct) {
-            if (window.Cart) window.Cart.notify('Please select all options.', 'warning');
             return;
         }
 
-        if (window.Cart) {
-            window.Cart.add(this.currentProduct.id, this.selectedVariantId);
-            this.close();
+        const addBtn = document.getElementById('qv-add-btn');
+        if (!addBtn || !window.Cart) return;
+
+        // Show loading state on QuickView button
+        const originalContent = addBtn.innerHTML;
+        addBtn.disabled = true;
+        addBtn.classList.add('opacity-60', 'cursor-not-allowed');
+        addBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Adding...';
+
+        try {
+            const result = await window.Cart.add(this.currentProduct.id, this.selectedVariantId);
+            if (result && result.success) {
+                this.close();
+            }
+        } finally {
+            addBtn.disabled = false;
+            addBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+            addBtn.innerHTML = originalContent;
         }
     }
 }

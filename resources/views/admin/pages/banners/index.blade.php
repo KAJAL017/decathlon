@@ -11,9 +11,7 @@
             <p class="text-sm text-gray-600 mt-1">Manage homepage slider banners</p>
         </div>
         <button onclick="openAddModal()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0082C3] text-white text-sm font-semibold rounded-lg hover:bg-[#006ba3] transition-all shadow-sm hover:shadow-md">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
+            <i data-lucide="plus" class="w-5 h-5"></i>
             Add Banner
         </button>
     </div>
@@ -79,9 +77,7 @@
                 <p class="text-sm text-gray-600 mt-0.5">Upload a new banner for the homepage</p>
             </div>
             <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
 
@@ -97,22 +93,17 @@
                         <div id="imagePlaceholder" class="aspect-[21/9] w-full border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center bg-gray-50 hover:border-[#0082C3] hover:bg-blue-50/30 transition-all cursor-pointer overflow-hidden" onclick="document.getElementById('bannerImageInput').click()">
                             <div id="uploadUI" class="flex flex-col items-center">
                                 <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                                    <svg class="w-6 h-6 text-gray-400 group-hover:text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                                    </svg>
+                                    <i data-lucide="upload" class="w-6 h-6 text-gray-400 group-hover:text-[#0082C3]"></i>
                                 </div>
                                 <p class="text-sm font-medium text-gray-700">Click to upload banner</p>
-                                <p class="text-xs text-gray-500 mt-1.5">PNG, JPG, WEBP (Max {{ \App\Models\Setting::group('media')['max_upload_size'] ?? 500 }}KB)</p>
+                                <p class="text-xs text-gray-500 mt-1.5">PNG, JPG, WEBP. Images are optimized automatically.</p>
                             </div>
                             <img id="imagePreview" src="" class="hidden absolute inset-0 w-full h-full object-cover">
                             
                             <!-- Loading Overlay -->
                             <div id="uploadLoader" class="hidden absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
                                 <div class="flex flex-col items-center">
-                                    <svg class="animate-spin h-8 w-8 text-[#0082C3] mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
+                                    <i data-lucide="loader" class="animate-spin h-8 w-8 text-[#0082C3] mb-2"></i>
                                     <p class="text-xs font-medium text-gray-600">Uploading...</p>
                                 </div>
                             </div>
@@ -122,9 +113,7 @@
                         <input type="hidden" id="bannerImageId">
                         
                         <button type="button" id="removeImageBtn" onclick="removeImage(event)" class="hidden absolute top-3 right-3 p-1.5 bg-red-600 text-white rounded-lg shadow-lg hover:bg-red-700 transition-colors z-10">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
+                            <i data-lucide="x" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
@@ -191,15 +180,33 @@ window.Toast = {
 
 let currentPage = 1;
 let selectedBanners = new Set();
+let isFirstLoad = true;
 
 document.addEventListener('DOMContentLoaded', () => {
     loadBanners();
 });
 
+function showTableLoading() {
+    const tbody = document.getElementById('bannersTableBody');
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="6" class="px-6 py-12">
+                <div class="flex flex-col items-center justify-center">
+                    <i data-lucide="loader" class="animate-spin h-8 w-8 text-[#0082C3] mb-3"></i>
+                    <p class="text-sm text-gray-500 font-medium">Loading banners...</p>
+                </div>
+            </td>
+        </tr>`;
+}
+
 function loadBanners(page = 1) {
     currentPage = page;
     const status = document.getElementById('statusFilter').value;
-    const url = `/admin/banners/list?page=${page}&status=${status}`;
+    const url = `/admin/banners/list?page=${page}&status=${status}&_=${Date.now()}`;
+
+    if (page !== 1 || !document.getElementById('bannersTableBody').innerHTML.trim()) {
+        showTableLoading();
+    }
 
     fetch(url, {
         headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
@@ -210,32 +217,53 @@ function loadBanners(page = 1) {
             renderBanners(data.data);
             renderPagination(data.pagination);
         }
+
+        if (isFirstLoad) {
+            isFirstLoad = false;
+            if (typeof window.dismissSkeleton === 'function') {
+                window.dismissSkeleton();
+            }
+        }
     })
-    .catch(error => console.error('Error loading banners:', error));
+    .catch(error => {
+        console.error('Error loading banners:', error);
+        if (isFirstLoad) {
+            isFirstLoad = false;
+            if (typeof window.dismissSkeleton === 'function') {
+                window.dismissSkeleton();
+            }
+        }
+    });
+}
+
+function normalizeStorageUrl(url) {
+    if (!url) return '';
+    return url.replace(/(\/storage)+\//g, '/storage/');
 }
 
 function renderBanners(banners) {
     const tbody = document.getElementById('bannersTableBody');
-    
+
     if (banners.length === 0) {
         tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-16 text-center text-gray-500">No banners found</td></tr>`;
         return;
     }
 
-    tbody.innerHTML = banners.map(banner => `
+    tbody.innerHTML = banners.map(banner => {
+        const imageUrl = normalizeStorageUrl(banner.image_url || '');
+
+        return `
         <tr class="hover:bg-gray-50/50 transition-colors">
             <td class="px-6 py-4">
                 <input type="checkbox" class="banner-checkbox w-4 h-4 text-[#0082C3] border-gray-300 rounded focus:ring-[#0082C3]" data-id="${banner.id}" onchange="updateBulkActions()">
             </td>
             <td class="px-6 py-4">
                 <div class="w-32 h-16 rounded-lg bg-gray-100 overflow-hidden border border-gray-200 shadow-sm group relative">
-                    <img src="${banner.thumbnail_url || banner.image_url}" class="w-full h-full object-cover" alt="Banner">
+                    <img src="${imageUrl}" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');" class="w-full h-full object-cover" alt="Banner">
+                    <div class="hidden absolute inset-0 items-center justify-center text-xs font-semibold text-gray-400 bg-gray-100">No Image</div>
                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <button onclick="previewImage('${banner.image_url}')" class="text-white p-1 hover:scale-110 transition-transform">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                            </svg>
+                        <button onclick="previewImage('${imageUrl}')" class="text-white p-1 hover:scale-110 transition-transform">
+                            <i data-lucide="eye" class="w-5 h-5"></i>
                         </button>
                     </div>
                 </div>
@@ -255,19 +283,16 @@ function renderBanners(banners) {
             <td class="px-6 py-4 text-right">
                 <div class="flex items-center justify-end gap-2">
                     <button onclick="editBanner(${banner.id})" class="p-2 text-gray-600 hover:text-[#0082C3] hover:bg-blue-50 rounded-lg transition-colors" title="Edit Banner">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                        </svg>
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
                     </button>
                     <button onclick="deleteBanner(${banner.id})" class="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete Banner">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                        </svg>
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
             </td>
         </tr>
-    `).join('');
+    `;
+    }).join('');
 }
 
 function renderPagination(pagination) {
@@ -325,11 +350,6 @@ async function handleImageUpload(event) {
 
     if (!file.type.startsWith('image/')) {
         Dialog.alert({ title: 'Invalid File', message: 'Please select an image file.', type: 'danger' });
-        return;
-    }
-    const maxSizeKB = {{ \App\Models\Setting::group('media')['max_upload_size'] ?? 500 }};
-    if (file.size > maxSizeKB * 1024) {
-        Dialog.alert({ title: 'File Too Large', message: `Image size should not exceed ${maxSizeKB}KB.`, type: 'danger' });
         return;
     }
 
@@ -551,7 +571,46 @@ async function applyBulkAction() {
 }
 
 function previewImage(url) {
-    Dialog.alert({ title: 'Banner Preview', message: `<img src="${url}" class="w-full rounded-lg">`, type: 'info' });
+    const imageUrl = normalizeStorageUrl(url || '');
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 z-[100001] flex items-center justify-center bg-gray-950/60 backdrop-blur-sm p-4';
+
+    const panel = document.createElement('div');
+    panel.className = 'w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden';
+
+    const header = document.createElement('div');
+    header.className = 'flex items-center justify-between px-6 py-4 border-b border-gray-100';
+
+    const title = document.createElement('h3');
+    title.className = 'text-lg font-black text-gray-950';
+    title.textContent = 'Banner Preview';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 text-2xl leading-none';
+    closeBtn.type = 'button';
+    closeBtn.textContent = '×';
+    closeBtn.onclick = () => modal.remove();
+
+    const body = document.createElement('div');
+    body.className = 'p-6';
+
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.alt = 'Banner preview';
+    img.className = 'w-full rounded-lg border border-gray-200 bg-gray-100';
+    img.onerror = () => {
+        img.replaceWith(document.createTextNode('Unable to load banner image.'));
+    };
+
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) modal.remove();
+    });
+
+    header.append(title, closeBtn);
+    body.appendChild(img);
+    panel.append(header, body);
+    modal.appendChild(panel);
+    document.body.appendChild(modal);
 }
 </script>
 @endpush

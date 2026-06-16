@@ -10,9 +10,7 @@
         <div class="px-8 py-5 border-b border-gray-200 bg-white flex items-center justify-between z-10 shrink-0">
             <div class="flex items-center gap-4 min-w-0">
                 <div class="bg-blue-50 p-2.5 rounded-xl shrink-0">
-                    <svg class="w-6 h-6 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                    </svg>
+                    <i data-lucide="box" class="w-6 h-6 text-[#0082C3]"></i>
                 </div>
                 <div class="min-w-0">
                     <h3 id="modalTitle" class="text-xl font-bold text-gray-900 leading-tight truncate">
@@ -23,13 +21,11 @@
             </div>
             <div class="flex items-center gap-4 shrink-0">
                 <button type="button" onclick="fillDemoData()" class="hidden md:inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white text-sm font-semibold rounded-lg hover:from-purple-600 hover:to-indigo-700 transition-all shadow-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <i data-lucide="zap" class="w-4 h-4"></i>
                     Auto-Fill Demo
                 </button>
                 <a href="{{ route('admin.products.index') }}" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
+                    <i data-lucide="x" class="w-6 h-6"></i>
                 </a>
             </div>
         </div>
@@ -38,17 +34,17 @@
         <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/80 z-10 overflow-x-auto custom-scrollbar shrink-0">
             <div class="flex items-center gap-2 min-w-max">
                 @foreach([
-                    'basic' => ['Details', 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
-                    'pricing' => ['Pricing & Inventory', 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
-                    'media' => ['Media', 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'],
-                    'variants' => ['Variants', 'M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z'],
-                    'organization' => ['Organization', 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'],
-                    'seo' => ['SEO', 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'],
-                    'advanced' => ['Advanced', 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z']
+                    'basic' => ['Details', 'file-text'],
+                    'pricing' => ['Pricing & Inventory', 'circle-dollar-sign'],
+                    'media' => ['Media', 'image'],
+                    'variants' => ['Variants', 'layout-grid'],
+                    'organization' => ['Organization', 'tag'],
+                    'seo' => ['SEO', 'search'],
+                    'advanced' => ['Advanced', 'settings']
                 ] as $id => $info)
                 <button type="button" onclick="switchTab('{{ $id }}')" id="tab-{{ $id }}" class="tab-btn {{ $id === 'basic' ? 'active' : '' }} flex-shrink-0 px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200">
                     <span class="flex items-center gap-2">
-                        <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $info[1] }}"/></svg>
+                        <i data-lucide="{{ $info[1] }}" class="w-4 h-4 opacity-70"></i>
                         {{ $info[0] }}
                     </span>
                 </button>
@@ -140,7 +136,7 @@
                 <!-- Pricing logic same as before... -->
                 <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                     <h4 class="text-sm font-bold text-gray-800 uppercase tracking-wider mb-6 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <i data-lucide="circle-check" class="w-4 h-4 text-[#0082C3]"></i>
                         Visibility & Status
                     </h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -182,7 +178,7 @@
 
                 <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                     <h4 class="text-sm font-bold text-gray-800 uppercase tracking-wider mb-6 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <i data-lucide="circle-dollar-sign" class="w-4 h-4 text-[#0082C3]"></i>
                         Pricing & SKU
                     </h4>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -211,7 +207,7 @@
 
                 <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                     <h4 class="text-sm font-bold text-gray-800 uppercase tracking-wider mb-6 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-[#0082C3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                        <i data-lucide="package" class="w-4 h-4 text-[#0082C3]"></i>
                         Inventory & Shipping
                     </h4>
                     
@@ -264,7 +260,7 @@
             <!-- TAB 3: MEDIA -->
             <div id="content-media" class="tab-content w-full p-6 lg:p-8">
                 <div class="bg-white border-2 border-dashed border-gray-300 rounded-2xl p-10 text-center hover:border-[#0082C3] transition-colors shadow-sm">
-                    <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <i data-lucide="image" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
                     <h4 class="text-lg font-bold text-gray-900 mb-1">Product Images</h4>
                     <p class="text-sm text-gray-500 mb-6">First image becomes the featured hero.</p>
                     <button type="button" class="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-300 text-gray-800 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors shadow-sm">
@@ -379,10 +375,7 @@
                 <button type="submit" form="productForm" id="submitBtn" class="hidden px-8 py-2.5 bg-[#0082C3] text-white text-sm font-bold rounded-xl hover:bg-[#006ba3] transition-all shadow-md hover:shadow-lg">
                     <span id="submitBtnText">Save Product</span>
                     <span id="submitBtnLoading" class="hidden flex items-center gap-2">
-                        <svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
+                        <i data-lucide="loader" class="animate-spin h-4 w-4 text-white"></i>
                         Saving...
                     </span>
                 </button>

@@ -15,12 +15,11 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('cascade');
             
-            // ImageKit URLs
             $table->string('image_url')->nullable();
-            $table->string('image_id')->nullable(); // ImageKit file ID
+            $table->string('image_id')->nullable();
             $table->string('banner_url')->nullable();
-            $table->string('banner_id')->nullable(); // ImageKit file ID
-            
+            $table->string('banner_id')->nullable();
+
             // SEO Fields
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();

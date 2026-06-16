@@ -39,7 +39,7 @@
                 <div class="pt-8">
                     <a href="{{ $d['button_link'] }}" class="inline-flex items-center gap-4 px-12 py-5 bg-white text-gray-950 text-xs font-black uppercase tracking-[0.3em] rounded-full hover:bg-[#0082C3] hover:text-white transition-all duration-500 shadow-2xl">
                         {{ $d['button_text'] }}
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/></svg>
+                        <i data-lucide="play" class="w-5 h-5"></i>
                     </a>
                 </div>
             @endif

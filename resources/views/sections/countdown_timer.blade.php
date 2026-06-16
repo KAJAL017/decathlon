@@ -32,7 +32,7 @@
                 <div class="pt-4">
                     <a href="{{ $d['button_link'] }}" class="inline-flex items-center gap-4 px-12 py-5 bg-white text-gray-950 text-xs font-black uppercase tracking-[0.3em] rounded-full hover:bg-gray-100 transition-all shadow-2xl">
                         {{ $d['button_text'] }}
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
                     </a>
                 </div>
             @endif

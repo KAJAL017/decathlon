@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class UploadController extends Controller
 {
@@ -62,7 +63,12 @@ class UploadController extends Controller
             );
 
             return response()->json($result);
-            
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->validator->errors()->first('file')
+            ], 422);
         } catch (\Exception $e) {
             \Log::error('Upload error: ' . $e->getMessage());
             return response()->json([

@@ -33,10 +33,21 @@ class BannerController extends Controller
         // Pagination
         $perPage = $request->get('per_page', 10);
         $banners = $query->orderBy('sort_order')->paginate($perPage);
+        $data = collect($banners->items())->map(function ($banner) {
+            return [
+                'id' => $banner->id,
+                'image_url' => $banner->image_url,
+                'image_id' => $banner->image_id,
+                'banner_link' => $banner->banner_link,
+                'sort_order' => $banner->sort_order,
+                'is_active' => $banner->is_active,
+                'thumbnail_url' => $banner->image_url,
+            ];
+        });
 
         return response()->json([
             'success' => true,
-            'data' => $banners->items(),
+            'data' => $data,
             'pagination' => [
                 'total' => $banners->total(),
                 'per_page' => $banners->perPage(),

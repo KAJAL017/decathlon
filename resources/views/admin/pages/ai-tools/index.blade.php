@@ -45,7 +45,7 @@ $currentProviderName = $providerNames[$aiProvider] ?? 'Not configured';
                 <button onclick="switchTab('{{$key}}')" id="nav-{{$key}}"
                         class="ai-nav w-full flex items-center gap-2 px-4 py-3 text-sm font-medium text-left transition-colors border-b border-gray-100 last:border-0
                                {{ $key === 'setup' ? 'bg-blue-50 text-[#0082C3] border-l-2 border-l-[#0082C3]' : 'text-gray-700 hover:bg-gray-50' }}">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">{!! $icons[$key] !!}</svg>
+                    <i data-lucide="settings" class="w-4 h-4 flex-shrink-0"></i>
                     <span>{{$label}}</span>
                     @if($key === 'setup' && (!$aiProvider || !$aiKeySet))
                     <span class="ml-auto w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0"></span>
@@ -84,7 +84,7 @@ $currentProviderName = $providerNames[$aiProvider] ?? 'Not configured';
                                     {{ ($aiProvider === $p['id']) ? 'border-[#0082C3] bg-blue-50' : 'border-gray-200' }}">
                             @if($aiProvider === $p['id'])
                             <div class="absolute top-3 right-3 w-5 h-5 bg-[#0082C3] rounded-full flex items-center justify-center">
-                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                <i data-lucide="check" class="w-3 h-3 text-white"></i>
                             </div>
                             @endif
                             <div class="flex items-center gap-3 mb-2">
@@ -101,7 +101,7 @@ $currentProviderName = $providerNames[$aiProvider] ?? 'Not configured';
                             <a href="{{ $p['link'] }}" target="_blank" onclick="event.stopPropagation()"
                                class="inline-flex items-center gap-1 mt-2 text-xs text-[#0082C3] hover:underline">
                                 Get API Key
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                <i data-lucide="external-link" class="w-3 h-3"></i>
                             </a>
                             @endif
                         </div>
@@ -145,7 +145,7 @@ $currentProviderName = $providerNames[$aiProvider] ?? 'Not configured';
                                            placeholder="{{ $aiProvider === 'openai' ? 'sk-...' : ($aiProvider === 'gemini' ? 'AIza...' : ($aiProvider === 'claude' ? 'sk-ant-...' : 'Your API key')) }}"
                                            class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#0082C3] pr-10">
                                     <button onclick="toggleVisibility('ai_api_key')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
@@ -220,7 +220,7 @@ $currentProviderName = $providerNames[$aiProvider] ?? 'Not configured';
                         {{-- Status --}}
                         @if($aiProvider && $aiKeySet)
                         <div class="bg-green-50 border border-green-200 rounded-xl p-3 flex items-center gap-3">
-                            <svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <i data-lucide="check-circle" class="w-5 h-5 text-green-600 flex-shrink-0"></i>
                             <div>
                                 <p class="text-sm font-semibold text-green-700">{{ $currentProviderName }} is configured</p>
                                 <p class="text-xs text-green-600">Model: {{ \App\Models\Setting::get('ai_model', 'default') }} · Language: {{ \App\Models\Setting::get('ai_language', 'English') }}</p>
@@ -308,7 +308,7 @@ $currentProviderName = $providerNames[$aiProvider] ?? 'Not configured';
                     </div>
                     <button onclick="generateDescription()" id="genDescBtn"
                             class="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-60">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <i data-lucide="zap" class="w-4 h-4"></i>
                         Generate Description
                     </button>
 
@@ -344,7 +344,7 @@ $currentProviderName = $providerNames[$aiProvider] ?? 'Not configured';
                         </div>
                     </div>
                     <button onclick="generateSEO()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <i data-lucide="zap" class="w-4 h-4"></i>
                         Generate SEO
                     </button>
                     <div id="seoResult" class="hidden space-y-3">
@@ -385,7 +385,7 @@ $currentProviderName = $providerNames[$aiProvider] ?? 'Not configured';
                         <textarea id="tagInput" rows="4" class="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0082C3]" placeholder="Describe your product…"></textarea>
                     </div>
                     <button onclick="generateTags()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <i data-lucide="zap" class="w-4 h-4"></i>
                         Suggest Tags
                     </button>
                     <div id="tagResult" class="hidden">
@@ -414,7 +414,7 @@ $currentProviderName = $providerNames[$aiProvider] ?? 'Not configured';
                         </div>
                     </div>
                     <button onclick="generateAltText()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <i data-lucide="zap" class="w-4 h-4"></i>
                         Generate Alt Text
                     </button>
                     <div id="altResult" class="hidden">
@@ -539,6 +539,7 @@ function switchTab(name) {
 
 // ── AI Provider Setup ─────────────────────────────────────────────
 const CSRF = document.querySelector('meta[name="csrf-token"]').content;
+let isFirstLoad = true;
 
 function selectProvider(id) {
     document.querySelectorAll('.provider-card').forEach(c => {
@@ -740,9 +741,8 @@ async function loadUsage() {
             </tr>
         `).join('');
     }
+    if (isFirstLoad) { isFirstLoad = false; if (typeof window.dismissSkeleton === 'function') window.dismissSkeleton(); }
 }
-
-// Auto-load usage when tab is opened — handled inside switchTab above
 function toast(msg, type = 'success') {
     const el = document.getElementById('toast');
     el.textContent = msg;
@@ -786,7 +786,7 @@ async function generateDescription() {
     if (!name) { toast('Please enter a product name', 'error'); return; }
 
     const btn = document.getElementById('genDescBtn');
-    btn.disabled = true; btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Generating…';
+    btn.disabled = true; btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Generating…';
 
     const wordCount = { short: '50-80 words', medium: '100-150 words', long: '200+ words' }[length] || '100-150 words';
     const prompt = `Write a ${tone} product description for "${name}" (Category: ${cat || 'Sports & Fitness'}).
@@ -804,7 +804,7 @@ Do not include any heading or title — just the description paragraph(s).`;
         toast(e.message, 'error');
     }
 
-    btn.disabled = false; btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Generate Description';
+    btn.disabled = false; btn.innerHTML = '<i data-lucide="zap" class="w-4 h-4"></i> Generate Description';
 }
 
 // ── SEO Generator ─────────────────────────────────────────────────
