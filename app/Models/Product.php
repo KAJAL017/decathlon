@@ -16,6 +16,7 @@ class Product extends Model
         'sku_prefix',
         'brand_id',
         'category_id',
+        'store_id',
         'short_description',
         'description',
         'product_type',

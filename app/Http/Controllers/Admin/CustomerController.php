@@ -74,7 +74,7 @@ class CustomerController extends Controller
         $validated['password'] = Hash::make($validated['password']);
 
         $customer = Customer::create($validated);
-        ActivityLog::log('created', 'customers', $customer->id, null, ['name' => $customer->name, 'email' => $customer->email]);
+        ActivityLog::log('created', 'customers', "Created customer: {$customer->email}", ['customer_id' => $customer->id]);
 
         return response()->json(['success' => true, 'message' => 'Customer created successfully', 'data' => $customer]);
     }
@@ -106,7 +106,7 @@ class CustomerController extends Controller
 
         $old = $customer->toArray();
         $customer->update($validated);
-        ActivityLog::log('updated', 'customers', $customer->id, $old, $customer->fresh()->toArray());
+        ActivityLog::log('updated', 'customers', "Updated customer: {$customer->email}", ['customer_id' => $customer->id, 'old' => $old, 'new' => $customer->fresh()->toArray()]);
 
         return response()->json(['success' => true, 'message' => 'Customer updated successfully', 'data' => $customer->fresh()]);
     }
@@ -114,7 +114,7 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customer = Customer::findOrFail($id);
-        ActivityLog::log('deleted', 'customers', $customer->id, ['name' => $customer->name, 'email' => $customer->email], null);
+        ActivityLog::log('deleted', 'customers', "Deleted customer: {$customer->email}", ['customer_id' => $customer->id]);
         $customer->delete();
 
         return response()->json(['success' => true, 'message' => 'Customer deleted successfully']);
@@ -134,7 +134,7 @@ class CustomerController extends Controller
 
     public function bulkAction(Request $request)
     {
-        $request->validate(['action' => 'required|string', 'ids' => 'required|array']);
+        $request->validate(['action' => 'required|string|in:activate,deactivate,delete', 'ids' => 'required|array']);
         $ids    = $request->ids;
         $action = $request->action;
 

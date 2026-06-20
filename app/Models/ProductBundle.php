@@ -143,7 +143,7 @@ class ProductBundle extends Model
     public function getOriginalPriceAttribute()
     {
         return $this->items->sum(function ($item) {
-            $price = $item->item_price ?? $item->product->price ?? 0;
+            $price = $item->item_price ?? $item->variant->price ?? $item->product->variants->first()?->price ?? 0;
             return $price * $item->quantity;
         });
     }
@@ -173,7 +173,7 @@ class ProductBundle extends Model
         $items = $selectedItems ?? $this->items;
         
         $totalPrice = $items->sum(function ($item) {
-            $price = $item->item_price ?? $item->product->price ?? 0;
+            $price = $item->item_price ?? $item->variant->price ?? $item->product->variants->first()?->price ?? 0;
             return $price * $item->quantity;
         });
 
@@ -210,8 +210,14 @@ class ProductBundle extends Model
         }
         
         // Check if product/variant is active
-        if ($product->status !== 'active') {
-            return false;
+        if (is_bool($product->status)) {
+            if (!$product->status) {
+                return false;
+            }
+        } else {
+            if ($product->status !== 'active') {
+                return false;
+            }
         }
         
         // Check availability status

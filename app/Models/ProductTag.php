@@ -11,6 +11,7 @@ class ProductTag extends Model
         'name',
         'slug',
         'description',
+        'store_id',
         'products_count',
         'status',
         'sort_order',

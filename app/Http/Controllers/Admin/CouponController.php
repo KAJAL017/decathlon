@@ -57,7 +57,13 @@ class CouponController extends Controller
         $v = Validator::make($request->all(), $this->rules());
         if ($v->fails()) return response()->json(['success'=>false,'errors'=>$v->errors()],422);
 
-        $data = $request->all();
+        $data = $request->only([
+            'code', 'description', 'discount_type', 'discount_value', 'max_discount_amount',
+            'buy_quantity', 'get_quantity', 'get_discount_percent', 'min_order_amount',
+            'min_quantity', 'usage_limit', 'usage_per_user', 'applies_to',
+            'customer_eligibility', 'starts_at', 'expires_at',
+            'combine_with_other_coupons', 'combine_with_promotions', 'is_active',
+        ]);
         $data['created_by'] = session('admin_id');
         if (empty($data['code'])) $data['code'] = \App\Models\Coupon::generateCode();
 
@@ -82,7 +88,13 @@ class CouponController extends Controller
         $v = Validator::make($request->all(), $this->rules($id));
         if ($v->fails()) return response()->json(['success'=>false,'errors'=>$v->errors()],422);
 
-        $data = $request->all();
+        $data = $request->only([
+            'code', 'description', 'discount_type', 'discount_value', 'max_discount_amount',
+            'buy_quantity', 'get_quantity', 'get_discount_percent', 'min_order_amount',
+            'min_quantity', 'usage_limit', 'usage_per_user', 'applies_to',
+            'customer_eligibility', 'starts_at', 'expires_at',
+            'combine_with_other_coupons', 'combine_with_promotions', 'is_active',
+        ]);
         $c->update($data);
         \App\Models\ActivityLog::log('updated','coupons',"Updated coupon: {$c->code}",['id'=>$c->id]);
 

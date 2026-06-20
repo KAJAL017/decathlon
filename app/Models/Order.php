@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'order_number', 'status', 'payment_status', 'payment_method', 'payment_reference',
+        'order_number', 'view_token', 'status', 'payment_status', 'payment_method', 'payment_reference',
         'customer_id', 'customer_name', 'customer_email', 'customer_phone',
         'shipping_name', 'shipping_address', 'shipping_city', 'shipping_state', 'shipping_pincode', 'shipping_country',
         'billing_name', 'billing_address', 'billing_city', 'billing_state', 'billing_pincode',
@@ -32,6 +33,15 @@ class Order extends Model
         'total_amount'        => 'decimal:2',
         'coupon_discount'     => 'decimal:2',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (Order $order) {
+            if (empty($order->view_token)) {
+                $order->view_token = Str::random(64);
+            }
+        });
+    }
 
     // Status options
     const STATUSES = [
@@ -65,6 +75,11 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
     public function returns()
     {
         return $this->hasMany(Return_::class);
@@ -80,13 +95,24 @@ class Order extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    // Generate next order number
+    // Generate next order number with race-condition safety
     public static function generateOrderNumber(): string
     {
-        $year  = date('Y');
-        $last  = static::whereYear('created_at', $year)->max('id') ?? 0;
-        $count = static::whereYear('created_at', $year)->count() + 1;
-        return 'ORD-' . $year . '-' . str_pad($count, 5, '0', STR_PAD_LEFT);
+        $year = date('Y');
+        $prefix = 'ORD-' . $year . '-';
+
+        $lastOrder = static::where('order_number', 'like', $prefix . '%')
+            ->orderByDesc('order_number')
+            ->first();
+
+        if ($lastOrder) {
+            $lastNumber = (int) substr($lastOrder->order_number, -5);
+            $nextNumber = $lastNumber + 1;
+        } else {
+            $nextNumber = 1;
+        }
+
+        return $prefix . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
     }
 
     public function getStatusColorAttribute(): string

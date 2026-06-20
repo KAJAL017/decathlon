@@ -221,9 +221,27 @@ class OrderController extends Controller
     {
         try {
             $order = Order::findOrFail($id);
-            $order->update(['status' => $request->status]);
+            $oldStatus = $order->status;
+            $newStatus = $request->status;
+
+            \DB::beginTransaction();
+
+            // Restore stock when cancelling an order
+            if ($newStatus === 'cancelled' && $oldStatus !== 'cancelled') {
+                $order->load('items.variant');
+                foreach ($order->items as $item) {
+                    if ($item->variant && $item->variant->manage_stock) {
+                        $item->variant->increment('stock_quantity', $item->quantity);
+                    }
+                }
+            }
+
+            $order->update(['status' => $newStatus]);
+            \DB::commit();
+
             return response()->json(['success' => true, 'message' => 'Status updated', 'data' => $order]);
         } catch (\Exception $e) {
+            \DB::rollBack();
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }

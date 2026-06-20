@@ -767,6 +767,8 @@ async function saveSection(group) {
         if (!el.name) return;
         if (el.type === 'checkbox') {
             data[el.name] = el.checked ? '1' : '0';
+        } else if (el.type === 'radio') {
+            if (el.checked) data[el.name] = el.value;
         } else {
             data[el.name] = el.value;
         }

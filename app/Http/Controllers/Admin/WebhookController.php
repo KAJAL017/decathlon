@@ -30,6 +30,11 @@ class WebhookController extends Controller
         'coupon.used'         => 'Coupon Used',
     ];
 
+    public function index()
+    {
+        return view('admin.pages.webhooks.index');
+    }
+
     public function list(Request $request)
     {
         $q = Webhook::query();

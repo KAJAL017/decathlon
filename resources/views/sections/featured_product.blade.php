@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="pt-6 flex flex-col sm:flex-row items-center gap-4">
-                    <a href="{{ route('product.show', $p->slug) }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-12 py-5 bg-gray-950 text-white text-xs font-black uppercase tracking-[0.2em] rounded-2xl shadow-2xl shadow-gray-300 hover:bg-[#0082C3] hover:-translate-y-1 transition-all duration-300">
+                    <a href="{{ route('product', $p->slug) }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-12 py-5 bg-gray-950 text-white text-xs font-black uppercase tracking-[0.2em] rounded-2xl shadow-2xl shadow-gray-300 hover:bg-[#0082C3] hover:-translate-y-1 transition-all duration-300">
                         {{ $section->settings['cta_text'] ?? 'View Product' }}
                         <i data-lucide="arrow-right" class="w-5 h-5"></i>
                     </a>

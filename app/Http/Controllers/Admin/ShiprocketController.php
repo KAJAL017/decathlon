@@ -201,12 +201,26 @@ class ShiprocketController extends Controller
                 return response()->json(['success' => false, 'message' => 'No Shiprocket order found for this order.'], 422);
             }
 
-            $result = $sr->cancelOrder([$srOrderId]);
+            \DB::beginTransaction();
 
+            // Restore stock when cancelling
+            if ($order->status !== 'cancelled') {
+                $order->load('items.variant');
+                foreach ($order->items as $item) {
+                    if ($item->variant && $item->variant->manage_stock) {
+                        $item->variant->increment('stock_quantity', $item->quantity);
+                    }
+                }
+            }
+
+            $result = $sr->cancelOrder([$srOrderId]);
             $order->update(['status' => 'cancelled']);
+
+            \DB::commit();
 
             return response()->json(['success' => true, 'message' => 'Order cancelled in Shiprocket', 'data' => $result]);
         } catch (\Exception $e) {
+            \DB::rollBack();
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }

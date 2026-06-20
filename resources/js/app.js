@@ -1,6 +1,7 @@
 import './bootstrap';
 import Search from './modules/search';
 import Cart from './modules/cart';
+import Wishlist from './modules/wishlist';
 import QuickView from './modules/quickview';
 import Shop from './modules/shop';
 import Slider from './modules/slider';
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initialize Shop (Filters, Sidebar)
-    if (document.querySelector('main.lg:col-span-3') || document.getElementById('price-panel')) {
+    if (document.querySelector('main.lg\\:col-span-3') || document.getElementById('price-panel')) {
         new Shop();
     }
 

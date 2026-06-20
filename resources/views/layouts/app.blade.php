@@ -21,9 +21,18 @@
             routes: {
                 searchSuggestions: "{{ route('search.suggestions') }}",
                 quickView: "/api/quick-view",
-                shop: "{{ route('shop') }}"
+                shop: "{{ route('shop') }}",
+                wishlist: {
+                    toggle: "{{ route('wishlist.toggle') }}",
+                    add: "{{ route('wishlist.add') }}",
+                    remove: "{{ route('wishlist.remove') }}",
+                    check: "{{ route('wishlist.check') }}",
+                    count: "{{ route('wishlist.count') }}",
+                    page: "{{ route('wishlist') }}"
+                }
             }
         };
+        window.customerAuth = {{ Auth::guard('customer')->check() ? 'true' : 'false' }};
     </script>
 
     @vite(['resources/js/app.js'])
@@ -82,6 +91,56 @@
             font-size: 12px !important;
             border-radius: 8px !important;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* Wishlist Heart Button */
+        .wishlist-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .wishlist-btn:hover {
+            transform: scale(1.1);
+        }
+        .wishlist-btn:active {
+            transform: scale(0.95);
+        }
+        .wishlist-btn .heart-outline,
+        .wishlist-btn .heart-filled {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .wishlist-btn.wishlisted .heart-filled {
+            animation: heartFill 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes heartFill {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes wishlistSpin {
+            to { transform: rotate(360deg); }
+        }
+        .wishlist-bounce {
+            animation: wishlistBounce 0.4s ease;
+        }
+        @keyframes wishlistBounce {
+            0%   { transform: scale(1); }
+            30%  { transform: scale(1.35); }
+            60%  { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        .wishlist-spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(0,0,0,0.2);
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: wishlistSpin 0.6s linear infinite;
+            vertical-align: middle;
         }
     </style>
     @stack('styles')

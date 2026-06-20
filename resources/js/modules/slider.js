@@ -6,6 +6,8 @@ export default class Slider {
     constructor(options = {}) {
         this.trackId = options.trackId;
         this.paginationId = options.paginationId;
+        this.prevBtnId = options.prevBtnId || 'prev-btn';
+        this.nextBtnId = options.nextBtnId || 'next-btn';
         this.interval = options.interval || 5000;
         
         this.track = document.getElementById(this.trackId);
@@ -32,8 +34,8 @@ export default class Slider {
             }
         }
 
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById(this.prevBtnId);
+        const nextBtn = document.getElementById(this.nextBtnId);
         if (prevBtn) prevBtn.onclick = () => this.goToSlide(this.currentIndex - 1);
         if (nextBtn) nextBtn.onclick = () => this.goToSlide(this.currentIndex + 1);
 

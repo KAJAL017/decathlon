@@ -23,7 +23,9 @@ export default class QuickView {
     }
 
     init() {
-        this.elements.backdrop.addEventListener('click', () => this.close());
+        if (this.elements.backdrop) {
+            this.elements.backdrop.addEventListener('click', () => this.close());
+        }
         window.QuickView = this;
     }
 
@@ -64,6 +66,11 @@ export default class QuickView {
                 }
 
                 this.render(product);
+
+                // Sync wishlist state after render
+                if (window.Wishlist) {
+                    window.Wishlist.updateAllUI();
+                }
             })
             .catch(error => {
                 this.elements.content.innerHTML = `
@@ -206,11 +213,23 @@ export default class QuickView {
                 </div>
 
                 <div class="flex flex-col gap-3">
-                    <button id="qv-add-btn" onclick="window.QuickView.addToCart()" 
-                            class="w-full bg-[#183a9e] hover:bg-[#0c246b] text-white py-4 rounded-xl text-[13px] font-black uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 ${!this.selectedVariantId ? 'opacity-50 cursor-not-allowed' : ''}"
-                            ${!this.selectedVariantId ? 'disabled' : ''}>
-                        Add to cart
-                    </button>
+                    <div class="flex gap-2">
+                        <button id="qv-add-btn" onclick="window.QuickView.addToCart()" 
+                                class="flex-1 bg-[#183a9e] hover:bg-[#0c246b] text-white py-4 rounded-xl text-[13px] font-black uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 ${!this.selectedVariantId ? 'opacity-50 cursor-not-allowed' : ''}"
+                                ${!this.selectedVariantId ? 'disabled' : ''}>
+                            Add to cart
+                        </button>
+                        <button class="wishlist-btn w-12 h-12 border border-gray-300 hover:border-black text-gray-600 hover:text-red-500 rounded-xl transition-all duration-200 flex items-center justify-center bg-white shadow-sm flex-shrink-0"
+                                data-product-id="${p.id}"
+                                title="Add to Wishlist">
+                            <span class="heart-outline">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                            </span>
+                            <span class="heart-filled hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-500"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                            </span>
+                        </button>
+                    </div>
                     <a href="/product/${p.slug}" class="text-center text-[12px] font-bold text-gray-500 hover:text-[#0082C3] transition-colors py-2">View Full Details &rarr;</a>
                 </div>
             </div>

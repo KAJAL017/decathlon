@@ -75,14 +75,12 @@ class AuthController extends Controller
 
         // Log failed login attempt
         if ($user) {
-            \App\Models\ActivityLog::create([
-                'user_id' => $user->id,
-                'action' => 'failed_login',
-                'module' => 'auth',
-                'description' => "Failed login attempt for {$user->email}",
-                'ip_address' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-            ]);
+            \App\Models\ActivityLog::log(
+                'failed_login',
+                'auth',
+                "Failed login attempt for {$user->email}",
+                ['user_id' => $user->id, 'email' => $user->email]
+            );
         }
 
         return response()->json([

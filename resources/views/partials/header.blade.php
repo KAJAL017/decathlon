@@ -47,9 +47,10 @@
                             <p class="text-[10px] text-gray-500 truncate">{{ Auth::guard('customer')->user()->email }}</p>
                         </div>
                         <div class="p-2">
-                            <a href="#" class="block px-4 py-2 text-[12px] font-bold text-gray-700 hover:bg-gray-50 hover:text-[#0082C3] rounded-lg transition-colors uppercase tracking-wider">My Profile</a>
-                            <a href="#" class="block px-4 py-2 text-[12px] font-bold text-gray-700 hover:bg-gray-50 hover:text-[#0082C3] rounded-lg transition-colors uppercase tracking-wider">My Orders</a>
-                            <a href="#" class="block px-4 py-2 text-[12px] font-bold text-gray-700 hover:bg-gray-50 hover:text-[#0082C3] rounded-lg transition-colors uppercase tracking-wider">Wishlist</a>
+                            <a href="{{ route('customer.dashboard') }}" class="block px-4 py-2 text-[12px] font-bold text-gray-700 hover:bg-gray-50 hover:text-[#0082C3] rounded-lg transition-colors uppercase tracking-wider">My Account</a>
+                            <a href="{{ route('customer.orders') }}" class="block px-4 py-2 text-[12px] font-bold text-gray-700 hover:bg-gray-50 hover:text-[#0082C3] rounded-lg transition-colors uppercase tracking-wider">My Orders</a>
+                            <a href="{{ route('customer.wishlist') }}" class="block px-4 py-2 text-[12px] font-bold text-gray-700 hover:bg-gray-50 hover:text-[#0082C3] rounded-lg transition-colors uppercase tracking-wider">Wishlist</a>
+                            <a href="{{ route('customer.profile') }}" class="block px-4 py-2 text-[12px] font-bold text-gray-700 hover:bg-gray-50 hover:text-[#0082C3] rounded-lg transition-colors uppercase tracking-wider">Profile</a>
                             <div class="my-1 border-t border-gray-100"></div>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
@@ -65,7 +66,8 @@
                 </a>
             @endif
 
-            <a href="#" class="flex flex-col items-center gap-[4px] group">
+            <a href="{{ route('wishlist') }}" class="flex flex-col items-center gap-[4px] group relative">
+                <span class="wishlist-count absolute -top-0 -right-1.5 bg-[#F7C844] text-gray-900 text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white hidden">0</span>
                 <i data-lucide="heart" class="w-[24px] h-[24px] text-gray-700 group-hover:text-[#0082C3] transition-colors"></i>
                 <span class="text-[11px] font-medium text-gray-600 group-hover:text-[#0082C3] leading-none transition-colors">Wishlist</span>
             </a>

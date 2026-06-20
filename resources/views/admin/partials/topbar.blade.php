@@ -10,7 +10,7 @@
             <i data-lucide="home" class="w-4 h-4 text-gray-400"></i>
             <span class="text-gray-400">Admin</span>
             <span class="text-gray-300">/</span>
-            <span class="text-gray-800 font-semibold">@yield('page-title', 'Dashboard')</span>
+            <span class="text-gray-800 font-semibold">@yield('page-title', ucfirst(request()->route()->getName() ? explode('.', request()->route()->getName())[1] ?? 'Dashboard' : 'Dashboard'))</span>
         </div>
     </div>
 

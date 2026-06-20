@@ -12,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'admin.auth'    => \App\Http\Middleware\AdminAuth::class,
+            'admin.auth'        => \App\Http\Middleware\AdminAuth::class,
+            'patient.auth'      => \App\Http\Middleware\PatientAuth::class,
+            'customer.panel'    => \App\Http\Middleware\CustomerPanelAuth::class,
+            'detect.device'     => \App\Http\Middleware\DetectDevice::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

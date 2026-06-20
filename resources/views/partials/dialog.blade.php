@@ -3,6 +3,7 @@
      • Smooth Backdrop Blur & Fade
      • Scale & Bounce Entrance
      • Fully Dynamic (Title, Message, Icons, Buttons)
+     • Loading State, Keyboard ESC, Backdrop Click
      ═══════════════════════════════════════════════════════════════ --}}
 <div id="global-dialog" 
      class="fixed inset-0 z-[100000] hidden flex items-center justify-center p-4 sm:p-6"
@@ -21,7 +22,6 @@
         <div class="p-8 text-center">
             {{-- Icon Container --}}
             <div id="dialog-icon-container" class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                {{-- Dynamic Icon Injected via JS --}}
                 <div id="dialog-icon"></div>
             </div>
 
@@ -47,14 +47,32 @@
 <style>
     #global-dialog.active #dialog-backdrop { opacity: 1; }
     #global-dialog.active #dialog-panel { opacity: 1; scale: 1; }
+    @keyframes dialogSpin { to { transform: rotate(360deg); } }
+    .dialog-btn-spinner {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: dialogSpin 0.6s linear infinite;
+        vertical-align: middle;
+        margin-right: 6px;
+    }
 </style>
 
 <script>
 /**
  * Global Dialog Controller
+ * - confirm(options) → Promise<boolean>
+ * - alert(options)   → Promise<void>
+ * - loading(options) → shows spinner, returns close() function
+ * - Keyboard ESC to close
+ * - Backdrop click to close
  */
 window.Dialog = {
     _resolve: null,
+    _keyHandler: null,
     
     init() {
         this.el = document.getElementById('global-dialog');
@@ -72,20 +90,21 @@ window.Dialog = {
         this.backdrop.onclick = () => this.close(false);
     },
 
-    /**
-     * Show confirmation dialog (Two buttons)
-     * @param {Object} options {title, message, type, confirmText, cancelText}
-     */
     confirm(options = {}) {
         return this.show({ ...options, mode: 'confirm' });
     },
 
-    /**
-     * Show alert dialog (One button)
-     * @param {Object} options {title, message, type, confirmText}
-     */
     alert(options = {}) {
         return this.show({ ...options, mode: 'alert' });
+    },
+
+    /**
+     * Show a loading dialog (no buttons, spinner in icon area)
+     * Returns a close function: closeLoading()
+     */
+    loading(options = {}) {
+        const { title = 'Processing...', message = 'Please wait' } = options;
+        return this.show({ title, message, type: 'info', mode: 'loading' });
     },
 
     show(options = {}) {
@@ -95,7 +114,7 @@ window.Dialog = {
             const {
                 title = 'Notice',
                 message = '',
-                type = 'info', // danger, warning, success, info
+                type = 'info',
                 confirmText = 'OK',
                 cancelText = 'Cancel',
                 mode = 'confirm'
@@ -106,25 +125,59 @@ window.Dialog = {
             this.confirmBtn.innerText = confirmText;
             this.cancelBtn.innerText = cancelText;
 
-            // Mode toggle
-            if (mode === 'alert') {
+            // Reset button states
+            this.confirmBtn.disabled = false;
+            this.confirmBtn.innerHTML = confirmText;
+
+            if (mode === 'alert' || mode === 'loading') {
                 this.cancelBtn.classList.add('hidden');
             } else {
                 this.cancelBtn.classList.remove('hidden');
             }
 
-            // Type styling
-            this.applyType(type);
+            if (mode === 'loading') {
+                this.confirmBtn.classList.add('hidden');
+                this.iconContainer.innerHTML = '<div class="dialog-btn-spinner" style="width:32px;height:32px;border-width:3px;"></div>';
+            } else {
+                this.confirmBtn.classList.remove('hidden');
+                this.iconContainer.innerHTML = '<div id="dialog-icon"></div>';
+                this.icon = document.getElementById('dialog-icon');
+                this.applyType(type);
+            }
 
-            // Show
             this.el.classList.remove('hidden');
             this.el.classList.add('flex');
             
-            // Force reflow for animation
             setTimeout(() => {
                 this.el.classList.add('active');
             }, 10);
+
+            // Keyboard ESC
+            this._keyHandler = (e) => {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    this.close(mode === 'alert' || mode === 'loading' ? false : false);
+                }
+            };
+            document.addEventListener('keydown', this._keyHandler);
         });
+    },
+
+    /**
+     * Show loading state on the confirm button (for async confirm dialogs)
+     */
+    setLoading(isLoading) {
+        if (isLoading) {
+            this.confirmBtn.disabled = true;
+            this.confirmBtn._originalText = this.confirmBtn.innerText;
+            this.confirmBtn.innerHTML = '<span class="dialog-btn-spinner"></span> Processing…';
+        } else {
+            this.confirmBtn.disabled = false;
+            if (this.confirmBtn._originalText) {
+                this.confirmBtn.innerText = this.confirmBtn._originalText;
+                delete this.confirmBtn._originalText;
+            }
+        }
     },
 
     applyType(type) {
@@ -157,7 +210,6 @@ window.Dialog = {
 
         const config = configs[type] || configs.info;
         
-        // Reset and apply
         this.iconContainer.className = `mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-6 ${config.bg} ${config.text}`;
         this.icon.innerHTML = `<i data-lucide="${config.icon}" class="w-8 h-8"></i>`;
         if (typeof lucide !== 'undefined') lucide.createIcons({ nodes: [this.icon] });
@@ -166,9 +218,19 @@ window.Dialog = {
 
     close(result) {
         this.el.classList.remove('active');
+        
+        // Remove keyboard listener
+        if (this._keyHandler) {
+            document.removeEventListener('keydown', this._keyHandler);
+            this._keyHandler = null;
+        }
+
         setTimeout(() => {
             this.el.classList.add('hidden');
             this.el.classList.remove('flex');
+            // Reset button states
+            this.confirmBtn.classList.remove('hidden');
+            this.confirmBtn.disabled = false;
             if (this._resolve) {
                 this._resolve(result);
                 this._resolve = null;

@@ -95,7 +95,10 @@ class ReviewController extends Controller
         $v = Validator::make($request->all(), $this->rules($id));
         if ($v->fails()) return response()->json(['success' => false, 'errors' => $v->errors()], 422);
 
-        $r->update($request->all());
+        $r->update($request->only([
+            'product_id', 'reviewer_name', 'reviewer_email', 'rating', 'title', 'body',
+            'status', 'verified_purchase', 'featured', 'images', 'helpful_count', 'source',
+        ]));
         \App\Models\ActivityLog::log('updated', 'reviews', "Updated review #{$r->id}", ['id' => $r->id]);
 
         return response()->json(['success' => true, 'message' => 'Review updated', 'data' => $r->load('product:id,name')]);

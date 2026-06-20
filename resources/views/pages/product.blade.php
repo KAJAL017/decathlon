@@ -169,8 +169,15 @@
                             Add to cart
                         </button>
 
-                        <button class="w-9 h-9 border border-gray-300 hover:border-black text-gray-600 hover:text-red-500 rounded-lg transition-all duration-200 flex items-center justify-center bg-white shadow-sm flex-shrink-0" title="Add to Wishlist">
-                            <i data-lucide="heart" class="w-5 h-5"></i>
+                        <button type="button" class="wishlist-btn w-9 h-9 border border-gray-300 hover:border-black text-gray-600 hover:text-red-500 rounded-lg transition-all duration-200 flex items-center justify-center bg-white shadow-sm flex-shrink-0"
+                                data-product-id="{{ $product->id }}"
+                                title="Add to Wishlist">
+                            <span class="heart-outline">
+                                <i data-lucide="heart" class="w-5 h-5"></i>
+                            </span>
+                            <span class="heart-filled hidden">
+                                <i data-lucide="heart" class="w-5 h-5 text-red-500 fill-red-500"></i>
+                            </span>
                         </button>
                     </div>
                 </div>

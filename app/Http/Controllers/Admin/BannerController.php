@@ -74,7 +74,9 @@ class BannerController extends Controller
             ], 422);
         }
 
-        $banner = Banner::create($request->all());
+        $banner = Banner::create($request->only([
+            'image_url', 'image_id', 'banner_link', 'sort_order', 'is_active',
+        ]));
 
         // Log activity
         \App\Models\ActivityLog::log(
@@ -139,7 +141,9 @@ class BannerController extends Controller
             $this->mediaService->delete($banner->getRawOriginal('image_url'));
         }
 
-        $banner->update($request->all());
+        $banner->update($request->only([
+            'image_url', 'image_id', 'banner_link', 'sort_order', 'is_active',
+        ]));
 
         // Log activity
         \App\Models\ActivityLog::log(

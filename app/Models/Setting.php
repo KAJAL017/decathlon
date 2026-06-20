@@ -20,6 +20,7 @@ class Setting extends Model
         'msg91_auth_key',
         'twilio_auth_token',
         'ai_api_key',
+        'google_client_secret',
     ];
 
     // Get a setting value

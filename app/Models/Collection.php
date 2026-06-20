@@ -14,6 +14,7 @@ class Collection extends Model
         'name',
         'slug',
         'description',
+        'store_id',
         'image_url',
         'type',
         'rules',

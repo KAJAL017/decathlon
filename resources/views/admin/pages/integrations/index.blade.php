@@ -3126,6 +3126,7 @@ async function saveSMTP() {
         smtp_from_name:  fname,
         smtp_from_email: from,
         smtp_reply_to:   document.getElementById('smtp_reply_to').value.trim(),
+        email_provider:  'smtp',
     };
 
     const r = await fetch('/admin/settings/integrations', {
@@ -3181,7 +3182,7 @@ async function disconnectSMTP() {
         type: 'danger'
     });
     if (!confirmed) return;
-    const body = { smtp_host: '', smtp_username: '', smtp_password: '', smtp_from_email: '', smtp_from_name: '' };
+    const body = { smtp_host: '', smtp_username: '', smtp_password: '', smtp_from_email: '', smtp_from_name: '', email_provider: '' };
 
     const r = await fetch('/admin/settings/integrations', {
         method: 'POST', credentials: 'same-origin',

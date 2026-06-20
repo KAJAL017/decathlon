@@ -85,8 +85,14 @@ class BundleItem extends Model
         }
         
         // Check if product/variant is active
-        if ($item->status !== 'active') {
-            return false;
+        if (is_bool($item->status)) {
+            if (!$item->status) {
+                return false;
+            }
+        } else {
+            if ($item->status !== 'active') {
+                return false;
+            }
         }
         
         // Check availability status

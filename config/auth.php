@@ -110,7 +110,7 @@ return [
 
         'customers' => [
             'provider' => 'customers',
-            'table' => 'password_reset_tokens_customers',
+            'table' => 'customer_password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],

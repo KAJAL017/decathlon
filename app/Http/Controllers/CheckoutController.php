@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Services\CartService;
 use App\Models\CustomerAddress;
 use App\Models\Order;
+use App\Mail\OrderConfirmation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -96,7 +98,9 @@ class CheckoutController extends Controller
                     $customer->addresses()->create($request->new_address);
                 }
             } else {
-                $address = CustomerAddress::findOrFail($request->address_id);
+                $address = $customer
+                    ? $customer->addresses()->findOrFail($request->address_id)
+                    : CustomerAddress::findOrFail($request->address_id);
                 $shippingName    = $address->full_name;
                 $shippingPhone   = $address->phone;
                 $shippingAddress = $address->address_line1 . ($address->address_line2 ? ', ' . $address->address_line2 : '');
@@ -173,11 +177,19 @@ class CheckoutController extends Controller
 
             DB::commit();
 
+            // ── Send Order Confirmation Email ──
+            try {
+                Mail::to($order->customer_email)->send(new OrderConfirmation($order));
+            } catch (\Exception $e) {
+                // Don't fail the order if email fails
+                \Log::error('Failed to send order confirmation email: ' . $e->getMessage());
+            }
+
             return response()->json([
                 'success'  => true,
                 'message'  => 'Order placed successfully!',
                 'order_id' => $order->id,
-                'redirect' => route('checkout.success', $order->order_number),
+                'redirect' => route('checkout.success', ['orderNumber' => $order->order_number, 'token' => $order->view_token]),
             ]);
 
         } catch (\Exception $e) {
@@ -192,7 +204,7 @@ class CheckoutController extends Controller
     /**
      * Order success page (guest + logged-in).
      */
-    public function success($orderNumber)
+    public function success($orderNumber, Request $request)
     {
         $customer = Auth::guard('customer')->user();
 
@@ -200,8 +212,14 @@ class CheckoutController extends Controller
 
         if ($customer) {
             $query->where('customer_id', $customer->id);
+        } else {
+            // Guests must provide a valid view token
+            $token = $request->query('token');
+            if (!$token) {
+                abort(403, 'Unauthorized.');
+            }
+            $query->where('view_token', $token);
         }
-        // Guests can view by order number alone (no customer_id filter)
 
         $order = $query->firstOrFail();
 

@@ -15,6 +15,7 @@ class Customer extends Authenticatable
         'first_name',
         'last_name',
         'email',
+        'google_id',
         'phone',
         'password',
         'avatar',
@@ -29,6 +30,8 @@ class Customer extends Authenticatable
         'login_count',
         'accepts_marketing',
         'notes',
+        'timezone',
+        'language',
     ];
 
     protected $hidden = [
@@ -50,35 +53,68 @@ class Customer extends Authenticatable
         ];
     }
 
-    /**
-     * Get the customer's full name.
-     */
     public function getNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
     }
 
-    /**
-     * Relationship: Customer has many addresses.
-     */
+    public function getInitialsAttribute(): string
+    {
+        return strtoupper(substr($this->first_name, 0, 1) . substr($this->last_name ?? '', 0, 1));
+    }
+
+    public function getAvatarUrlAttribute(): ?string
+    {
+        return $this->avatar ?? null;
+    }
+
     public function addresses()
     {
         return $this->hasMany(CustomerAddress::class);
     }
 
-    /**
-     * Relationship: Customer has many orders.
-     */
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
 
-    /**
-     * Relationship: Customer has many reviews.
-     */
-    public function reviews()
+    public function rewards()
     {
-        return $this->hasMany(ProductReview::class);
+        return $this->hasOne(CustomerReward::class);
+    }
+
+    public function notifications_panel()
+    {
+        return $this->hasMany(CustomerNotification::class);
+    }
+
+    public function paymentMethods()
+    {
+        return $this->hasMany(CustomerPaymentMethod::class);
+    }
+
+    public function supportTickets()
+    {
+        return $this->hasMany(SupportTicket::class);
+    }
+
+    public function recentlyViewed()
+    {
+        return $this->hasMany(RecentlyViewedProduct::class);
+    }
+
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
+    public function getOrCreateRewards(): CustomerReward
+    {
+        return $this->rewards()->firstOrCreate(['customer_id' => $this->id]);
     }
 }

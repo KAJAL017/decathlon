@@ -10,7 +10,7 @@
 
                     <div class="space-y-6">
                         @foreach($column['products'] as $product)
-                            <a href="{{ route('product.show', $product->slug) }}" class="flex items-center gap-5 group">
+                            <a href="{{ route('product', $product->slug) }}" class="flex items-center gap-5 group">
                                 <div class="w-20 h-20 bg-gray-50 rounded-2xl overflow-hidden flex-shrink-0">
                                     <img src="{{ $product->featured_image_url }}" alt="{{ $product->name }}" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500">
                                 </div>

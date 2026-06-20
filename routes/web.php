@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ActivityLogController;
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\NewsletterController;
@@ -29,9 +30,24 @@ Route::get('/register', [CustomerAuthController::class, 'showRegister'])->name('
 Route::post('/register', [CustomerAuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('logout');
 
+// OTP Routes
+Route::post('/auth/otp/verify', [CustomerAuthController::class, 'verifyOtp'])->name('auth.otp.verify');
+Route::post('/auth/otp/resend', [CustomerAuthController::class, 'resendOtp'])->name('auth.otp.resend');
+
+// Forgot Password Routes
+Route::post('/auth/forgot-password', [CustomerAuthController::class, 'forgotPassword'])->name('auth.forgot-password');
+Route::post('/auth/reset-password', [CustomerAuthController::class, 'resetPassword'])->name('auth.reset-password');
+
+// Google OAuth Routes
+Route::get('/auth/google/redirect', [CustomerAuthController::class, 'googleRedirect'])->name('auth.google.redirect');
+Route::get('/auth/google/callback', [CustomerAuthController::class, 'googleCallback'])->name('auth.google.callback');
+
+// Login Settings API
+Route::get('/api/login-settings', [CustomerAuthController::class, 'getLoginSettings'])->name('api.login-settings');
+
 // Checkout Routes (Guest + Auth)
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::post('/checkout', [CheckoutController::class, 'store'])->middleware('throttle:5,1')->name('checkout.store');
 Route::get('/checkout/success/{orderNumber}', [CheckoutController::class, 'success'])->name('checkout.success');
 
 // Guest Order Tracking
@@ -45,6 +61,18 @@ Route::prefix('cart')->name('cart.')->group(function() {
     Route::delete('/remove/{itemId}', [CartController::class, 'remove'])->name('remove');
     Route::delete('/clear', [CartController::class, 'clear'])->name('clear');
     Route::get('/mini-cart', [CartController::class, 'miniCart'])->name('mini-cart');
+});
+
+// Wishlist Routes
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+Route::post('/wishlist/guest-products', [WishlistController::class, 'guestProducts'])->name('wishlist.guest-products');
+Route::post('/wishlist/sync', [WishlistController::class, 'syncGuestWishlist'])->name('wishlist.sync');
+Route::prefix('wishlist')->name('wishlist.')->group(function() {
+    Route::post('/toggle', [WishlistController::class, 'toggle'])->name('toggle');
+    Route::post('/add', [WishlistController::class, 'add'])->name('add');
+    Route::post('/remove', [WishlistController::class, 'remove'])->name('remove');
+    Route::post('/check', [WishlistController::class, 'check'])->name('check');
+    Route::get('/count', [WishlistController::class, 'count'])->name('count');
 });
 
 // Search API
@@ -270,7 +298,7 @@ Route::get('/admin/coupons/{id}', [App\Http\Controllers\Admin\CouponController::
 Route::put('/admin/coupons/{id}', [App\Http\Controllers\Admin\CouponController::class, 'update'])->name('admin.coupons.update');
 Route::delete('/admin/coupons/{id}', [App\Http\Controllers\Admin\CouponController::class, 'destroy'])->name('admin.coupons.destroy');
 Route::post('/admin/coupons/{id}/toggle-status', [App\Http\Controllers\Admin\CouponController::class, 'toggleStatus'])->name('admin.coupons.toggle');
-Route::post('/admin/coupons/bulk-action', [App\Http\Controllers\Admin\ReviewController::class, 'bulkAction'])->name('admin.coupons.bulk');
+Route::post('/admin/coupons/bulk-action', [App\Http\Controllers\Admin\CouponController::class, 'bulkAction'])->name('admin.coupons.bulk');
 
 // Promotions Management
 Route::get('/admin/promotions', [App\Http\Controllers\Admin\PromotionController::class, 'index'])->name('admin.promotions.index');
@@ -307,6 +335,7 @@ Route::post('/admin/ai-tools/generate', [App\Http\Controllers\Admin\AIToolsContr
 Route::get('/admin/ai-tools/usage', [App\Http\Controllers\Admin\AIToolsController::class, 'usage'])->name('admin.ai-tools.usage');
 
 // Webhooks Management
+Route::get('/admin/webhooks', [App\Http\Controllers\Admin\WebhookController::class, 'index'])->name('admin.webhooks.index');
 Route::get('/admin/webhooks/list', [App\Http\Controllers\Admin\WebhookController::class, 'list'])->name('admin.webhooks.list');
 Route::get('/admin/webhooks/events', [App\Http\Controllers\Admin\WebhookController::class, 'getEvents'])->name('admin.webhooks.events');
 Route::post('/admin/webhooks', [App\Http\Controllers\Admin\WebhookController::class, 'store'])->name('admin.webhooks.store');
@@ -423,15 +452,79 @@ Route::get('/admin/settings/{group}', [App\Http\Controllers\Admin\SettingControl
 // Notifications
 Route::get('/admin/notifications', [App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('admin.notifications');
 
-
-}); // end admin.auth middleware group
-
 // Media Upload Routes
 Route::post('/api/upload', [App\Http\Controllers\UploadController::class, 'upload'])->name('upload.media');
 Route::delete('/api/upload/delete', [App\Http\Controllers\UploadController::class, 'delete'])->name('upload.media.delete');
-
-
 Route::get('/api/media-usage', [App\Http\Controllers\UploadController::class, 'usage'])->name('upload.media.usage');
 Route::get('/api/media-files', [App\Http\Controllers\UploadController::class, 'listFiles'])->name('upload.media.files');
 Route::post('/api/media-folder', [App\Http\Controllers\UploadController::class, 'createFolder'])->name('upload.media.folder.create');
 Route::delete('/api/media-folder', [App\Http\Controllers\UploadController::class, 'deleteFolder'])->name('upload.media.folder.delete');
+
+}); // end admin.auth middleware group
+
+// ── Customer Panel Routes ──────────────────────────────────────
+Route::middleware(['customer.panel', 'detect.device'])->prefix('account')->name('customer.')->group(function () {
+    Route::get('/', [App\Http\Controllers\Customer\DashboardController::class, 'index'])->name('dashboard');
+
+    // Orders
+    Route::get('/orders', [App\Http\Controllers\Customer\OrderController::class, 'index'])->name('orders');
+    Route::get('/orders/{orderNumber}', [App\Http\Controllers\Customer\OrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{orderNumber}/cancel', [App\Http\Controllers\Customer\OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::post('/orders/{orderNumber}/return', [App\Http\Controllers\Customer\OrderController::class, 'returnOrder'])->name('orders.return');
+    Route::get('/orders/{orderNumber}/track', [App\Http\Controllers\Customer\OrderController::class, 'track'])->name('orders.track');
+    Route::get('/orders/{orderNumber}/invoice', [App\Http\Controllers\Customer\OrderController::class, 'invoice'])->name('orders.invoice');
+
+    // Wishlist
+    Route::get('/wishlist', [App\Http\Controllers\Customer\WishlistController::class, 'index'])->name('wishlist');
+    Route::post('/wishlist/toggle', [App\Http\Controllers\Customer\WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::post('/wishlist/move-to-cart/{id}', [App\Http\Controllers\Customer\WishlistController::class, 'moveToCart'])->name('wishlist.move-to-cart');
+    Route::delete('/wishlist/{id}', [App\Http\Controllers\Customer\WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+    // Addresses
+    Route::get('/addresses', [App\Http\Controllers\Customer\AddressController::class, 'index'])->name('addresses');
+    Route::post('/addresses', [App\Http\Controllers\Customer\AddressController::class, 'store'])->name('addresses.store');
+    Route::put('/addresses/{id}', [App\Http\Controllers\Customer\AddressController::class, 'update'])->name('addresses.update');
+    Route::delete('/addresses/{id}', [App\Http\Controllers\Customer\AddressController::class, 'destroy'])->name('addresses.destroy');
+    Route::post('/addresses/{id}/default', [App\Http\Controllers\Customer\AddressController::class, 'setDefault'])->name('addresses.default');
+
+    // Profile
+    Route::get('/profile', [App\Http\Controllers\Customer\ProfileController::class, 'index'])->name('profile');
+    Route::put('/profile', [App\Http\Controllers\Customer\ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/avatar', [App\Http\Controllers\Customer\ProfileController::class, 'updateAvatar'])->name('profile.avatar');
+    Route::post('/profile/password', [App\Http\Controllers\Customer\ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Payments
+    Route::get('/payments', [App\Http\Controllers\Customer\PaymentController::class, 'index'])->name('payments');
+    Route::post('/payments', [App\Http\Controllers\Customer\PaymentController::class, 'store'])->name('payments.store');
+    Route::delete('/payments/{id}', [App\Http\Controllers\Customer\PaymentController::class, 'destroy'])->name('payments.destroy');
+    Route::post('/payments/{id}/default', [App\Http\Controllers\Customer\PaymentController::class, 'setDefault'])->name('payments.default');
+
+    // Coupons
+    Route::get('/coupons', [App\Http\Controllers\Customer\CouponController::class, 'index'])->name('coupons');
+
+    // Rewards
+    Route::get('/rewards', [App\Http\Controllers\Customer\RewardController::class, 'index'])->name('rewards');
+    Route::post('/rewards/redeem', [App\Http\Controllers\Customer\RewardController::class, 'redeem'])->name('rewards.redeem');
+
+    // Notifications
+    Route::get('/notifications', [App\Http\Controllers\Customer\NotificationController::class, 'index'])->name('notifications');
+    Route::post('/notifications/{id}/read', [App\Http\Controllers\Customer\NotificationController::class, 'markRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [App\Http\Controllers\Customer\NotificationController::class, 'markAllRead'])->name('notifications.read-all');
+    Route::get('/notifications/unread-count', [App\Http\Controllers\Customer\NotificationController::class, 'unreadCount'])->name('notifications.unread-count');
+
+    // Recently Viewed
+    Route::get('/recently-viewed', [App\Http\Controllers\Customer\RecentlyViewedController::class, 'index'])->name('recently-viewed');
+
+    // Support
+    Route::get('/support', [App\Http\Controllers\Customer\SupportController::class, 'index'])->name('support');
+    Route::post('/support', [App\Http\Controllers\Customer\SupportController::class, 'store'])->name('support.store');
+    Route::get('/support/{ticketNumber}', [App\Http\Controllers\Customer\SupportController::class, 'show'])->name('support.show');
+    Route::post('/support/{ticketNumber}/reply', [App\Http\Controllers\Customer\SupportController::class, 'reply'])->name('support.reply');
+
+    // Settings
+    Route::get('/settings', [App\Http\Controllers\Customer\SettingsController::class, 'index'])->name('settings');
+    Route::put('/settings', [App\Http\Controllers\Customer\SettingsController::class, 'update'])->name('settings.update');
+
+    // AJAX API endpoints
+    Route::post('/recently-viewed/track', [App\Http\Controllers\Customer\RecentlyViewedController::class, 'track'])->name('recently-viewed.track');
+});

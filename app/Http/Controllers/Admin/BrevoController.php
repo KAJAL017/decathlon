@@ -23,6 +23,7 @@ class BrevoController extends Controller
             'brevo_from_email' => $request->brevo_from_email,
             'brevo_from_name'  => $request->brevo_from_name,
             'brevo_list_id'    => $request->brevo_list_id ?? '',
+            'email_provider'   => 'brevo',
         ], 'integrations');
 
         \App\Models\ActivityLog::log('updated', 'integrations', 'Brevo settings updated');
@@ -291,11 +292,14 @@ class BrevoController extends Controller
     // ── Disconnect ────────────────────────────────────────────────
     public function disconnect()
     {
+        $currentProvider = Setting::get('email_provider', '');
+
         Setting::saveMany([
             'brevo_api_key'    => '',
             'brevo_from_email' => '',
             'brevo_from_name'  => '',
             'brevo_list_id'    => '',
+            'email_provider'   => $currentProvider === 'brevo' ? '' : $currentProvider,
         ], 'integrations');
 
         return response()->json(['success' => true, 'message' => 'Brevo disconnected']);

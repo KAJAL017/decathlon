@@ -79,8 +79,9 @@ class ProductVariant extends Model
 
     public function scopeInStock($query)
     {
-        return $query->whereHas('inventory', function($q) {
-            $q->whereRaw('quantity - reserved_quantity > 0');
+        return $query->where(function ($q) {
+            $q->where('manage_stock', false)
+              ->orWhere('stock_quantity', '>', 0);
         });
     }
 

@@ -18,8 +18,15 @@
             <span class="absolute top-2 left-2 bg-yellow-400 text-gray-900 text-[10px] font-bold px-2 py-0.5 rounded">Price drop</span>
         @endif
         
-        <button class="absolute top-2 right-2 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50 z-10">
-            <i data-lucide="heart" class="w-4 h-4 text-gray-600"></i>
+        <button class="wishlist-btn absolute top-2 right-2 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50 z-10"
+                data-product-id="{{ $product->id }}"
+                title="Add to Wishlist">
+            <span class="heart-outline">
+                <i data-lucide="heart" class="w-4 h-4 text-gray-600"></i>
+            </span>
+            <span class="heart-filled hidden">
+                <i data-lucide="heart" class="w-4 h-4 text-red-500 fill-red-500"></i>
+            </span>
         </button>
         
         <a href="{{ route('product', $product->slug) }}" class="block overflow-hidden">

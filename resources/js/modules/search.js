@@ -98,6 +98,7 @@ export default class Search {
     }
 
     openOverlay() {
+        if (!this.elements.overlay) return;
         this.elements.overlay.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
         this.renderRecentlyViewed();
@@ -107,6 +108,7 @@ export default class Search {
     }
 
     closeOverlay() {
+        if (!this.elements.overlay) return;
         this.elements.overlay.classList.add('hidden');
         document.body.style.overflow = '';
         if (this.elements.overlayInput) this.elements.overlayInput.value = '';
@@ -121,13 +123,13 @@ export default class Search {
     }
 
     showDefaultState() {
-        this.elements.defaultState.classList.remove('hidden');
-        this.elements.resultsState.classList.add('hidden');
+        if (this.elements.defaultState) this.elements.defaultState.classList.remove('hidden');
+        if (this.elements.resultsState) this.elements.resultsState.classList.add('hidden');
     }
 
     showResultsState() {
-        this.elements.defaultState.classList.add('hidden');
-        this.elements.resultsState.classList.remove('hidden');
+        if (this.elements.defaultState) this.elements.defaultState.classList.add('hidden');
+        if (this.elements.resultsState) this.elements.resultsState.classList.remove('hidden');
     }
 
     fetchDefaultState() {
@@ -142,27 +144,27 @@ export default class Search {
     }
 
     renderTrending(tags) {
-        if (!tags || !tags.length) return;
+        if (!tags || !tags.length || !this.elements.trendingChips) return;
         this.elements.trendingChips.innerHTML = tags.map(t => 
             `<button onclick="setSearch('${t}')" class="px-3.5 py-1.5 rounded-full border border-gray-300 text-[13px] text-gray-700 hover:border-[#0082C3] hover:text-[#0082C3] transition-colors bg-white">${t}</button>`
         ).join('');
-        this.elements.trendingSection.classList.remove('hidden');
+        if (this.elements.trendingSection) this.elements.trendingSection.classList.remove('hidden');
     }
 
     renderPopular(products) {
-        if (!products || !products.length) return;
+        if (!products || !products.length || !this.elements.popularGrid) return;
         this.elements.popularGrid.innerHTML = products.map(p => this.popularCardTemplate(p)).join('');
-        this.elements.popularSection.classList.remove('hidden');
+        if (this.elements.popularSection) this.elements.popularSection.classList.remove('hidden');
     }
 
     renderRecentlyViewed() {
         const recent = JSON.parse(localStorage.getItem('recently_viewed') || '[]');
-        if (!recent.length) {
-            this.elements.recentSection.classList.add('hidden');
+        if (!recent.length || !this.elements.recentGrid) {
+            if (this.elements.recentSection) this.elements.recentSection.classList.add('hidden');
             return;
         }
         this.elements.recentGrid.innerHTML = recent.slice(0, 4).map(p => this.recentCardTemplate(p)).join('');
-        this.elements.recentSection.classList.remove('hidden');
+        if (this.elements.recentSection) this.elements.recentSection.classList.remove('hidden');
     }
 
     fetchResults(q) {

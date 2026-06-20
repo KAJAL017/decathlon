@@ -75,7 +75,9 @@ class HomeSectionController extends Controller
             ], 422);
         }
 
-        $section = HomeSection::create($request->all());
+        $section = HomeSection::create($request->only([
+            'type', 'title', 'subtitle', 'settings', 'sort_order', 'is_active',
+        ]));
 
         return response()->json([
             'success' => true,
@@ -128,7 +130,9 @@ class HomeSectionController extends Controller
             ], 422);
         }
 
-        $section->update($request->all());
+        $section->update($request->only([
+            'type', 'title', 'subtitle', 'settings', 'sort_order', 'is_active',
+        ]));
 
         return response()->json([
             'success' => true,
